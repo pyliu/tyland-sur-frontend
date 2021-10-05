@@ -1,5 +1,6 @@
 <template lang="pug">
 .file-upload
+  span(v-if="progress !== 0") {{ progress }}
   input(type="file" @change="onFileChange")
   var-button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
 </template>
@@ -9,7 +10,8 @@ import axios from "axios"
 
 export default {
   data: () => ({
-    selectedFile: undefined
+    selectedFile: undefined,
+    progress: 0
   }),
   methods: {
     onFileChange (e) {
@@ -22,12 +24,22 @@ export default {
 
      // sending file to the backend
       axios
-        .post("http://localhost:4500/upload", formData)
+        .post("http://localhost:4500/upload", formData, {
+          onUploadProgress: ProgressEvent => {
+            let progress =
+              Math.round((ProgressEvent.loaded / ProgressEvent.total) * 100)
+              +"%"
+            this.progress = progress
+          }
+        })
         .then(res => {
           console.log(res)
         })
         .catch(err => {
           console.log(err)
+        })
+        .finally(() => {
+          setTimeout(() => (this.progress = 0), 1000)
         })
     }
   }
