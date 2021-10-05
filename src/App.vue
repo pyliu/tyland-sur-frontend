@@ -1,20 +1,20 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<template lang="pug">
+img(alt="Vue logo" src="./assets/logo.png")
+FileUpload
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import FileUpload from './components/FileUpload.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FileUpload
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
