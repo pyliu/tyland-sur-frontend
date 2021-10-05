@@ -1,5 +1,5 @@
 <template lang="pug">
-img(alt="Vue logo" src="./assets/logo.png")
+.d-flex.justify-content-center: img.ml-5(alt="Vue logo" src="./assets/logo.png")
 FileUpload
 </template>
 

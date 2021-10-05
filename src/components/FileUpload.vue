@@ -1,7 +1,7 @@
 <template lang="pug">
 .file-upload
   input(type="file" @change="onFileChange")
-  button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+  var-button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
 </template>
 
 <script>
@@ -51,8 +51,8 @@ input {
   font-size: 0.9rem;
 }
 
-input, div, utton {
-  margin-top: 2rem;
+input, div, button {
+  margin-top: 1rem;
 }
 
 .upload-button {
