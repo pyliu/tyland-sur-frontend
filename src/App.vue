@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-flex.justify-content-center: img.ml-5(alt="Vue logo" src="./assets/logo.png")
+.d-flex.justify-content-center: img.ml-5(alt="tyland logo" src="./assets/logo.png")
 FileUpload
 </template>
 
@@ -8,8 +8,16 @@ import FileUpload from './components/FileUpload.vue'
 
 export default {
   name: 'App',
-  components: {
-    FileUpload
+  head: { title: '界標資料閱覽系統-桃園地政事務所' },
+  components: { FileUpload },
+  setup () {
+    const loggedIn = false
+    return {
+      loggedIn
+    }
+  },
+  mounted () {
+    console.log(this.loggedIn)
   }
 }
 </script>
