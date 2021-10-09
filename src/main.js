@@ -1,7 +1,5 @@
 import App from './App.vue'
 import { createApp } from 'vue'
-import Varlet from '@varlet/ui'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '@varlet/ui/es/style'
+import './index.css'
 
-createApp(App).use(Varlet).mount('#app')
+createApp(App).mount('#app')

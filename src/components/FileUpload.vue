@@ -2,7 +2,7 @@
 .file-upload
   span(v-if="progress !== 0") {{ progress }}
   input(type="file" @change="onFileChange")
-  var-button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+  button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
 </template>
 
 <script>
