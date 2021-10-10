@@ -2,13 +2,16 @@
 .file-upload
   span(v-if="progress !== 0") {{ progress }}
   input(type="file" @change="onFileChange")
-  button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+  //- button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+  TylandButton(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
 </template>
 
 <script>
 import axios from "axios"
+import TylandButton from './TylandButton.vue'
 
 export default {
+  components: { TylandButton },
   data: () => ({
     selectedFile: undefined,
     progress: 0

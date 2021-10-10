@@ -5,7 +5,7 @@ button(@click="isShowing = !isShowing") 切換
     .text-xl.font-bold.text-red-900 訊息
     p.text-gray-500 你有新訊息！
 
-div(class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-md space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6")
+div(class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-2xl space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6")
   img(class="block mx-auto h-12 rounded-full sm:mx-0 sm:flex-shrink-0" src="./assets/avatar-user.svg" alt="Woman's Face")
   div(class="text-center space-y-2 sm:text-left")
     div(class="space-y-0.5")
