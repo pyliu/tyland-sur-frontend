@@ -1,6 +1,6 @@
 <template lang="pug">
 button(@click="isShowing = !isShowing") 切換
-.p-6.max-w-sm.mx-auto.bg-white.rounded-xl.shadow-md.flex.items-center.space-x-4(v-if="isShowing")
+.p-6.max-w-sm.mx-auto.bg-white.rounded-xl.shadow-xl.flex.items-center.space-x-4(v-if="isShowing")
   div
     .text-xl.font-bold.text-red-900 訊息
     p.text-gray-500 你有新訊息！
