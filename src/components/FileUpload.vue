@@ -2,8 +2,9 @@
 .file-upload
   span(v-if="progress !== 0") {{ progress }}
   input(type="file" @change="onFileChange")
-  //- button.upload-button(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
-  TylandButton(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+  .flex-1
+    TylandButton(@click="onUploadFile" :disabled="!this.selectedFile") 上傳
+    TylandButton(@click="this.selectedFile = null" variant="secondary") 取消
 </template>
 
 <script>
