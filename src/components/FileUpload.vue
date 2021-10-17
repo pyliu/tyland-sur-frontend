@@ -55,11 +55,11 @@ export default {
   box-shadow: 2px 2px 9px 2px #ccc;
   border-radius: 1rem;
   padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: space-between;
   font-size: 1rem;
-  width: 60%;
+  width: 95%;
   margin: 0 auto;
 }
 
@@ -69,21 +69,5 @@ input {
 
 input, div, button {
   margin-top: 1rem;
-}
-
-.upload-button {
-  width: 7rem;
-  padding: 0.5rem;
-  background-color: #278be9;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 1rem;
-}
-
-.upload-button:disabled {
-  background-color: #b3bcc4;
-  cursor: no-drop;
 }
 </style>
