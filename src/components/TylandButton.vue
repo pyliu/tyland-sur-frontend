@@ -8,9 +8,14 @@ export default {
   },
   computed: {
     classNames () {
-      const classes = []
-      this.variant === 'primary' && classes.push('btn-primary')
-      this.variant === 'secondary' && classes.push('btn-secondary')
+      const classes = ['btn-primary']
+      this.variant === 'secondary' && classes.splice(0, 1) && classes.push('btn-secondary')
+      this.variant === 'warning' && classes.splice(0, 1) && classes.push('btn-warning')
+      this.variant === 'danger' && classes.splice(0, 1) && classes.push('btn-danger')
+      this.variant === 'success' && classes.splice(0, 1) && classes.push('btn-success')
+      this.variant === 'info' && classes.splice(0, 1) && classes.push('btn-info')
+      this.variant === 'dark' && classes.splice(0, 1) && classes.push('btn-dark')
+      this.variant === 'light' && classes.splice(0, 1) && classes.push('btn-light')
       return classes
     }
   }
