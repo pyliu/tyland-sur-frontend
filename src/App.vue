@@ -15,20 +15,35 @@
 
 img.logo.mx-auto.my-5(alt="tyland logo" src="./assets/logo.png")
 FileUpload
+.flex-1: TylandButton(@click="test") 測試
 </template>
 
 <script>
 // import { ref } from 'vue'
+import axios from 'axios'
 import { TransitionRoot } from '@headlessui/vue'
 import FileUpload from './components/FileUpload.vue'
+import TylandButton from './components/TylandButton.vue'
 
 export default {
   name: 'App',
   head: { title: '界標資料閱覽系統-桃園地政事務所' },
-  components: { FileUpload, TransitionRoot },
+  components: { FileUpload, TransitionRoot, TylandButton },
   data: () => ({
     isShowing: false
-  })
+  }),
+  methods: {
+    test () {
+      // sending file to the backend
+      axios.post("http://localhost:4500/test").then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      }).finally(() => {
+        
+      })
+    }
+  }
 }
 </script>
 
