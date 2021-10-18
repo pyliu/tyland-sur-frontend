@@ -35,7 +35,9 @@ export default {
   methods: {
     test () {
       // sending file to the backend
-      axios.post("http://localhost:4500/test").then(res => {
+      axios.post("http://localhost:4500/test", {
+        payload: 'test'
+      }).then(res => {
         console.log(res)
       }).catch(err => {
         console.log(err)
