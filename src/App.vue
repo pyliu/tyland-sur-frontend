@@ -13,7 +13,7 @@
 //-       p(class="text-gray-500 font-medium") Product Engineer
 //-     button(class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2") Message
 
-img.mx-auto.my-5(alt="tyland logo" src="./assets/logo.png")
+img.logo.mx-auto.my-5(alt="tyland logo" src="./assets/logo.png")
 FileUpload
 </template>
 
@@ -40,5 +40,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+@mixin shadow-level($first, $second, $opacity) {
+    -webkit-filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity));
+    filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity))
+}
+
+.logo {
+  width: 90%;
+  @include shadow-level(6px, 7px, 0.4)
 }
 </style>

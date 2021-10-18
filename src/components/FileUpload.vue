@@ -59,7 +59,7 @@ export default {
   // flex-direction: column;
   // justify-content: space-between;
   font-size: 1rem;
-  width: 95%;
+  width: 90%;
   margin: 0 auto;
 }
 
