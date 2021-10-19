@@ -57,11 +57,11 @@ fieldset {
   @apply m-2 p-2 rounded-xl bg-gray-200 shadow-xl;
 }
 
-input {
-  @apply w-full border-2 border-pink-400 mb-3 p-1;
+legend {
+  @apply bg-gray-600 text-white text-xl font-bold py-3 px-3 rounded-xl;
 }
 
-legend {
-  @apply bg-pink-200 text-black text-xl font-bold py-3 px-3 rounded-xl;
+input {
+  @apply w-full border-2 border-gray-400 mb-3 p-1 hover:border-pink-400 focus:ring-pink-600;
 }
 </style>
