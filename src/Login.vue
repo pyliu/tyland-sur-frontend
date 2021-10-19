@@ -1,14 +1,14 @@
 <template lang="pug">
 img.logo.mx-auto.my-5(alt="tyland logo" src="./assets/logo.png")
-fieldset.m-2.p-2.rounded.bg-gray-100.shadow-xl
+fieldset
   legend 登入系統
-  label(for="account") 帳號
-  input.w-full.mx-2(type="text" id="account" name="account")
-  br
-  label(for="password") 密碼
-  input.w-full.mx-2(type="password" id="password" name="password")
-  br
-  TylandButton 登入
+  div
+    label(for="account") 帳號
+    input(type="text" id="account" name="account")
+  div
+    label(for="password") 密碼
+    input(type="password" id="password" name="password")
+  .text-center: TylandButton 登入
 </template>
 
 <script>
@@ -48,17 +48,20 @@ export default {
     filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity))
 }
 
-legend {
-  background-color: rgb(68, 66, 66);
-  color: white;
-  font-size: 1.25rem;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
 .logo {
   width: 90%;
   @include shadow-level(6px, 7px, 0.4);
+}
+
+fieldset {
+  @apply m-2 p-2 rounded-xl bg-gray-200 shadow-xl;
+}
+
+input {
+  @apply w-full border-2 border-pink-400 mb-3 p-1;
+}
+
+legend {
+  @apply bg-pink-200 text-black text-xl font-bold py-3 px-3 rounded-xl;
 }
 </style>

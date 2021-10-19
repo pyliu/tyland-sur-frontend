@@ -23,20 +23,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .btn-basic {
-  @apply mx-1 w-16 px-4 py-1 text-sm text-black font-semibold rounded-full border border-gray-400
+  @apply mx-1 w-auto px-4 py-1 text-xl text-black font-semibold rounded-full border border-gray-400
     hover:border-transparent
     focus:outline-none
     focus:ring-2
     focus:ring-offset-2;
     &.btn-primary {
       @apply
-        hover:bg-pink-300
+        bg-pink-200
+        hover:bg-pink-400
         focus:ring-pink-600;
     }
     &.btn-secondary {
       @apply
-        hover:bg-gray-300
-        focus:ring-gray-600;
+      bg-gray-200
+      hover:bg-gray-400
+      focus:ring-gray-600;
     }
 }
 </style>
