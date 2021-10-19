@@ -58,7 +58,7 @@ fieldset {
 }
 
 legend {
-  @apply bg-gray-600 text-white text-xl font-bold py-3 px-3 rounded-xl;
+  @apply bg-pink-200 text-gray-700 text-xl font-bold py-2 px-7 rounded-xl;
 }
 
 input {
