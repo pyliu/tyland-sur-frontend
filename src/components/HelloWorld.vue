@@ -1,6 +1,6 @@
 <template lang="pug">
 el-row
-  el-button 預設
+  el-button(@click="count++") 預設 {{ count }}
   el-button(type="primary") 主要
   el-button(type="success") 成功
   el-button(type="info") 資訊
