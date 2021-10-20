@@ -1,55 +1,13 @@
-<template lang="pug">
-//- button(@click="isShowing = !isShowing") 切換
-//- .p-6.max-w-sm.mx-auto.bg-white.rounded-xl.shadow-xl.flex.items-center.space-x-4(v-if="isShowing")
-//-   div
-//-     .text-xl.font-bold.text-red-900 訊息
-//-     p.text-gray-500 你有新訊息！
-
-//- div(class="py-8 px-8 max-w-sm mx-auto bg-white rounded-xl shadow-2xl space-y-2 sm:py-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-6")
-//-   img(class="block mx-auto h-12 rounded-full sm:mx-0 sm:flex-shrink-0" src="./assets/avatar-user.svg" alt="Woman's Face")
-//-   div(class="text-center space-y-2 sm:text-left")
-//-     div(class="space-y-0.5")
-//-       p(class="text-lg text-black font-semibold") Erin Lindford
-//-       p(class="text-gray-500 font-medium") Product Engineer
-//-     button(class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2") Message
-
-img.logo.mx-auto.my-5(alt="tyland logo" src="./assets/logo.png")
-FileUpload
-.flex-1: TylandButton(@click="test") 測試
+<script setup>
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import HelloWorld from './components/HelloWorld.vue'
+</script><template lang="pug">
+img(alt="Vue logo" src="./assets/logo.png")
+HelloWorld
 </template>
 
-<script>
-// import { ref } from 'vue'
-import axios from 'axios'
-import { TransitionRoot } from '@headlessui/vue'
-import FileUpload from './components/FileUpload.vue'
-import TylandButton from './components/TylandButton.vue'
-
-export default {
-  name: 'App',
-  head: { title: '界標資料閱覽系統-桃園地政事務所' },
-  components: { FileUpload, TransitionRoot, TylandButton },
-  data: () => ({
-    isShowing: false
-  }),
-  methods: {
-    test () {
-      // sending file to the backend
-      axios.post("http://localhost:4500/test", {
-        payload: 'test'
-      }).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      }).finally(() => {
-        
-      })
-    }
-  }
-}
-</script>
-
-<style lang="scss" scoped>
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -57,15 +15,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-@mixin shadow-level($first, $second, $opacity) {
-    -webkit-filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity));
-    filter: drop-shadow($first $first $second rgba(0, 0, 0, $opacity))
-}
-
-.logo {
-  width: 90%;
-  @include shadow-level(6px, 7px, 0.4)
 }
 </style>
