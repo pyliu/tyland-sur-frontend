@@ -6,18 +6,24 @@ el-row
   el-button(type="info") 資訊
   el-button(type="warning") 警告
   el-button(type="danger") 危險
+  router-link(to="/about") ABOUT
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const username = ref('AAA')
-const password = ref('BBB')
-
-</script>
-
 <script>
+import { ref } from 'vue'
 export default {
+  setup () {
+    const username = ref('AAA')
+    const password = ref('BBB')
+
+    return {
+      username,
+      password
+    }
+  },
+  created () {
+    console.log('created', this.username, this.password)
+  },
   methods: {
     login () {
       console.log(this.username, this.password)

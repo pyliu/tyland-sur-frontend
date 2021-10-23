@@ -15,7 +15,8 @@
     "style-loader": "^3.3.0",
     "url-loader": "^4.1.1",
     "vue": "^3.2.16",
-    "vue-cli-plugin-pug": "^2.0.0"
+    "vue-cli-plugin-pug": "^2.0.0",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.3",
