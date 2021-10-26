@@ -3,7 +3,7 @@ section.p-5: img.w-auto.mx-auto(alt="事務所LOGO", src="./assets/logo_removebg
 router-view
 </template>
 
-<script lang="ts">
+<script>
 import { ref, watchEffect } from "vue";
 import localforage from "localforage";
 export default {
