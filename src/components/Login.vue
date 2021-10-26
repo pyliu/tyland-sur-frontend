@@ -9,7 +9,7 @@ el-row
   router-link(to="/about") ABOUT
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from 'vue'
 export default {
   setup () {

@@ -1,19 +1,19 @@
-<script setup>
-// https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { ref, watchEffect } from "vue";
-import localforage from "localforage";
-
-const loggedin = ref(false);
-</script>
-
 <template lang="pug">
 section.p-5: img.w-auto.mx-auto(alt="事務所LOGO", src="./assets/logo_removebg.png")
 router-view
 //- div: Login(msg="TEST ELEMENT BUTTON")
 </template>
 
-<script>
+<script lang="ts">
+import { ref, watchEffect } from "vue";
+import localforage from "localforage";
 export default {
+  setup () {
+    const loggedin = ref(false);
+    return {
+      loggedin
+    }
+  },
   async created() {
     this.loggedin = await localforage.getItem("session");
     if (this.loggedin) {
