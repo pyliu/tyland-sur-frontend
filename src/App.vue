@@ -1,7 +1,6 @@
 <template lang="pug">
 section.p-5: img.w-auto.mx-auto(alt="事務所LOGO", src="./assets/logo_removebg.png")
 router-view
-//- div: Login(msg="TEST ELEMENT BUTTON")
 </template>
 
 <script lang="ts">
