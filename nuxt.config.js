@@ -1,9 +1,14 @@
 export default {
+  server: {
+    // bind to all possible addresses
+    host: '0.0.0.0'
+  },
+  dev: process.env.NODE_ENV !== 'production',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'tyland-sur-fe',
+    title: '界標閱覽系統-桃園市桃園地政事務所',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'zh_TW'
     },
     meta: [
       { charset: 'utf-8' },
@@ -35,9 +40,44 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    '@nuxtjs/style-resources',
+    // https://go.nuxtjs.dev/axios
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy',
+    '@nuxtjs/localforage'
   ],
+  bootstrapVue: {
+    // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
+    icons: true,
+    config: {
+      // Custom config options here
+    }
+  },
+  styleResources: {
+    scss: '@/assets/scss/_variables.scss'
+  },
+  // Axios module configuration (https://go.nuxtjs.dev/config-axios)
+  axios: {
+    baseURL: `http://localhost:4500`,
+    proxy: true,
+    credentials: false,
+    https: process.env.PROTOCOL === 'https',
+    debug: false
+  },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  proxy: {
+    '/api': {
+      target: `http://localhost:4500`,
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' }
+    }
+  },
+  // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    /*
+     ** You can extend webpack config here
+     */
+    extend (config, ctx) {},
+    babel: { compact: true }
   }
 }
