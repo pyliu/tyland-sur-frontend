@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { mapActions, mapGetters } from 'vuex'
+import isEmpty from 'lodash/isEmpty'
 
 // inject to all Vue instances
 Vue.mixin({
