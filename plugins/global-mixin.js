@@ -139,7 +139,6 @@ Vue.mixin({
             opts.variant = opts.type || opts.variant || 'default'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
           }
-          opts.noAutoHide = parseInt(opts.autoHideDelay) > 0 ? false : true
           this.makeToast(msg, opts).then((config) => {
             resolve(config)
           }).catch((err) => {
