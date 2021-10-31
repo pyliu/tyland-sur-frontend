@@ -81,7 +81,7 @@ Vue.mixin({
             title: '通知',
             subtitle: this.now().split(' ')[1],
             href: '',
-            noAutoHide: false,
+            noAutoHide: true,
             autoHideDelay: 5000,
             solid: true,
             toaster: 'b-toaster-bottom-right',
@@ -128,7 +128,7 @@ Vue.mixin({
         if (typeof msg !== 'string' && typeof opts !== 'object') {
           reject(`notify 傳入參數有誤: msg:${msg}, opts: ${opts}`)
         } else {
-          const defDelay = (opts.variant === 'danger' ? 7500 : (opts.variant === 'warning' ? 6250 : 5000))
+          const defDelay = (opts.variant === 'danger' ? 10000 : (opts.variant === 'warning' ? 7500 : 5000))
           if (typeof msg === 'string') {
             opts.variant = opts.type || opts.variant || 'default'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
@@ -139,6 +139,7 @@ Vue.mixin({
             opts.variant = opts.type || opts.variant || 'default'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
           }
+          opts.noAutoHide = parseInt(opts.autoHideDelay) > 0 ? false : true
           this.makeToast(msg, opts).then((config) => {
             resolve(config)
           }).catch((err) => {
