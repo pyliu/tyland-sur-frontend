@@ -54,10 +54,6 @@ export default {
       return "請輸入密碼。";
     },
   },
-  watch: {},
-  mounted () {
-    console.log(this.$config)
-  },
   methods: {
     login () {
       this.$axios.post('http://localhost:4500/login', {

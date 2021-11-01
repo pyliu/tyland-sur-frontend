@@ -1,8 +1,10 @@
-export default function ({ store, redirect }) {
+export default function ({ store, redirect, isDev }) {
   const user = store.getters.user;
-  console.log('👩‍💻', user)
   // not logged in => redirect to '/login'
-  if (!user) {
+  if (user) {
+    isDev && console.log('👩‍💻', user)
+  } else {
+    isDev && console.log('⚠ 無登入資訊，重新導向登入畫面 ... ')
     return redirect("/login");
   }
 }
