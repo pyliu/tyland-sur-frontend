@@ -1,7 +1,3 @@
-import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
-import uniqWith from 'lodash/uniqWith'
-
 const logerror = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
@@ -59,13 +55,14 @@ const actions = {
   nuxtServerInit ({ commit, dispatch }, nuxt) {
     try {
       commit('ip', nuxt.req.connection.remoteAddress || nuxt.req.socket.remoteAddress)
-      // query login require info by ip to use middleware to control authority
-      dispatch('login')
+      // restore user session
+      nuxt.req.session.user && commit('user', nuxt.req.session.user)
     } catch (e) {
       console.error(e)
     }
   },
-  login ({ commit, getters }) {}
+  checkSession ({ commit, getters }) {
+  }
 }
 
 export default {

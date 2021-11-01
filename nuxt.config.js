@@ -1,4 +1,5 @@
 export default {
+  ssr: false,
   server: {
     // bind to all possible addresses
     host: '0.0.0.0'
@@ -35,6 +36,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/composition-api/module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

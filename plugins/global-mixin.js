@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import isEmpty from 'lodash/isEmpty'
 
 // inject to all Vue instances
@@ -15,6 +15,7 @@ Vue.mixin({
     ...mapActions([
       'login'
     ]),
+    ...mapMutations([]),
     now () {
       // e.g. 2020-11-06 13:39:23
       const now = new Date()
