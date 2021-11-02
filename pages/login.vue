@@ -59,13 +59,17 @@ export default {
       return "請輸入密碼。";
     },
   },
+  mounted () {
+    console.log(this.$store.state.auth)
+  },
   methods: {
     async userLogin () {
       try {
         this.$auth.loginWith("local", {
           data: this.loginInfo
         }).then(({ data }) => {
-          this.$store.commit('login', data);
+          // this.$store.commit('login', data);
+
           this.$router.push("/");
         }).catch((err) => {
           console.error(err);

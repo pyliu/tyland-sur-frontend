@@ -74,6 +74,16 @@ export default {
     // Options
     strategies: {
       local: {
+        token: {
+          property: 'token',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
         endpoints: {
           login: { url: 'http://localhost:4500/login', method: 'post', propertyName: 'data.token' },
           user: { url: 'http://localhost:4500/me', method: 'get', propertyName: 'data' },

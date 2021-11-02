@@ -46,7 +46,7 @@ const getters = {
 
 // only sync operation
 const mutations = {
-  login (state, payload) { state.auth = { ...state.auth, ...payload } },
+  // login (state, payload) { state.auth = { ...state.auth, ...payload } },
   ip (state, payload) { state.ip = payload }
 }
 
