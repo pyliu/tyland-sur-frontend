@@ -1,5 +1,5 @@
 <template lang="pug">
-b-container(v-if="!loggedIn")
+b-container
   b-form-group(
     label="帳號",
     label-for="input-account",
@@ -19,28 +19,27 @@ b-container(v-if="!loggedIn")
     :invalid-feedback="pwInvalidFeedback",
     :state="pwState"
   ): b-input#input-password(
-    type="password"
+    type="password",
     v-model="loginInfo.password",
     :state="pwState",
     placeholder="請輸入密碼",
     trim
   )
   .text-center: b-button(
-    variant="primary"
-    @click="userLogin"
+    variant="primary",
+    @click="userLogin",
     :disabled="!pwState || !accState"
   ) 登入
-b-container(v-else): NuxtLink(to="/") 已登入，回根目錄
 </template>
 
 <script>
 export default {
-  auth: 'guest',
+  auth: "guest",
   data: () => ({
     loginInfo: {
-      username: '',
-      password: ''
-    }
+      username: "",
+      password: "",
+    },
   }),
   computed: {
     accState() {
@@ -59,30 +58,37 @@ export default {
       return "請輸入密碼。";
     },
   },
-  mounted () {
-    console.log(this.$store.state.auth)
+  watch: {
+    loggedIn(flag) {
+      console.log("🔑", flag);
+    },
+    user(val) {
+      console.log("👩‍💻", val);
+    },
   },
   methods: {
-    async userLogin () {
+    async userLogin() {
       try {
-        this.$auth.loginWith("local", {
-          data: this.loginInfo
-        }).then(({ data }) => {
-          // this.$store.commit('login', data);
-
-          this.$router.push("/");
-        }).catch((err) => {
-          console.error(err);
-        }).finally(() => {
-          this.loginInfo.username = ''
-          this.loginInfo.password = ''
-          console.log(this.$store.state.auth)
-        });
+        this.$auth
+          .loginWith("local", {
+            data: this.loginInfo,
+          })
+          .then(({ data }) => {
+            console.log("💻 loginWith response data", data);
+            this.$router.push("/");
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.loginInfo.username = "";
+            this.loginInfo.password = "";
+          });
       } catch (err) {
         console.error(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

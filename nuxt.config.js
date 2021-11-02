@@ -76,18 +76,25 @@ export default {
       local: {
         token: {
           property: 'token',
+          type: 'Bearer',
+          name: 'Authorization',
+          maxAge: 30,
           global: true,
-          // required: true,
-          // type: 'Bearer'
+          required: true,
+          prefix: '_token.',
+          expirationPrefix: '_token_expiration.'
         },
         user: {
           property: 'user',
-          // autoFetch: true
+          autoFetch: true
         },
+        clientId: true,
+        grantType: false,
+        scope: false,
         endpoints: {
           login: { url: 'http://localhost:4500/login', method: 'post', propertyName: 'data.token' },
-          user: { url: 'http://localhost:4500/me', method: 'get', propertyName: 'data' },
-          logout: false
+          user: { url: 'http://localhost:4500/user', method: 'get', propertyName: 'data' },
+          logout: { url: 'http://localhost:4500/logout', method: 'post' }
         }
       }
     }
