@@ -35,7 +35,7 @@ b-container(v-else): NuxtLink(to="/") 已登入，回根目錄
 
 <script>
 export default {
-  // middleware: ['guest'],
+  auth: false,
   data: () => ({
     loginInfo: {
       username: '',
