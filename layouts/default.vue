@@ -1,6 +1,6 @@
 <template lang="pug">
 b-container(v-cloak fluid)
-  section.p-3: img.w-auto.mx-auto.img-fluid(alt="事務所LOGO", src="~/assets/images/logo_lg.png")
+  .text-center.p-3: img.w-auto.mx-auto.img-fluid(alt="事務所LOGO", src="~/assets/images/logo_lg.png")
   Nuxt
   Footer
 </template>
