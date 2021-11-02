@@ -1,5 +1,5 @@
 <template lang="pug">
-.h1 AA
+.h1 THIS IS INDEX PAGE
 </template>
 
 <script>

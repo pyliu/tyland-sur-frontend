@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty'
 Vue.mixin({
   computed: {
     ...mapGetters([
+      'loggedIn',
       'user',
       'ip'
     ])
@@ -13,7 +14,7 @@ Vue.mixin({
   watch: {},
   methods: {
     ...mapActions([
-      'login'
+      'checkSession'
     ]),
     ...mapMutations([]),
     now () {

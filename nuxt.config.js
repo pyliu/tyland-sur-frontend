@@ -1,10 +1,13 @@
 export default {
   ssr: false,
+
   server: {
     // bind to all possible addresses
     host: '0.0.0.0'
   },
+
   dev: process.env.NODE_ENV !== 'production',
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: '界標閱覽系統-桃園市桃園地政事務所',
@@ -44,11 +47,13 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     '@nuxtjs/style-resources',
+    '@nuxtjs/auth-next',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/localforage'
   ],
+
   bootstrapVue: {
     // Install the `IconsPlugin` plugin (in addition to `BootstrapVue` plugin)
     icons: true,
@@ -56,9 +61,28 @@ export default {
       // Custom config options here
     }
   },
+
   styleResources: {
     scss: '@/assets/scss/_variables.scss'
   },
+
+  router: {
+    middleware: ['auth']
+  },
+
+  auth: {
+    // Options
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'http://localhost:4500/login', method: 'post', propertyName: 'data.token' },
+          user: { url: 'http://localhost:4500/me', method: 'get', propertyName: 'data' },
+          logout: false
+        }
+      }
+    }
+  },
+
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: `http://localhost:4500`,
@@ -75,6 +99,7 @@ export default {
       pathRewrite: { '^/api': '' }
     }
   },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     /*

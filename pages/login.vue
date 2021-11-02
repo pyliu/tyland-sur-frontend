@@ -1,5 +1,5 @@
 <template lang="pug">
-b-container
+b-container(v-if="!loggedIn")
   b-form-group(
     label="帳號",
     label-for="input-account",
@@ -7,7 +7,7 @@ b-container
     :invalid-feedback="accInvalidFeedback",
     :state="accState"
   ): b-input#input-account(
-    v-model="account",
+    v-model="loginInfo.username",
     :state="accState",
     placeholder="請輸入帳號",
     trim
@@ -19,49 +19,64 @@ b-container
     :invalid-feedback="pwInvalidFeedback",
     :state="pwState"
   ): b-input#input-password(
-    v-model="password",
+    type="password"
+    v-model="loginInfo.password",
     :state="pwState",
     placeholder="請輸入密碼",
     trim
   )
   .text-center: b-button(
     variant="primary"
-    @click="login"
+    @click="userLogin"
     :disabled="!pwState || !accState"
   ) 登入
+b-container(v-else): NuxtLink(to="/") 已登入，回根目錄
 </template>
 
 <script>
 export default {
+  // middleware: ['guest'],
   data: () => ({
-    account: "",
-    password: "",
+    loginInfo: {
+      username: '',
+      password: ''
+    }
   }),
   computed: {
     accState() {
-      return this.account.length >= 4;
+      return this.loginInfo.username.length >= 4;
     },
     accInvalidFeedback() {
-      if (this.account.length > 0) {
+      if (this.loginInfo.username.length > 0) {
         return "請輸入至少4個字元";
       }
       return "請輸入帳號。";
     },
     pwState() {
-      return this.password.length > 0;
+      return this.loginInfo.password.length > 0;
     },
     pwInvalidFeedback() {
       return "請輸入密碼。";
     },
   },
   methods: {
-    login () {
-      this.$axios.post('http://localhost:4500/login', {
-        account: this.account,
-        password: this.password
-      }).then(({ data }) => {
-        console.log(data)
-      })
+    async userLogin () {
+      try {
+        this.$auth.loginWith("local", {
+          data: this.loginInfo
+        }).then(({ data }) => {
+          this.$store.commit('login', data);
+          this.$router.push("/");
+        }).catch((err) => {
+          console.error(err);
+        }).finally(() => {
+          this.loginInfo.username = ''
+          this.loginInfo.password = ''
+          console.log(this.$store.state.auth)
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 };

@@ -34,18 +34,19 @@ const logtimestamp = (message) => {
 }
 
 const state = () => ({
-  ip: '',
-  user: false
+  ip: ''
 })
 
 const getters = {
-  user: state => state.user,
+  // @nuxtjs/auth will add user/loggedIn in store
+  loggedIn: state => state.auth?.loggedIn,
+  user: state => state.auth?.user,
   ip: state => state.ip
 }
 
 // only sync operation
 const mutations = {
-  user (state, payload) { state.user = typeof payload === 'object' ? { ...payload } : false },
+  login (state, payload) { state.auth = { ...state.auth, ...payload } },
   ip (state, payload) { state.ip = payload }
 }
 
