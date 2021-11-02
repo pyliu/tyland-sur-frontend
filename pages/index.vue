@@ -4,7 +4,6 @@
 
 <script>
 export default {
-  middleware: ['login'],
   mounted () {
     this.notify('test')
   }

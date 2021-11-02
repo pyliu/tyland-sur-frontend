@@ -57,13 +57,13 @@ const actions = {
     try {
       commit('ip', nuxt.req.connection.remoteAddress || nuxt.req.socket.remoteAddress)
       // restore user session
-      nuxt.req.session.user && commit('user', nuxt.req.session.user)
+      // nuxt.req.session.user && commit('user', nuxt.req.session.user)
     } catch (e) {
       console.error(e)
     }
   },
-  checkSession ({ commit, getters }) {
-  }
+  // checkSession ({ commit, getters }) {
+  // }
 }
 
 export default {
