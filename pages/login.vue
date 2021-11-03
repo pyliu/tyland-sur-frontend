@@ -68,7 +68,7 @@ export default {
             data: this.loginInfo,
           })
           .then((response) => {
-            this.$router.push("/");
+            /* do nothing */
           })
           .catch((err) => {
             console.warn(err);

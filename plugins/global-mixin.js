@@ -83,7 +83,7 @@ Vue.mixin({
             title: '通知',
             subtitle: this.now().split(' ')[1],
             href: '',
-            noAutoHide: true,
+            noAutoHide: false,
             autoHideDelay: 5000,
             solid: true,
             toaster: 'b-toaster-bottom-right',
@@ -125,12 +125,12 @@ Vue.mixin({
         }
       })
     },
-    notify (msg, opts = { title: '🗨 通知' }) {
+    notify (msg, opts = { title: '💬 通知' }) {
       return new Promise((resolve, reject) => {
         if (typeof msg !== 'string' && typeof opts !== 'object') {
           reject(`notify 傳入參數有誤: msg:${msg}, opts: ${opts}`)
         } else {
-          const defDelay = (opts.variant === 'danger' ? 10000 : (opts.variant === 'warning' ? 7500 : 5000))
+          const defDelay = (opts.variant === 'danger' ? 20000 : (opts.variant === 'warning' ? 15000 : 10000))
           if (typeof msg === 'string') {
             opts.variant = opts.type || opts.variant || 'default'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
@@ -154,8 +154,7 @@ Vue.mixin({
       if (!isEmpty(message)) {
         const merged = Object.assign({
           title: '⚠ 警示',
-          noAutoHide: true,
-          autoHideDelay: 7500,
+          autoHideDelay: 15000,
           pos: 'tr',
           variant: 'warning'
         }, opts)
@@ -171,8 +170,7 @@ Vue.mixin({
         }
         const merged = Object.assign({
           title: '‼ 錯誤',
-          noAutoHide: true,
-          autoHideDelay: 10000,
+          autoHideDelay: 20000,
           variant: 'danger'
         }, opts)
         this.notify(message, merged)
