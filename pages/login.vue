@@ -7,7 +7,7 @@ b-container
     :invalid-feedback="accInvalidFeedback",
     :state="accState"
   ): b-input#input-account(
-    v-model="loginInfo.username",
+    v-model="loginInfo.userid",
     :state="accState",
     placeholder="請輸入帳號",
     trim
@@ -28,7 +28,7 @@ b-container
   .text-center: b-button(
     variant="primary",
     @click="userLogin",
-    :disabled="!pwState || !accState"
+    :disabled="busy || !pwState || !accState"
   ) 登入
 </template>
 
@@ -37,16 +37,17 @@ export default {
   auth: "guest",
   data: () => ({
     loginInfo: {
-      username: "",
+      userid: "",
       password: "",
     },
+    busy: false,
   }),
   computed: {
     accState() {
-      return this.loginInfo.username.length >= 4;
+      return this.loginInfo.userid.length >= 4;
     },
     accInvalidFeedback() {
-      if (this.loginInfo.username.length > 0) {
+      if (this.loginInfo.userid.length > 0) {
         return "請輸入至少4個字元";
       }
       return "請輸入帳號。";
@@ -58,34 +59,30 @@ export default {
       return "請輸入密碼。";
     },
   },
-  watch: {
-    loggedIn(flag) {
-      console.log("🔑", flag);
-    },
-    user(val) {
-      console.log("👩‍💻", val);
-    },
-  },
   methods: {
     async userLogin() {
       try {
+        this.busy = true;
         this.$auth
           .loginWith("local", {
             data: this.loginInfo,
           })
-          .then(({ data }) => {
-            console.log("💻 loginWith response data", data);
+          .then((response) => {
             this.$router.push("/");
           })
           .catch((err) => {
-            console.error(err);
+            console.warn(err);
+            this.warning("登入失敗，請確認帳號密碼是否正確 ... ");
           })
           .finally(() => {
-            this.loginInfo.username = "";
+            this.loginInfo.userid = "";
             this.loginInfo.password = "";
           });
       } catch (err) {
         console.error(err);
+        this.alert(err.toString());
+      } finally {
+        this.busy = false;
       }
     },
   },

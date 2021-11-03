@@ -93,7 +93,7 @@ export default {
         scope: false,
         endpoints: {
           login: { url: 'http://localhost:4500/login', method: 'post', propertyName: 'data.token' },
-          user: { url: 'http://localhost:4500/user', method: 'get', propertyName: 'data' },
+          user: { url: 'http://localhost:4500/me', method: 'get', propertyName: 'data' },
           logout: { url: 'http://localhost:4500/logout', method: 'post' }
         }
       }
