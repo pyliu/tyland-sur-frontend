@@ -1,5 +1,7 @@
 <template lang="pug">
-b-container
+b-container: b-card
+  b-card-title 登入系統
+  b-container
   b-form-group(
     label="帳號",
     label-for="input-account",
@@ -35,6 +37,9 @@ b-container
 <script>
 export default {
   auth: "guest",
+  head: {
+    title: '登入系統-界標閱覽系統'
+  },
   data: () => ({
     loginInfo: {
       userid: "",
