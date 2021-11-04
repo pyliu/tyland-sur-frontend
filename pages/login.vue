@@ -63,14 +63,21 @@ export default {
     pwInvalidFeedback() {
       return "請輸入密碼。";
     },
+    maxAge() {
+      // seconds
+      return this.$auth.strategies.local.options.token.maxAge || 1800
+    }
   },
+  // mounted () {
+  //   console.log(this.$auth)
+  // },
   methods: {
     async userLogin() {
       try {
         this.busy = true;
         this.$auth
           .loginWith("local", {
-            data: this.loginInfo,
+            data: { ...this.loginInfo, maxAge: this.maxAge },
           })
           .then((response) => {
             /* do nothing */
