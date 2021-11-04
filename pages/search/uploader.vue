@@ -6,7 +6,7 @@ b-card(no-body) UPLOADER
 export default {
   emit: ['dataUpdate'],
   head: {
-    title: '根據上傳使用者查詢-界標閱覽系統'
+    title: '使用者條件查詢-界標閱覽系統'
   }
 }
 </script>

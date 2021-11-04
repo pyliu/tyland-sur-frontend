@@ -1,5 +1,4 @@
 <template lang="pug">
-h1 請選擇項目
 </template>
 
 <script>

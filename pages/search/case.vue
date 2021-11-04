@@ -6,7 +6,7 @@ b-card(no-body) CASE
 export default {
   emit: ['data-update'],
   head: {
-    title: '根據案件查詢-界標閱覽系統'
+    title: '案件條件查詢-界標閱覽系統'
   },
   mounted () {
     this.$emit('data-update', { message: 'case emit!' })
