@@ -132,13 +132,13 @@ Vue.mixin({
         } else {
           const defDelay = (opts.variant === 'danger' ? 20000 : (opts.variant === 'warning' ? 15000 : 10000))
           if (typeof msg === 'string') {
-            opts.variant = opts.type || opts.variant || 'default'
+            opts.variant = opts.type || opts.variant || 'info'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
           } else if (typeof msg === 'object') {
             opts = msg
             // previous API only use one object param
             msg = opts.body || opts.message
-            opts.variant = opts.type || opts.variant || 'default'
+            opts.variant = opts.type || opts.variant || 'info'
             opts.autoHideDelay = opts.duration || opts.delay || defDelay
           }
           this.makeToast(msg, opts).then((config) => {
