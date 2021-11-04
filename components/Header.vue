@@ -10,9 +10,10 @@ section
       icon="layout-text-sidebar",
       font-scale="1.5"
     )
+    NuxtLink(v-else-if="$route.path !== '/login'" to="/login") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
   hr
   b-sidebar#sidebar-1(
-    title="選單",
+    :title="sidebarTitle",
     backdrop-variant="dark",
     shadow,
     right,
@@ -20,7 +21,7 @@ section
   )
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
-        b-button.mr-2(variant="outline-danger", pill, size="sm", @click="$auth.logout()")
+        b-button.mr-2(variant="outline-danger", pill, size="sm", @click="logout")
           b-icon(icon="box-arrow-right")
           span 登出
         b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
@@ -34,7 +35,19 @@ section
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    sidebarTitle () { return this.user?.id ? `${this.user?.id} ${this.user?.name}` : '選單' }
+  },
+  methods: {
+    logout () {
+      this.$auth.logout().then(() => {
+        this.notify('已登出', { type: 'success' });
+        this.$router.push('/login');
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

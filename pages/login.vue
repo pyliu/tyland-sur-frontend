@@ -80,7 +80,7 @@ export default {
             data: { ...this.loginInfo, maxAge: this.maxAge },
           })
           .then((response) => {
-            /* do nothing */
+            this.notify('已登入系統', { type: 'success' });
           })
           .catch((err) => {
             console.warn(err);
