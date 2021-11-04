@@ -25,13 +25,21 @@ section
           b-icon(icon="box-arrow-right")
           span 登出
         b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
+    hr
     ul
       li.h5
-        b-icon.mr-1(icon="briefcase")
+        b-icon.mr-2(icon="plus-circle-fill" variant="primary")
+        NuxtLink(to="/add") 新增案件
+    hr
+    ul
+      li.h5
+        b-icon.mr-2(icon="briefcase-fill" variant="dark")
         NuxtLink(to="/search/case") 以案件號搜尋
       li.h5
-        b-icon.mr-1(icon="people")
+        b-icon.mr-2(icon="people-fill" variant="dark")
         NuxtLink(to="/search/uploader") 以使用者搜尋
+    hr
+
 </template>
 
 <script>
@@ -59,8 +67,11 @@ export default {
   max-width: 200px;
 }
 #sidebar-1 {
+  hr {
+    margin: 5px 10px;
+  }
   ul {
-    padding: 10px;
+    padding-left: 20px;
     li {
       list-style: none;
     }
