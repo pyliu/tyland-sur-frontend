@@ -19,11 +19,11 @@ section
     backdrop
   )
     template(#footer="{ hide }")
-      .d-flex.align-items-center.justify-content-between.m-2
-        b-img.img-fluid.m-2(src="~/assets/images/logo_lg.png", width="200")
-        b-button.mr-2(variant="outline-danger", pill, @click="$auth.logout()")
+      .d-flex.align-items-center.justify-content-between.p-2
+        b-button.mr-2(variant="outline-danger", pill, size="sm", @click="$auth.logout()")
           b-icon(icon="box-arrow-right")
           span 登出
+        b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
     ul
       li.h5
         b-icon.mr-1(icon="briefcase")
