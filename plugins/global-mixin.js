@@ -68,11 +68,11 @@ Vue.mixin({
               switch (opts.variant) {
                 case 'danger':
                 case 'red':
-                  // opts.toaster = 'b-toaster-bottom-center'
-                  // break
+                  opts.toaster = 'b-toaster-top-full'
+                  break
                 case 'warning':
                 case 'yellow':
-                  opts.toaster = 'b-toaster-bottom-left'
+                  opts.toaster = 'b-toaster-bottom-full'
                   break
                 default:
                   opts.toaster = 'b-toaster-bottom-right'
@@ -169,7 +169,7 @@ Vue.mixin({
           opts.pos = 'tf'
         }
         const merged = Object.assign({
-          title: '‼ 錯誤',
+          title: '❌ 錯誤‼',
           autoHideDelay: 20000,
           variant: 'danger'
         }, opts)
