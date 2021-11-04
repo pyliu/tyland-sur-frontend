@@ -14,10 +14,14 @@ export default {
   head: {
     title: '查詢案件-界標閱覽系統'
   },
+  data: () => ({
+    searchedData: []
+  }),
   created () { this.$router.push('/search/case') },
   methods: {
     handleDataUpdate(data) {
-      this.alert(data.message)
+      this.notify(data.message)
+      data.raw && (this.searchedData = [...data.raw])
     }
   }
 }
