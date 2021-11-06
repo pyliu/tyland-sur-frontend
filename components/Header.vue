@@ -19,12 +19,6 @@ section
     right,
     backdrop
   )
-    template(#footer="{ hide }")
-      .d-flex.align-items-center.justify-content-between.p-2
-        b-button.mr-2(variant="outline-danger", pill, size="sm", @click="logout")
-          b-icon(icon="box-arrow-right")
-          span 登出
-        b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
     hr
     ul
       li.h5
@@ -36,9 +30,18 @@ section
         b-icon.mr-2(icon="briefcase-fill" variant="dark")
         NuxtLink(to="/search/case") 以案件號搜尋
       li.h5
+        b-icon.mr-2(icon="image-alt" variant="dark")
+        NuxtLink(to="/search/land") 以地段號搜尋
+      li.h5
         b-icon.mr-2(icon="people-fill" variant="dark")
         NuxtLink(to="/search/uploader") 以使用者搜尋
     hr
+    template(#footer="{ hide }")
+      .d-flex.align-items-center.justify-content-between.p-2
+        b-button.mr-2(variant="outline-danger", pill, @click="logout")
+          b-icon(icon="box-arrow-right")
+          span 登出
+        b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
 
 </template>
 
