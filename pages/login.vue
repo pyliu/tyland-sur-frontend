@@ -72,7 +72,7 @@ export default {
   //   console.log(this.$auth)
   // },
   methods: {
-    async userLogin() {
+    userLogin() {
       try {
         this.busy = true;
         this.$auth

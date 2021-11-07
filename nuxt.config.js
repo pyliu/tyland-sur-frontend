@@ -89,7 +89,7 @@ export default {
           property: 'user',
           autoFetch: true
         },
-        clientId: true,
+        clientId: false,
         grantType: false,
         scope: false,
         endpoints: {
