@@ -68,9 +68,11 @@ export default {
       return this.$auth.strategies.local.options.token.maxAge || 1800
     }
   },
-  // mounted () {
-  //   console.log(this.$auth)
-  // },
+  created () {
+    this.$auth.onError(function (error) {
+      console.error('👉 認證發生錯誤 ❗', error);
+    })
+  },
   methods: {
     userLogin() {
       try {
