@@ -89,13 +89,13 @@ export default {
           property: 'user',
           autoFetch: true
         },
-        clientId: false,
+        clientId: true,
         grantType: false,
         scope: false,
         endpoints: {
-          login: { url: 'http://localhost:4500/login', method: 'post', propertyName: 'data.token' },
-          user: { url: 'http://localhost:4500/me', method: 'get', propertyName: 'data' },
-          logout: { url: 'http://localhost:4500/logout', method: 'post' }
+          login: { url: `/api/login`, method: 'post', propertyName: 'data.token' },
+          user: { url: `/api/me`, method: 'get', propertyName: 'data.user' },
+          logout: { url: `/api/logout`, method: 'post' }
         }
       }
     }
@@ -103,7 +103,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: `http://localhost:4500`,
+    baseURL: process.env.baseUrl || `http://localhost:3000`,
     proxy: true,
     credentials: false,
     https: process.env.PROTOCOL === 'https',
@@ -112,7 +112,7 @@ export default {
 
   proxy: {
     '/api': {
-      target: `http://localhost:4500`,
+      target: `http://${process.env.API_HOST}:${process.env.API_PORT}`,
       changeOrigin: true,
       pathRewrite: { '^/api': '' }
     }
