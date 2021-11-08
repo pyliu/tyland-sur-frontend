@@ -30,8 +30,11 @@ b-container: b-card
   .text-center: b-button(
     variant="primary",
     @click="userLogin",
-    :disabled="busy || !pwState || !accState"
-  ) 登入
+    :disabled="btnDisabled"
+  )
+    b-icon.mr-1(icon="box-arrow-in-right")
+    b-icon(v-if="btnDisabled" icon="three-dots" animation="cylon")
+    span(v-else) 登入
 </template>
 
 <script>
@@ -48,6 +51,10 @@ export default {
     busy: false,
   }),
   computed: {
+    btnDisabled() {
+      if (this.busy) { return true; }
+      return !this.pwState || !this.accState;
+    },
     accState() {
       return this.loginInfo.userid.length >= 4;
     },
@@ -91,12 +98,11 @@ export default {
           .finally(() => {
             this.loginInfo.userid = "";
             this.loginInfo.password = "";
+            this.busy = false;
           });
       } catch (err) {
         console.error(err);
         this.alert(err.toString());
-      } finally {
-        this.busy = false;
       }
     },
   },

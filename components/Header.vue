@@ -38,24 +38,29 @@ section
     hr
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
-        b-button.mr-2(variant="outline-danger", pill, @click="logout")
-          b-icon(icon="box-arrow-right")
-          span 登出
+        b-button.mr-2(variant="outline-danger", pill, @click="logout", :disabled="disabled")
+          b-icon.mr-1(icon="box-arrow-right")
+          b-icon(v-if="disabled" icon="three-dots" animation="cylon")
+          span(v-else) 登出
         b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
 
 </template>
 
 <script>
 export default {
+  data: () => ({
+    disabled: false
+  }),
   computed: {
     sidebarTitle () { return this.user?.id ? `${this.user?.id} ${this.user?.name}` : '選單' }
   },
   methods: {
     logout () {
+      this.disabled = true;
       this.$auth.logout().then(() => {
         this.notify('已登出', { type: 'success' });
         this.$router.push('/login');
-      });
+      }).finally(() => { this.disabled = false; });
     }
   }
 };
