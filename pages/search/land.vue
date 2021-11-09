@@ -12,18 +12,26 @@ div
 </template>
 
 <script>
+import tysection from "~/assets/json/tysection.json"
 export default {
   emit: ['data-update'],
   head: {
     title: '地段號條件查詢-界標閱覽系統'
   },
-  data: () => ({
-    section: '',
-    sectionOpts: [
-      { text: '測試段', value: '0100' }
-    ],
-    landNum: ''
-  }),
+  data: () => {
+    const sections = [];
+    tysection?.forEach(element => {
+      sections.push({
+        text: `${element.value} ${element.text}`,
+        value: element.value
+      });
+    });
+    return {
+      section: '',
+      sectionOpts: sections,
+      landNum: ''
+    }
+  },
   mounted () {
     this.$emit('data-update', { message: '接收地段號查詢回傳DATA' })
   }

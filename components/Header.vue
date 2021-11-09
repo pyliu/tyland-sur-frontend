@@ -1,16 +1,17 @@
 <template lang="pug">
 section
   .d-flex.align-items-center.justify-content-between.mt-2
-    b-img.logo(src="~/assets/images/logo_sm.png", @click="$router.push('/')")
+    b-img.logo(src="~/assets/images/logo_sm.png", @click="toIndex")
     b-button.sidebar.ml-2(
       v-if="loggedIn",
       v-b-toggle.sidebar-1,
-      variant="secondary"
+      variant="outline-dark"
+      title="側邊選單"
     ): b-icon(
-      icon="layout-text-sidebar",
-      font-scale="1.5"
+      icon="card-list",
+      font-scale="1.8"
     )
-    NuxtLink(v-else-if="$route.path !== '/login'" to="/login") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
+    b-button(v-else-if="$route.path !== '/login'" to="/login" variant="primary") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
   hr
   b-sidebar#sidebar-1(
     :title="sidebarTitle",
@@ -55,6 +56,9 @@ export default {
     sidebarTitle () { return this.user?.id ? `${this.user?.id} ${this.user?.name}` : '選單' }
   },
   methods: {
+    toIndex () {
+      this.$router.push('/');
+    },
     logout () {
       this.disabled = true;
       this.$auth.logout().then(() => {

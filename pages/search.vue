@@ -18,7 +18,7 @@ export default {
   data: () => ({
     searchedData: []
   }),
-  created () { this.$router.push('/search/case') },
+  created () { this.$router.push('/search/case'); },
   methods: {
     handleDataUpdate(data) {
       this.notify(data.message)

@@ -1,6 +1,6 @@
 <template lang="pug">
 b-card
-  b-card-title 緣起
+  b-card-title 界標閱覽系統
   b-card-text
     ul(style="padding-left: 1.5rem;")
       li 土地界標為保障民眾土地財產之重要依據，本所自96年以來就已辦畢之鑑界案件進行界址拍攝作業，並列為案件結案之必要文件之一。
@@ -10,7 +10,6 @@ b-card
 
 <script>
 export default {
-  // created () { !this.loggedIn && this.$router.push('/login') }
 }
 </script>
 
