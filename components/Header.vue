@@ -11,7 +11,7 @@ section
       icon="card-list",
       font-scale="1.8"
     )
-    b-button(v-else-if="$route.path !== '/login'" to="/login" variant="primary") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
+    b-button.sidebar.ml-2(v-else-if="$route.path !== '/login'" to="/login" variant="primary") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
   hr
   b-sidebar#sidebar-1(
     :title="sidebarTitle",
@@ -31,11 +31,8 @@ section
         b-icon.mr-2(icon="briefcase-fill" variant="dark")
         NuxtLink(to="/search/case") 以案件號搜尋
       li.h5
-        b-icon.mr-2(icon="image-alt" variant="dark")
-        NuxtLink(to="/search/land") 以地段號搜尋
-      li.h5
         b-icon.mr-2(icon="people-fill" variant="dark")
-        NuxtLink(to="/search/uploader") 以使用者搜尋
+        NuxtLink(to="/search/uploader") 以上傳者搜尋
     hr
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
@@ -53,7 +50,7 @@ export default {
     disabled: false
   }),
   computed: {
-    sidebarTitle () { return this.user?.id ? `${this.user?.id} ${this.user?.name}` : '選單' }
+    sidebarTitle () { return this.user ? `${this.user._id} ${this.user.name}` : '選單' }
   },
   methods: {
     toIndex () {
@@ -73,6 +70,7 @@ export default {
 <style lang="scss" scoped>
 .sidebar {
   border-radius: 10px;
+  height: 100%;
 }
 .logo {
   cursor: pointer;

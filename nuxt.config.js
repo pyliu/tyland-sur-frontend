@@ -94,7 +94,7 @@ export default {
         scope: false,
         endpoints: {
           login: { url: `/api/login`, method: 'post', propertyName: 'data.token' },
-          user: { url: `/api/me`, method: 'get', propertyName: 'data.user' },
+          user: { url: `/api/me`, method: 'get' },
           logout: { url: `/api/logout`, method: 'post' }
         }
       }
