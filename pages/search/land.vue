@@ -16,7 +16,7 @@ import tysection from "~/assets/json/tysection.json"
 export default {
   emit: ['data-update'],
   head: {
-    title: '地段號條件查詢-界標閱覽系統'
+    title: '地段號查詢-界標閱覽系統'
   },
   data: () => {
     const sections = [];
