@@ -50,7 +50,7 @@ export default {
     disabled: false
   }),
   computed: {
-    sidebarTitle () { return this.user ? `${this.user._id} ${this.user.name}` : '選單' }
+    sidebarTitle () { return this.user ? `${this.user.id} ${this.user.name}` : '選單' }
   },
   methods: {
     toIndex () {
