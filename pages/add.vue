@@ -6,14 +6,10 @@ b-card
     b-input-group(prepend="　　　年"): b-input(v-model="year" type="number" :max="maxYear" min="87")
     b-input-group.my-1(prepend="　　　字"): b-select(v-model="code", :options="codeOpts")
     b-input-group(prepend="　　　號"): b-input(v-model="num" type="number" max="999999" min="100" step="100")
-    .d-flex.my-1
-      b-input-group.mr-1(prepend="　　地段"): b-select(
-        v-model="section"
-        :options="sectionOpts"
-      )
-      b-input-group(prepend="地號"): b-input(
-        v-model="landNum"
-      )
+    b-input-group.my-1(prepend="　　地段"): b-select(
+      v-model="section"
+      :options="sectionOpts"
+    )
     b-input-group(prepend="複丈日期"): b-input(v-model="opdate" type="date" :max="maxOpdate")
 </template>
 
@@ -47,10 +43,9 @@ export default {
       maxYear: defYear,
       code: 'HA46',
       codeOpts: codes,
-      num: 100,
+      num: '999999',
       section: '',
       sectionOpts: sections,
-      landNum: '',
       opdate: today,
       maxOpdate: today
     }
