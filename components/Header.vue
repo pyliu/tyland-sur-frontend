@@ -40,7 +40,7 @@ section
           b-icon.mr-1(icon="box-arrow-right")
           b-icon(v-if="disabled" icon="three-dots" animation="cylon")
           span(v-else) 登出
-        b-img.img-fluid(src="~/assets/images/logo_lg.png", width="200")
+        b-img.logo.img-fluid(src="~/assets/images/logo_lg.png", @click="toIndex")
 
 </template>
 
