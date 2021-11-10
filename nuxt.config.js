@@ -79,7 +79,7 @@ export default {
           property: 'token',
           type: 'Bearer',
           name: 'Authorization',
-          maxAge: process.env.NODE_ENV === 'production' ? 1800 : 300,
+          maxAge: process.env.NODE_ENV === 'production' ? 1800 : 3600,
           global: true,
           required: true,
           prefix: '_token.',
