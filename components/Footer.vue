@@ -8,7 +8,7 @@ transition(name="slide" mode="out-in" appear): .p-2(v-show="show" :class="classe
   strong.
     #[span ©]
     #[a(href="mailto:pangyu.liu@gmail.com") LIU, PANG-YU]
-    ALL RIGHTS RESERVED.
+    2021 ALL RIGHTS RESERVED.
   //- a(href="https://vuejs.org/" target="_blank" title="Learn Vue JS!"): i.text-success
 </template>
 
@@ -30,7 +30,7 @@ export default {
     ],
   }),
   mounted() {
-    setTimeout(() => (this.show = true), 2000)
+    setTimeout(() => (this.show = true), 1000)
     setTimeout(() => (this.show = false), 5000)
   }
 };
