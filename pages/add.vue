@@ -3,11 +3,11 @@ b-card
   b-card-title.d-flex.align-items-center
     span.mr-auto 新增案件
   b-card-text
-    b-input-group(prepend="　年"): b-input(v-model="year" type="number" :max="maxYear" min="87")
-    b-input-group.my-1(prepend="　字"): b-select(v-model="code", :options="codeOpts")
-    b-input-group(prepend="　號"): b-input(v-model="num" type="number" max="999999" min="100" step="100")
+    b-input-group(prepend="　　　年"): b-input(v-model="year" type="number" :max="maxYear" min="87")
+    b-input-group.my-1(prepend="　　　字"): b-select(v-model="code", :options="codeOpts")
+    b-input-group(prepend="　　　號"): b-input(v-model="num" type="number" max="999999" min="100" step="100")
     .d-flex.my-1
-      b-input-group.mr-1(prepend="地段"): b-select(
+      b-input-group.mr-1(prepend="　　地段"): b-select(
         v-model="section"
         :options="sectionOpts"
       )
