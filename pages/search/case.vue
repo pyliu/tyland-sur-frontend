@@ -24,7 +24,7 @@ export default {
     title: '查詢 BY 案件-界標閱覽系統'
   },
   data: () => {
-    const codes = [];
+    const codes = [{ text: '', value: ''}];
     tycode?.forEach(element => {
       codes.push({
         text: `${element.value} ${element.text}`,
@@ -44,11 +44,11 @@ export default {
       ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
       ('0' + now.getDate()).slice(-2)
     return {
-      year: defYear,
+      year: '',
       maxYear: defYear,
-      code: 'HA46',
+      code: '',
       codeOpts: codes,
-      num: 100,
+      num: '',
       section: '',
       sectionOpts: sections,
       landNum: '',
