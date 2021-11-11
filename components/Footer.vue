@@ -27,11 +27,12 @@ export default {
       "text-center",
       "p-2",
       "shadow-lg",
+      "small"
     ],
   }),
   mounted() {
     setTimeout(() => (this.show = true), 1000)
-    setTimeout(() => (this.show = false), 5000)
+    setTimeout(() => (this.show = false), 10000)
   }
 };
 </script>
