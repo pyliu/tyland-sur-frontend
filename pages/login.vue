@@ -33,7 +33,7 @@ b-container: b-card
     :disabled="btnDisabled"
   )
     b-icon.mr-1(icon="box-arrow-in-right")
-    b-icon(v-if="btnDisabled" icon="three-dots" animation="cylon")
+    b-icon(v-if="busy" icon="three-dots" animation="cylon")
     span(v-else) 登入
 </template>
 
