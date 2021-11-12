@@ -31,7 +31,7 @@ export default {
         value: element.value
       });
     });
-    const sections = [];
+    const sections = [{ text: '', value: ''}];
     tysection?.forEach(element => {
       sections.push({
         text: `${element.value} ${element.text}`,
