@@ -2,18 +2,27 @@
 b-card
   b-card-title.d-flex.align-items-center
     span.mr-auto 新增案件
-    span.small.text-muted {{ this.caseId }}
+    span.small.text-muted.mr-2 {{ this.caseId }}
+    b-button(
+      title="確認新增",
+      :variant="ok ? 'primary' : 'outline-secondary'",
+      :disabled="!ok",
+      @click="add"
+    ): b-icon(
+      icon="plus",
+      font-scale="1.5"
+    )
   b-card-text
     b-input-group(prepend="　　　年"): b-input(
       v-model="year",
       type="number",
       :max="maxYear",
-      min="87"
+      min="87",
       :state="yearOK"
     )
     b-input-group.my-1(prepend="　　　字"): b-select(
       v-model="code",
-      :options="codeOpts"
+      :options="codeOpts",
       :state="codeOK"
     )
     b-input-group(prepend="　　　號"): b-input(
@@ -21,25 +30,20 @@ b-card
       type="number",
       max="999999",
       min="100",
-      step="100"
+      step="100",
       :state="numOK"
     )
     b-input-group.my-1(prepend="　　地段"): b-select(
       v-model="section",
-      :options="sectionOpts"
+      :options="sectionOpts",
       :state="sectionOK"
     )
     b-input-group(prepend="複丈日期"): b-input(
       v-model="opdate",
       type="date",
-      :max="maxOpdate"
+      :max="maxOpdate",
       :state="opdateOK"
     )
-    b-button-group.mt-1.d-flex.justify-content-center: b-button(
-      variant="primary",
-      :disabled="!ok",
-      @click="add"
-    ) 新增案件
 </template>
 
 <script>
@@ -81,25 +85,25 @@ export default {
       sectionOpts: sections,
       opdate: today,
       maxOpdate: today,
-      creator: ''
+      creator: "",
     };
   },
   computed: {
-    yearOK () {
+    yearOK() {
       const iYear = parseInt(this.year, 10);
       return iYear <= this.maxYear && iYear >= 87;
     },
-    codeOK () {
+    codeOK() {
       return this.notEmpty(this.code);
     },
-    numOK () {
+    numOK() {
       const iNum = parseInt(this.num, 10);
       return iNum > 0 && iNum < 1000000;
     },
-    sectionOK () {
+    sectionOK() {
       return this.notEmpty(this.section);
     },
-    opdateOK () {
+    opdateOK() {
       return this.notEmpty(this.opdate);
     },
     ok() {
@@ -119,16 +123,52 @@ export default {
     rawCaseId() {
       return this.caseId.replaceAll("-", "");
     },
+    postBody() {
+      return {
+        token: this.userTokenHash,
+        year: this.year,
+        code: this.code,
+        num: this.num,
+        opdate: this.opdate,
+        section: this.section,
+        creator: this.creator,
+        lands: [],
+      };
+    },
   },
-  created () {
-    this.creator = this.userid;
+  created() {
+    this.creator = this.userId;
+    console.log(this.user);
     // console.log(this.userid, this.username, this.usernote, this.userauthority);
   },
   methods: {
     notEmpty(val) {
       return !isEmpty(val);
     },
-    add() {},
+    add() {
+      const expire = this.userExpire;
+      const now = +new Date();
+      if (now > expire) {
+        this.$router.push("/login");
+      } else {
+        this.$axios
+          .post("/api/add", this.postBody)
+          .then((response) => {
+            // console.log(response.data)
+            this.notify(response.data.message);
+          })
+          .catch((err) => {
+            console.warn(err);
+          })
+          .finally(() => {
+            this.year = "";
+            this.code = "";
+            this.num = "";
+            this.opdate = "";
+            this.section = "";
+          });
+      }
+    },
   },
 };
 </script>

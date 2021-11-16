@@ -10,10 +10,12 @@ Vue.mixin({
       'user',
       'ip'
     ]),
-    userid () { return this.user?.id },
-    username () { return this.user?.name },
-    usernote () { return this.user?.note },
-    userauthority () { return this.user?.authority }
+    userId () { return this.user?.id },
+    userName () { return this.user?.name },
+    userNote () { return this.user?.note },
+    userAuthority () { return this.user?.authority },
+    userTokenHash () { return this.user?.token.hash },
+    userExpire () { return this.user?.token.expire }
   },
   watch: {},
   methods: {
