@@ -8,7 +8,8 @@ Vue.mixin({
     ...mapGetters([
       'loggedIn',
       'user',
-      'ip'
+      'ip',
+      'statusCode'
     ]),
     userId () { return this.user?.id },
     userName () { return this.user?.name },

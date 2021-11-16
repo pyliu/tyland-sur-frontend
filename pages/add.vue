@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.creator = this.userId;
-    console.log(this.user);
+    // console.log(this.user);
     // console.log(this.userid, this.username, this.usernote, this.userauthority);
   },
   methods: {
@@ -153,9 +153,9 @@ export default {
       } else {
         this.$axios
           .post("/api/add", this.postBody)
-          .then((response) => {
+          .then(({ data }) => {
             // console.log(response.data)
-            this.notify(response.data.message);
+            data.statusCode !== this.statusCode.SUCCESS && this.warning(data.message);
           })
           .catch((err) => {
             console.warn(err);
