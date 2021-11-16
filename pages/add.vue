@@ -9,10 +9,12 @@ b-card
       type="number",
       :max="maxYear",
       min="87"
+      :state="yearOK"
     )
     b-input-group.my-1(prepend="　　　字"): b-select(
       v-model="code",
       :options="codeOpts"
+      :state="codeOK"
     )
     b-input-group(prepend="　　　號"): b-input(
       v-model="num",
@@ -20,15 +22,18 @@ b-card
       max="999999",
       min="100",
       step="100"
+      :state="numOK"
     )
     b-input-group.my-1(prepend="　　地段"): b-select(
       v-model="section",
       :options="sectionOpts"
+      :state="sectionOK"
     )
     b-input-group(prepend="複丈日期"): b-input(
       v-model="opdate",
       type="date",
       :max="maxOpdate"
+      :state="opdateOK"
     )
     b-button-group.mt-1.d-flex.justify-content-center: b-button(
       variant="primary",
@@ -76,18 +81,34 @@ export default {
       sectionOpts: sections,
       opdate: today,
       maxOpdate: today,
+      creator: ''
     };
   },
   computed: {
+    yearOK () {
+      const iYear = parseInt(this.year, 10);
+      return iYear <= this.maxYear && iYear >= 87;
+    },
+    codeOK () {
+      return this.notEmpty(this.code);
+    },
+    numOK () {
+      const iNum = parseInt(this.num, 10);
+      return iNum > 0 && iNum < 1000000;
+    },
+    sectionOK () {
+      return this.notEmpty(this.section);
+    },
+    opdateOK () {
+      return this.notEmpty(this.opdate);
+    },
     ok() {
-      const iYear = parseInt(this.year);
-      const iNum = parseInt(this.num);
       return (
-        parseInt(iYear) <= this.maxYear && parseInt(iYear) >= 87 &&
-        parseInt(iNum) > 0 && parseInt(iNum) < 1000000 &&
-        this.notEmpty(this.code) &&
-        this.notEmpty(this.section) &&
-        this.notEmpty(this.opdate)
+        this.yearOK &&
+        this.numOK &&
+        this.codeOK &&
+        this.sectionOK &&
+        this.opdateOK
       );
     },
     caseId() {
@@ -98,6 +119,10 @@ export default {
     rawCaseId() {
       return this.caseId.replaceAll("-", "");
     },
+  },
+  created () {
+    this.creator = this.userid;
+    // console.log(this.userid, this.username, this.usernote, this.userauthority);
   },
   methods: {
     notEmpty(val) {

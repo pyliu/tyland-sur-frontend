@@ -9,7 +9,11 @@ Vue.mixin({
       'loggedIn',
       'user',
       'ip'
-    ])
+    ]),
+    userid () { return this.user?.id },
+    username () { return this.user?.name },
+    usernote () { return this.user?.note },
+    userauthority () { return this.user?.authority }
   },
   watch: {},
   methods: {
