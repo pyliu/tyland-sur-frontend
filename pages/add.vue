@@ -5,12 +5,12 @@ b-card
     span.small.text-muted.mr-2 {{ this.caseId }}
     b-button(
       title="確認新增",
+      size="sm",
       :variant="ok ? 'primary' : 'outline-secondary'",
       :disabled="!ok",
       @click="add"
     ): b-icon(
-      icon="plus",
-      font-scale="1.5"
+      icon="plus"
     )
   b-card-text
     b-input-group(prepend="　　　年"): b-input(
