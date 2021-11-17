@@ -146,7 +146,7 @@ export default {
     },
     loadRecentCases() {
       this.$axios
-        .post("/api/search", {})
+        .post("/api/search", {limit: 5})
         .then(({ data }) => {
           this.recentCases = [...data.payload];
         })
