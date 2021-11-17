@@ -86,6 +86,7 @@ export default {
       opdate: today,
       maxOpdate: today,
       creator: "",
+      recentCases: []
     };
   },
   computed: {
@@ -137,10 +138,23 @@ export default {
     this.creator = this.userId;
     // console.log(this.user);
     // console.log(this.userid, this.username, this.usernote, this.userauthority);
+    this.loadRecentCases();
   },
   methods: {
     notEmpty(val) {
       return !isEmpty(val);
+    },
+    loadRecentCases() {
+      this.$axios
+        .post("/api/search", {})
+        .then(({ data }) => {
+          this.recentCases = [...data.payload];
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+        });
     },
     add() {
       const expire = this.userExpire;
@@ -151,7 +165,7 @@ export default {
         this.$axios
           .post("/api/add", this.postBody)
           .then(({ data }) => {
-            console.log(data.payload)
+            // console.log(data.payload)
             if (data.statusCode === this.statusCode.SUCCESS) {
               this.success(data.message);
             } else {
