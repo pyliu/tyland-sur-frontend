@@ -78,9 +78,9 @@ export default {
     return {
       year: defYear,
       maxYear: defYear,
-      code: "HA46",
+      code: "",
       codeOpts: codes,
-      num: "999999",
+      num: "",
       section: "",
       sectionOpts: sections,
       opdate: today,
@@ -115,20 +115,17 @@ export default {
         this.opdateOK
       );
     },
-    caseId() {
-      return `${("000" + this.year).slice(-3)}-${this.code}-${(
-        "000000" + this.num
-      ).slice(-6)}`;
-    },
-    rawCaseId() {
-      return this.caseId.replaceAll("-", "");
-    },
+    formatedYear() { return ("000" + this.year).slice(-3); },
+    formatedCode() { return ("XXXX" + this.code).slice(-4); },
+    formatedNum() { return ("000000" + this.num).slice(-6); },
+    caseId() { return `${this.formatedYear}-${this.formatedCode}-${this.formatedNum}`; },
+    rawCaseId() { return this.caseId.replaceAll("-", ""); },
     postBody() {
       return {
         token: this.userTokenHash,
-        year: this.year,
-        code: this.code,
-        num: this.num,
+        year: this.formatedYear,
+        code: this.formatedCode,
+        num: this.formatedNum,
         opdate: this.opdate,
         section: this.section,
         creator: this.creator,
@@ -154,14 +151,17 @@ export default {
         this.$axios
           .post("/api/add", this.postBody)
           .then(({ data }) => {
-            // console.log(response.data)
-            data.statusCode !== this.statusCode.SUCCESS && this.warning(data.message);
+            console.log(data.payload)
+            if (data.statusCode === this.statusCode.SUCCESS) {
+              this.success(data.message);
+            } else {
+              this.warning(data.message);
+            }
           })
           .catch((err) => {
             console.warn(err);
           })
           .finally(() => {
-            this.year = "";
             this.code = "";
             this.num = "";
             this.opdate = "";
