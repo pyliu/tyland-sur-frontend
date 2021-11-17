@@ -5,6 +5,7 @@ b-card.border-0(no-body)
     b-list-group-item(
       v-for="(item, idx) in list",
       :key="`case-${idx}`"
+      :to="`/case/${caseId(item)}`"
     ): CaseItem(
       :raw="item"
     )
@@ -30,6 +31,11 @@ export default {
       .finally(() => {});
   },
   methods: {
+    caseId(caseData) {
+      return ("000" + caseData.year).slice(-3) + '-'
+        + ("XXXX" + caseData.code).slice(-4) + '-'
+        + ("000000" + caseData.num).slice(-6)
+    },
   },
 };
 </script>
