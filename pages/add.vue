@@ -1,55 +1,67 @@
 <template lang="pug">
-b-card
-  b-card-title.d-flex.align-items-center
-    span.mr-auto 新增案件
-    span.small.text-muted.mr-2 {{ this.caseId }}
-    b-button(
-      title="確認新增",
-      size="sm",
-      :variant="ok ? 'primary' : 'outline-secondary'",
-      :disabled="!ok",
-      @click="add"
-    ): b-icon(
-      icon="plus"
-    )
-  b-card-text
-    b-input-group(prepend="　　　年"): b-input(
-      v-model="year",
-      type="number",
-      :max="maxYear",
-      min="87",
-      :state="yearOK"
-    )
-    b-input-group.my-1(prepend="　　　字"): b-select(
-      v-model="code",
-      :options="codeOpts",
-      :state="codeOK"
-    )
-    b-input-group(prepend="　　　號"): b-input(
-      v-model="num",
-      type="number",
-      max="999999",
-      min="100",
-      step="100",
-      :state="numOK"
-    )
-    b-input-group.my-1(prepend="　　地段"): b-select(
-      v-model="section",
-      :options="sectionOpts",
-      :state="sectionOK"
-    )
-    b-input-group(prepend="複丈日期"): b-input(
-      v-model="opdate",
-      type="date",
-      :max="maxOpdate",
-      :state="opdateOK"
-    )
+div
+  b-card
+    b-card-title.d-flex.align-items-center
+      span.mr-auto 新增案件
+      span.small.text-muted.mr-2 {{ this.caseId }}
+      b-button(
+        title="確認新增",
+        size="sm",
+        :variant="ok ? 'primary' : 'outline-secondary'",
+        :disabled="!ok",
+        @click="add"
+      ): b-icon(
+        icon="plus"
+      )
+    b-card-text
+      b-input-group(prepend="　　　年"): b-input(
+        v-model="year",
+        type="number",
+        :max="maxYear",
+        min="87",
+        :state="yearOK"
+      )
+      b-input-group.my-1(prepend="　　　字"): b-select(
+        v-model="code",
+        :options="codeOpts",
+        :state="codeOK"
+      )
+      b-input-group(prepend="　　　號"): b-input(
+        v-model="num",
+        type="number",
+        max="999999",
+        min="100",
+        step="100",
+        :state="numOK"
+      )
+      b-input-group.my-1(prepend="　　地段"): b-select(
+        v-model="section",
+        :options="sectionOpts",
+        :state="sectionOK"
+      )
+      b-input-group(prepend="複丈日期"): b-input(
+        v-model="opdate",
+        type="date",
+        :max="maxOpdate",
+        :state="opdateOK"
+      )
+  b-card.my-2.border-0(no-body)
+    b-card-title 最近案件
+    b-list-group(flush)
+      b-list-group-item(
+        v-for="(item, idx) in recentCases",
+        :key="`case-${idx}`"
+        :to="`/case/${toCaseId(item)}`"
+      ): CaseItem(
+        :raw="item"
+      )
 </template>
 
 <script>
 import tycode from "~/assets/json/tycode.json";
 import tysection from "~/assets/json/tysection.json";
 import isEmpty from "lodash/isEmpty";
+import CaseItem from "../components/CaseItem.vue";
 
 export default {
   data: () => {
@@ -86,7 +98,7 @@ export default {
       opdate: today,
       maxOpdate: today,
       creator: "",
-      recentCases: []
+      recentCases: [],
     };
   },
   computed: {
@@ -116,11 +128,21 @@ export default {
         this.opdateOK
       );
     },
-    formatedYear() { return ("000" + this.year).slice(-3); },
-    formatedCode() { return ("XXXX" + this.code).slice(-4); },
-    formatedNum() { return ("000000" + this.num).slice(-6); },
-    caseId() { return `${this.formatedYear}-${this.formatedCode}-${this.formatedNum}`; },
-    rawCaseId() { return this.caseId.replaceAll("-", ""); },
+    formatedYear() {
+      return ("000" + this.year).slice(-3);
+    },
+    formatedCode() {
+      return ("XXXX" + this.code).slice(-4);
+    },
+    formatedNum() {
+      return ("000000" + this.num).slice(-6);
+    },
+    caseId() {
+      return `${this.formatedYear}-${this.formatedCode}-${this.formatedNum}`;
+    },
+    rawCaseId() {
+      return this.caseId.replaceAll("-", "");
+    },
     postBody() {
       return {
         token: this.userTokenHash,
@@ -144,17 +166,21 @@ export default {
     notEmpty(val) {
       return !isEmpty(val);
     },
+    toCaseId(caseData) {
+      return ("000" + caseData.year).slice(-3) + '-'
+        + ("XXXX" + caseData.code).slice(-4) + '-'
+        + ("000000" + caseData.num).slice(-6)
+    },
     loadRecentCases() {
       this.$axios
-        .post("/api/search", {limit: 5})
+        .post("/api/search", { limit: 5 })
         .then(({ data }) => {
           this.recentCases = [...data.payload];
         })
         .catch((err) => {
           console.warn(err);
         })
-        .finally(() => {
-        });
+        .finally(() => {});
     },
     add() {
       const expire = this.userExpire;
@@ -184,6 +210,7 @@ export default {
       }
     },
   },
+  components: { CaseItem },
 };
 </script>
 
