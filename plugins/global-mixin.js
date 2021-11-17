@@ -132,7 +132,7 @@ Vue.mixin({
         }
       })
     },
-    notify (msg, opts = { title: '💬 通知' }) {
+    notify (msg, opts = { title: '🗨 通知' }) {
       return new Promise((resolve, reject) => {
         if (typeof msg !== 'string' && typeof opts !== 'object') {
           reject(`notify 傳入參數有誤: msg:${msg}, opts: ${opts}`)
@@ -160,7 +160,7 @@ Vue.mixin({
     success (message, opts = {}) {
       if (!isEmpty(message)) {
         const merged = Object.assign({
-          title: '✔ 成功',
+          title: '🟢 成功',
           autoHideDelay: 15000,
           pos: 'tr',
           variant: 'success'
@@ -171,7 +171,7 @@ Vue.mixin({
     warning (message, opts = {}) {
       if (!isEmpty(message)) {
         const merged = Object.assign({
-          title: '⚠ 警示',
+          title: '🟡 警示',
           autoHideDelay: 15000,
           pos: 'tr',
           variant: 'warning'
@@ -187,7 +187,7 @@ Vue.mixin({
           opts.pos = 'tf'
         }
         const merged = Object.assign({
-          title: '❌ 錯誤‼',
+          title: '🔴 錯誤',
           autoHideDelay: 20000,
           variant: 'danger'
         }, opts)
