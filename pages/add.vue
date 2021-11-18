@@ -47,19 +47,11 @@ div
         span 新增案件
   b-card.my-2.border-0(no-body)
     b-card-title 最近案件
-    b-list-group(flush)
-      b-list-group-item(
-        v-for="(item, idx) in recentCases",
-        :key="`case-${idx}`"
-        :to="`/list/${toCaseId(item)}`"
-      ): CaseItem(
-        :raw="item"
-      )
+    CaseList(:list="recentCases", :loading="busy")
 </template>
 
 <script>
 import isEmpty from "lodash/isEmpty";
-import CaseItem from "../components/CaseItem.vue";
 
 export default {
   head: {
@@ -145,8 +137,6 @@ export default {
   },
   created() {
     this.creator = this.userId;
-    // console.log(this.user);
-    // console.log(this.userid, this.username, this.usernote, this.userauthority);
     this.loadRecentCases();
     // codes/sections which is Map structure from global mixin
     this.codes.forEach((val, key, map) => {
@@ -166,12 +156,8 @@ export default {
     notEmpty(val) {
       return !isEmpty(val);
     },
-    toCaseId(caseData) {
-      return ("000" + caseData.year).slice(-3) + '-'
-        + ("XXXX" + caseData.code).slice(-4) + '-'
-        + ("000000" + caseData.num).slice(-6)
-    },
     loadRecentCases() {
+      this.busy = true;
       this.$axios
         .post("/api/search", { limit: 5 })
         .then(({ data }) => {
@@ -180,7 +166,9 @@ export default {
         .catch((err) => {
           console.warn(err);
         })
-        .finally(() => {});
+        .finally(() => {
+          this.busy = false;
+        });
     },
     add() {
       const expire = this.userExpire;
@@ -209,8 +197,7 @@ export default {
           });
       }
     },
-  },
-  components: { CaseItem },
+  }
 };
 </script>
 
