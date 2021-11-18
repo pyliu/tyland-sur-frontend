@@ -58,27 +58,11 @@ div
 </template>
 
 <script>
-import tycode from "~/assets/json/tycode.json";
-import tysection from "~/assets/json/tysection.json";
 import isEmpty from "lodash/isEmpty";
 import CaseItem from "../components/CaseItem.vue";
 
 export default {
   data: () => {
-    const codes = [];
-    tycode?.forEach((element) => {
-      codes.push({
-        text: `${element.value} ${element.text}`,
-        value: element.value,
-      });
-    });
-    const sections = [];
-    tysection?.forEach((element) => {
-      sections.push({
-        text: `${element.value} ${element.text}`,
-        value: element.value,
-      });
-    });
     const now = new Date();
     const defYear = now.getFullYear() - 1911;
     const today =
@@ -91,10 +75,10 @@ export default {
       year: defYear,
       maxYear: defYear,
       code: "",
-      codeOpts: codes,
+      codeOpts: [],
       num: "",
       section: "",
-      sectionOpts: sections,
+      sectionOpts: [],
       opdate: today,
       maxOpdate: today,
       creator: "",
@@ -161,6 +145,19 @@ export default {
     // console.log(this.user);
     // console.log(this.userid, this.username, this.usernote, this.userauthority);
     this.loadRecentCases();
+    // codes/sections which is Map structure from global mixin
+    this.codes.forEach((val, key, map) => {
+      this.codeOpts.push({
+        text: `${key} ${val}`,
+        value: key,
+      });
+    });
+    this.sections.forEach((val, key, map) => {
+      this.sectionOpts.push({
+        text: `${key} ${val}`,
+        value: key,
+      });
+    });
   },
   methods: {
     notEmpty(val) {

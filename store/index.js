@@ -43,7 +43,8 @@ const state = () => ({
     FAIL_DUPLICATED: -3,
     FAIL_EXPIRE: -4,
     FAIL_NOT_IMPLEMENTED: -5
-  }
+  },
+  wipCase: {}
 })
 
 const getters = {
@@ -51,13 +52,14 @@ const getters = {
   loggedIn: state => state.auth?.loggedIn,
   user: state => state.auth?.user,
   ip: state => state.ip,
-  statusCode: state => state.statusCode
+  statusCode: state => state.statusCode,
+  wip: state => state.wipCase
 }
 
 // only sync operation
 const mutations = {
-  // login (state, payload) { state.auth = { ...state.auth, ...payload } },
-  ip (state, payload) { state.ip = payload }
+  ip (state, payload) { state.ip = payload; },
+  wip (state, payload) { state.wipCase = { ...payload }; },
 }
 
 // support async operation

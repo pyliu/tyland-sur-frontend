@@ -2,14 +2,31 @@ import Vue from 'vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import isEmpty from 'lodash/isEmpty'
 
+import tycode from "~/assets/json/tycode.json"
+import tysection from "~/assets/json/tysection.json"
+
+const codeMap = new Map();
+tycode?.forEach(element => {
+  codeMap.set(element.value, element.text);
+});
+const sectionMap = new Map();
+tysection?.forEach(element => {
+  sectionMap.set(element.value, element.text);
+});
+
 // inject to all Vue instances
 Vue.mixin({
+  data: () => ({
+    codes: codeMap,
+    sections: sectionMap
+  }),
   computed: {
     ...mapGetters([
       'loggedIn',
       'user',
       'ip',
-      'statusCode'
+      'statusCode',
+      'wip'
     ]),
     userId () { return this.user?.id },
     userName () { return this.user?.name },

@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     caseId(caseData) {
+      return caseData._id;
       return ("000" + caseData.year).slice(-3) + '-'
         + ("XXXX" + caseData.code).slice(-4) + '-'
         + ("000000" + caseData.num).slice(-6)
