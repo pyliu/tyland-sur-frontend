@@ -47,8 +47,7 @@ export default {
     loginInfo: {
       userid: "",
       password: "",
-    },
-    busy: false,
+    }
   }),
   computed: {
     btnDisabled() {

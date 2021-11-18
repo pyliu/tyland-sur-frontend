@@ -18,7 +18,8 @@ tysection?.forEach(element => {
 Vue.mixin({
   data: () => ({
     codes: codeMap,
-    sections: sectionMap
+    sections: sectionMap,
+    busy: false
   }),
   computed: {
     ...mapGetters([

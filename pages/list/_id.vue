@@ -18,7 +18,6 @@ export default {
     title: "案件列表-界標閱覽系統"
   },
   data: () => ({
-    busy: false
   }),
   computed: {
     queryCaseId() { return this.$route.params.id; },
