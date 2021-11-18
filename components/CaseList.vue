@@ -1,6 +1,6 @@
 <template lang="pug">
 .text-center.mt-5(v-if="loading")
-  b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
+  b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
 b-list-group(v-else, flush)
   b-list-group-item(
     v-for="(item, idx) in list",
