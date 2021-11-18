@@ -1,6 +1,13 @@
 <template lang="pug">
-b-card
+b-card(v-if="dataReady")
   b-card-text {{ caseId }}
+.text-center.mt-5(v-else-if="busy")
+  b-icon(
+    icon="arrow-clockwise",
+    animation="spin-pulse",
+    font-scale="4"
+  )
+h4.text-center.mt-5(v-else) ⚠ 找不到資料 ‼
 </template>
 
 <script>
@@ -11,6 +18,7 @@ export default {
     title: "案件列表-界標閱覽系統"
   },
   data: () => ({
+    busy: false
   }),
   computed: {
     queryCaseId() { return this.$route.params.id; },
@@ -24,22 +32,36 @@ export default {
     sectionCode() { return this.wip.section; },
     section() { return this.sections.get(this.wip.section); },
     code() { return this.codes.get(this.wip.code); },
-    creator() { return this.wip.creator; }
-    
+    creator() { return this.wip.creator; },
+    dataReady() { return !isEmpty(this.wip) && this.$route.params.id === this.caseId }
+
   },
   created() {
-    if (isEmpty(this.wip) || this.$route.params.id !== this.caseId) {
-      // TODO: query case by => this.$route.params.id
+    if (!this.dataReady) {
+      this.busy = true;
       console.warn(`STORE資料(${this.caseId})與查詢案件資料(${this.queryCaseId})不同，重新查詢DB ... `);
-      // this.$axios
-      //   .post("/api/search", { limit: 20 })
-      //   .then(({ data }) => {
-      //     this.list = [...data.payload];
-      //   })
-      //   .catch((err) => {
-      //     console.warn(err);
-      //   })
-      //   .finally(() => {});
+      const parts = this.queryCaseId.split('-');
+      this.$axios
+        .post("/api/search", {
+          year: parts[0],
+          code: parts[1],
+          num: parts[2],
+          limit: 1
+        })
+        .then(({ data }) => {
+          if (data.statusCode !== this.statusCode.SUCCESS) {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          } else {
+            this.$store.commit('wip', data.payload[0]);
+            this.notify(data.message);
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+          this.busy = false;
+        });
     }
   }
 };
