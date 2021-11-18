@@ -182,6 +182,7 @@ export default {
             // console.log(data.payload)
             if (data.statusCode === this.statusCode.SUCCESS) {
               this.success(data.message);
+              this.loadRecentCases();
             } else {
               this.warning(data.message);
             }
