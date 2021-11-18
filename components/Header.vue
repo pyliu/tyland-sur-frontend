@@ -7,8 +7,8 @@ section
       v-b-toggle.sidebar-1,
       variant="outline-dark"
       title="側邊選單"
-    ): b-icon(
-      icon="card-list",
+    ): b-icon.mt-1(
+      icon="list",
       font-scale="1.8"
     )
     b-button.sidebar.ml-2(v-else-if="$route.path !== '/login'" to="/login" variant="primary") #[b-icon(icon="box-arrow-in-right", font-scale="1.5")] 登入
@@ -28,11 +28,16 @@ section
     hr
     ul
       li.h5
-        b-icon.mr-2(icon="briefcase-fill" variant="dark")
-        NuxtLink(to="/search/case") 以案件號搜尋
+        b-icon.mr-2(icon="card-list" variant="success")
+        NuxtLink(to="/case") 案件列表
+    hr
+    ul
       li.h5
-        b-icon.mr-2(icon="people-fill" variant="dark")
-        NuxtLink(to="/search/uploader") 以上傳者搜尋
+        b-icon.mr-2(icon="briefcase-fill" variant="info")
+        NuxtLink(to="/search/case") 搜尋案件
+      li.h5
+        b-icon.mr-2(icon="people-fill" variant="info")
+        NuxtLink(to="/search/uploader") 搜尋上傳者
     hr
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
@@ -82,6 +87,7 @@ export default {
   }
   ul {
     padding-left: 20px;
+    margin: 5px 0;
     li {
       list-style: none;
     }
