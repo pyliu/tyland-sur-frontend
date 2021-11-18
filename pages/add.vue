@@ -62,6 +62,9 @@ import isEmpty from "lodash/isEmpty";
 import CaseItem from "../components/CaseItem.vue";
 
 export default {
+  head: {
+    title: '新增案件-界標閱覽系統'
+  },
   data: () => {
     const now = new Date();
     const defYear = now.getFullYear() - 1911;
