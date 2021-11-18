@@ -29,7 +29,7 @@ section
     ul
       li.h5
         b-icon.mr-2(icon="card-list" variant="success")
-        NuxtLink(to="/case") 案件列表
+        NuxtLink(to="/list") 案件列表
     hr
     ul
       li.h5

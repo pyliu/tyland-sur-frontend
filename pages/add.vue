@@ -51,7 +51,7 @@ div
       b-list-group-item(
         v-for="(item, idx) in recentCases",
         :key="`case-${idx}`"
-        :to="`/case/${toCaseId(item)}`"
+        :to="`/list/${toCaseId(item)}`"
       ): CaseItem(
         :raw="item"
       )

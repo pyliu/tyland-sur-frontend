@@ -5,7 +5,7 @@ b-card.border-0(no-body)
     b-list-group-item(
       v-for="(item, idx) in list",
       :key="`case-${idx}`"
-      :to="`/case/${caseId(item)}`"
+      :to="`/list/${caseId(item)}`"
     ): CaseItem(
       :raw="item"
     )

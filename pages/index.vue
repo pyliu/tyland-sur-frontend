@@ -2,7 +2,7 @@
 b-card
   b-card-title.d-flex.align-items-center
     span.mr-auto 界標閱覽系統
-    NuxtLink(to="/case" title="開始使用" style="font-size: 3rem") ➭
+    NuxtLink(to="/list" title="開始使用" style="font-size: 3rem") ➭
   b-card-text
     ul(style="padding-left: 1.5rem;")
       li 土地界標為保障民眾土地財產之重要依據，本所自96年以來就已辦畢之鑑界案件進行界址拍攝作業，並列為案件結案之必要文件之一。
