@@ -3,16 +3,7 @@ div
   b-card
     b-card-title.d-flex.align-items-center
       span.mr-auto 新增案件
-      span.small.text-muted.mr-2 {{ this.caseId }}
-      b-button(
-        title="確認新增",
-        size="sm",
-        :variant="ok ? 'primary' : 'outline-secondary'",
-        :disabled="!ok",
-        @click="add"
-      ): b-icon(
-        icon="plus"
-      )
+      span.small.text-muted {{ this.caseId }}
     b-card-text
       b-input-group(prepend="　　　年"): b-input(
         v-model="year",
@@ -45,6 +36,15 @@ div
         :max="maxOpdate",
         :state="opdateOK"
       )
+      b-button.mt-1(
+        block,
+        title="確認新增",
+        :variant="ok ? 'primary' : 'outline-secondary'",
+        :disabled="!ok",
+        @click="add"
+      )
+        b-icon.mr-1(icon="plus")
+        span 新增案件
   b-card.my-2.border-0(no-body)
     b-card-title 最近案件
     b-list-group(flush)
