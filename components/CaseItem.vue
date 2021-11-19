@@ -16,7 +16,7 @@
         .mr-1 {{ sectionCode }} {{ section }}
         div
 
-      h5 TODO: 顯示地號群
+      h5 TODO: 顯示地號群 BY CAROUSEL
 
       template(#footer): .d-flex.justify-content-between.align-items-center
         .mr-1 {{ creator }}
