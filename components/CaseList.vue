@@ -10,11 +10,25 @@ div(v-else)
     size="sm"
   )
   b-table(
+    ref="caseList"
     :items="list"
     :per-page="perPage"
     :current-page="currentPage"
-    small
+    :fields="fields"
+    responsive="sm"
+    select-mode="single"
+    selected-variant="warning"
+    caption-top
+    selectable
+    striped
+    hover
+    no-border-collapse
+    borderless
   )
+    template(#table-busy) 讀取中...
+    template(#cell(#)="row") {{ row.index + 1 }}
+    template(#cell(opdate)="{ item }")
+      b-list-group-item(:to="`/list/${caseId(item)}`"): CaseItem(:raw="item")
   //- b-list-group(flush)
   //-   b-list-group-item(
   //-     v-for="(item, idx) in list",
@@ -33,10 +47,21 @@ export default {
     perPage: { type: Number, default: 10 }
   },
   data: () => ({
-    currentPage: 1
+    currentPage: 1,
+    fields: [
+      '#',
+      {
+        key: 'opdate',
+        label:"案件",
+        sortable: true
+      }
+    ]
   }),
   computed: {
     rows() { return this.list.length; }
+  },
+  mounted() {
+    console.log(this.list)
   },
   methods: {
     caseId(caseData) {
