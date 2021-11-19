@@ -45,9 +45,9 @@ div
       )
         b-icon.mr-1(icon="plus")
         span 新增案件
-  b-card.my-2.border-0(no-body)
-    b-card-title 最近案件
-    CaseList(:list="recentCases", :loading="isBusy" :per-page="3")
+  hr
+  h5 最近案件
+  CaseList(:list="recentCases", :loading="isBusy" :per-page="3" :class="recentCases.length > 3 ? 'shift-up' : ''")
 </template>
 
 <script>
@@ -60,12 +60,6 @@ export default {
   data: () => {
     const now = new Date();
     const defYear = now.getFullYear() - 1911;
-    const today =
-      now.getFullYear() +
-      "-" +
-      ("0" + (now.getMonth() + 1)).slice(-2) +
-      "-" +
-      ("0" + now.getDate()).slice(-2);
     return {
       year: defYear,
       maxYear: defYear,
@@ -74,8 +68,8 @@ export default {
       num: "",
       section: "",
       sectionOpts: [],
-      opdate: today,
-      maxOpdate: today,
+      opdate: '',
+      maxOpdate: '',
       creator: "",
       recentCases: [],
     };
@@ -137,6 +131,7 @@ export default {
   },
   created() {
     this.creator = this.userId;
+    this.opdate = this.maxOpdate = this.today;
     this.loadRecentCases();
     // codes/sections which is Map structure from global mixin
     this.codes.forEach((val, key, map) => {
@@ -203,4 +198,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.shift-up {
+  margin-top: -35px;
+}
 </style>

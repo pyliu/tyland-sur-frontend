@@ -44,7 +44,8 @@ const state = () => ({
     FAIL_EXPIRE: -4,
     FAIL_NOT_IMPLEMENTED: -5
   },
-  wipCase: {}
+  wipCase: {},
+  wipList: []
 })
 
 const getters = {
@@ -53,13 +54,15 @@ const getters = {
   user: state => state.auth?.user,
   ip: state => state.ip,
   statusCode: state => state.statusCode,
-  wip: state => state.wipCase
+  wip: state => state.wipCase,
+  wipList: state => state.wipList
 }
 
 // only sync operation
 const mutations = {
   ip (state, payload) { state.ip = payload; },
   wip (state, payload) { state.wipCase = { ...payload }; },
+  wipList (state, payload) { state.wipList = [...payload]; }
 }
 
 // support async operation

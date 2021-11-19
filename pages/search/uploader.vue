@@ -18,20 +18,16 @@ export default {
   head: {
     title: '查詢 BY 上傳使用者-界標閱覽系統'
   },
-  data: () => {
-    const now = new Date()
-    const today = now.getFullYear() + '-' +
-      ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
-      ('0' + now.getDate()).slice(-2)
-    return {
-      opdate: today,
-      maxOpdate: today,
-      uploader: '',
-      uploaderOpts: [{ text: 'HAADMIN HA管理者', value: 'HAADMIN' }]
-    }
-  },
-  mounted () {
-    this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
+  data: () => ({
+    opdate: '',
+    maxOpdate: '',
+    uploader: '',
+    uploaderOpts: [{ text: 'HAADMIN HA管理者', value: 'HAADMIN' }]
+  }),
+  created () {
+    // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
+    this.opdate = this.maxOpdate = this.today;
+    this.uploader = this.userId;
   }
 }
 </script>

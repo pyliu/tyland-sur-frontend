@@ -2,15 +2,16 @@
 .text-center.mt-5(v-if="loading")
   b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
 div(v-else)
-  b-pagination.ml-auto(
-    v-if="rows > perPage"
-    v-model="currentPage"
-    :total-rows="rows"
-    :per-page="perPage"
-    size="sm"
-  )
-  b-table(
+  .d-flex.justify-content-end(v-if="count > perPage")
+    b-pagination(
+      v-model="currentPage"
+      :total-rows="count"
+      :per-page="perPage"
+      size="sm"
+    )
+  b-table.text-center(
     ref="caseList"
+    :caption="caption"
     :items="list"
     :per-page="perPage"
     :current-page="currentPage"
@@ -18,7 +19,7 @@ div(v-else)
     responsive="sm"
     select-mode="single"
     selected-variant="warning"
-    caption-top
+    head-variant="dark"
     selectable
     striped
     hover
@@ -27,8 +28,8 @@ div(v-else)
   )
     template(#table-busy) 讀取中...
     template(#cell(#)="row") {{ row.index + 1 }}
-    template(#cell(opdate)="{ item }")
-      b-list-group-item(:to="`/list/${caseId(item)}`"): CaseItem(:raw="item")
+    template(#cell(num)="{ item }")
+      b-list-group-item: CaseItem(:raw="item")
   //- b-list-group(flush)
   //-   b-list-group-item(
   //-     v-for="(item, idx) in list",
@@ -51,17 +52,25 @@ export default {
     fields: [
       '#',
       {
+        key: 'num',
+        label:"案號",
+        sortable: true
+      },
+      {
         key: 'opdate',
-        label:"案件",
+        label:"複丈日期",
+        sortable: true
+      },
+      {
+        key: 'creator',
+        label:"立案人",
         sortable: true
       }
     ]
   }),
   computed: {
-    rows() { return this.list.length; }
-  },
-  mounted() {
-    console.log(this.list)
+    count() { return this.list.length; },
+    caption() { return `找到 ${this.count} 筆案件資料`}
   },
   methods: {
     caseId(caseData) {

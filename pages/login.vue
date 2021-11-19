@@ -33,7 +33,7 @@ b-container: b-card
     :disabled="btnDisabled"
   )
     b-icon.mr-1(icon="box-arrow-in-right")
-    b-icon(v-if="isBusy" icon="three-dots" animation="cylon")
+    b-icon(v-if="isBusy", icon="three-dots", animation="cylon")
     span(v-else) 登入
 </template>
 
@@ -41,17 +41,19 @@ b-container: b-card
 export default {
   auth: "guest",
   head: {
-    title: '登入系統-界標閱覽系統'
+    title: "登入系統-界標閱覽系統",
   },
   data: () => ({
     loginInfo: {
       userid: "",
       password: "",
-    }
+    },
   }),
   computed: {
     btnDisabled() {
-      if (this.isBusy) { return true; }
+      if (this.isBusy) {
+        return true;
+      }
       return !this.pwState || !this.accState;
     },
     accState() {
@@ -71,13 +73,16 @@ export default {
     },
     maxAge() {
       // seconds
-      return this.$auth.strategies.local.options.token.maxAge || 1800
-    }
+      return this.$auth.strategies.local.options.token.maxAge || 1800;
+    },
   },
-  created () {
+  created() {
     this.$auth.onError(function (error) {
-      console.error('👉 認證發生錯誤 ❗', error);
-    })
+      console.error("👉 認證發生錯誤 ❗", error);
+    });
+    if (this.loggedIn) {
+      this.$router.push('/');
+    }
   },
   methods: {
     userLogin() {
@@ -88,7 +93,7 @@ export default {
             data: { ...this.loginInfo, maxAge: this.maxAge },
           })
           .then((response) => {
-            this.notify('已登入系統', { type: 'success' });
+            this.notify("已登入系統", { type: "success" });
           })
           .catch((err) => {
             console.warn(err);
