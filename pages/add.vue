@@ -47,7 +47,7 @@ div
         span 新增案件
   b-card.my-2.border-0(no-body)
     b-card-title 最近案件
-    CaseList(:list="recentCases", :loading="busy")
+    CaseList(:list="recentCases", :loading="isBusy" :per-page="3")
 </template>
 
 <script>
@@ -157,7 +157,7 @@ export default {
       return !isEmpty(val);
     },
     loadRecentCases() {
-      this.busy = true;
+      this.isBusy = true;
       this.$axios
         .post("/api/search", { limit: 5 })
         .then(({ data }) => {
@@ -167,7 +167,7 @@ export default {
           console.warn(err);
         })
         .finally(() => {
-          this.busy = false;
+          this.isBusy = false;
         });
     },
     add() {

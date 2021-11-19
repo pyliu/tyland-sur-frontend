@@ -19,7 +19,7 @@ Vue.mixin({
   data: () => ({
     codes: codeMap,
     sections: sectionMap,
-    busy: false
+    isBusy: false
   }),
   computed: {
     ...mapGetters([

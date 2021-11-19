@@ -1,7 +1,7 @@
 <template lang="pug">
 b-card(v-if="dataReady")
   b-card-text {{ caseId }}
-.text-center.mt-5(v-else-if="busy")
+.text-center.mt-5(v-else-if="isBusy")
   b-icon(
     icon="arrow-clockwise",
     animation="spin-pulse",
@@ -37,7 +37,7 @@ export default {
   },
   created() {
     if (!this.dataReady) {
-      this.busy = true;
+      this.isBusy = true;
       console.warn(`STORE資料(${this.caseId})與查詢案件資料(${this.queryCaseId})不同，重新查詢DB ... `);
       const parts = this.queryCaseId.split('-');
       this.$axios
@@ -59,7 +59,7 @@ export default {
           console.warn(err);
         })
         .finally(() => {
-          this.busy = false;
+          this.isBusy = false;
         });
     }
   }

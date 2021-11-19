@@ -1,7 +1,7 @@
 <template lang="pug">
 b-card.border-0(no-body)
   b-card-title 案件列表
-  CaseList(:list="list", :loading="busy")
+  CaseList(:list="list", :loading="isBusy")
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
     list: [],
   }),
   created() {
-    this.busy = true;
+    this.isBusy = true;
     this.$axios
       .post("/api/search", { limit: 20 })
       .then(({ data }) => {
@@ -23,7 +23,7 @@ export default {
         console.warn(err);
       })
       .finally(() => {
-        this.busy = false;
+        this.isBusy = false;
       });
   }
 };

@@ -33,7 +33,7 @@ b-container: b-card
     :disabled="btnDisabled"
   )
     b-icon.mr-1(icon="box-arrow-in-right")
-    b-icon(v-if="busy" icon="three-dots" animation="cylon")
+    b-icon(v-if="isBusy" icon="three-dots" animation="cylon")
     span(v-else) 登入
 </template>
 
@@ -51,7 +51,7 @@ export default {
   }),
   computed: {
     btnDisabled() {
-      if (this.busy) { return true; }
+      if (this.isBusy) { return true; }
       return !this.pwState || !this.accState;
     },
     accState() {
@@ -82,7 +82,7 @@ export default {
   methods: {
     userLogin() {
       try {
-        this.busy = true;
+        this.isBusy = true;
         this.$auth
           .loginWith("local", {
             data: { ...this.loginInfo, maxAge: this.maxAge },
@@ -97,7 +97,7 @@ export default {
           .finally(() => {
             this.loginInfo.userid = "";
             this.loginInfo.password = "";
-            this.busy = false;
+            this.isBusy = false;
           });
       } catch (err) {
         console.error(err);
