@@ -27,17 +27,13 @@ div(v-else)
     borderless
   )
     template(#table-busy) 讀取中...
-    template(#cell(#)="row") {{ row.index + 1 }}
+    template(#cell(#)="row")
+      b-checkbox(v-model="row.detailsShowing" @change="row.toggleDetails")
     template(#cell(num)="{ item }")
-      b-list-group-item: CaseItem(:raw="item")
-  //- b-list-group(flush)
-  //-   b-list-group-item(
-  //-     v-for="(item, idx) in list",
-  //-     :key="`case-${idx}`",
-  //-     :to="`/list/${caseId(item)}`"
-  //-   ): CaseItem(
-  //-     :raw="item"
-  //-   )
+      a.link(@click="saveWip(item)") {{ caseId(item) }}
+    template(#cell(section)="{ item }") {{ sections.get(item.section) }}
+    template(#row-details="{ item }")
+      CaseItem(:raw="item" open)
 </template>
 
 <script>
@@ -50,20 +46,24 @@ export default {
   data: () => ({
     currentPage: 1,
     fields: [
-      '#',
+      {
+        key: '#',
+        label: '詳情',
+        sortable: false
+      },
       {
         key: 'num',
-        label:"案號",
+        label: "案號",
+        sortable: true
+      },
+      {
+        key: 'section',
+        label: "段",
         sortable: true
       },
       {
         key: 'opdate',
-        label:"複丈日期",
-        sortable: true
-      },
-      {
-        key: 'creator',
-        label:"立案人",
+        label: "日期",
         sortable: true
       }
     ]
@@ -77,10 +77,17 @@ export default {
       return ("000" + caseData.year).slice(-3) + '-'
         + ("XXXX" + caseData.code).slice(-4) + '-'
         + ("000000" + caseData.num).slice(-6)
-    }
+    },
+    saveWip(caseData) {
+      this.$store.commit("wip", caseData);
+      this.$router.push(`/list/${this.caseId(caseData)}`);
+    },
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.link {
+  color: #007bff;
+}
 </style>
