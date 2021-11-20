@@ -7,6 +7,16 @@ b-container(v-cloak fluid)
 
 <script>
 export default {
+  async created() {
+    const map = await this.getCache('userMap');
+    if (map) {
+      this.$store.commit('userMap', map);
+    } else {
+      await this.$store.dispatch('prepareUserMap');
+      // cache a day
+      this.setCache('userMap', this.userMap, 86400000);
+    }
+  }
 }
 </script>
 
