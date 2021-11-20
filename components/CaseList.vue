@@ -33,7 +33,7 @@ div(v-else)
       a.link(@click="saveWip(item)") {{ caseId(item) }}
     template(#cell(section)="{ item }") {{ sections.get(item.section) }}
     template(#row-details="{ item }")
-      CaseItem(:raw="item" open)
+      .p-2: CaseItem(:raw="item" open)
 </template>
 
 <script>
@@ -87,7 +87,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.link {
-  color: #007bff;
-}
 </style>

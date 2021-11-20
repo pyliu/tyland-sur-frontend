@@ -1,8 +1,14 @@
 <template lang="pug">
 .text-left
-  .d-flex.align-items-center(:title="caseId")
-    a.mr-2(@click="saveWip") {{ formatedCaseId }}
-    b-button.border-0(
+  .d-flex.align-items-center.justify-content-between(:title="caseId")
+    a.link(@click="saveWip") {{ formatedCaseId }}
+
+    span(v-if="!detail") {{ section }}
+    span(v-if="!detail") {{ opdate }}
+    span(v-if="!detail") {{ creator }}
+
+    b-button.border-0.ml-auto(
+      v-if="!open"
       title="顯示詳情",
       size="sm",
       variant="outline-secondary",
@@ -10,7 +16,7 @@
     ): b-icon(
       :icon="collapseIcon"
     )
-  b-collapse(v-model="detail")
+  b-collapse.mt-1(v-model="detail")
     b-card.text-left
       template(#header): .d-flex.justify-content-between.align-items-center
         .mr-1 {{ sectionCode }} {{ section }}

@@ -199,6 +199,6 @@ export default {
 
 <style lang="scss" scoped>
 .shift-up {
-  margin-top: -35px;
+  margin-top: -32.5px;
 }
 </style>
