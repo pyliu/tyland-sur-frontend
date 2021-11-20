@@ -13,8 +13,9 @@ export default {
       this.$store.commit('userMap', map);
     } else {
       await this.$store.dispatch('prepareUserMap');
-      // cache a day
-      this.setCache('userMap', this.userMap, 86400000);
+      // cached time aligned with $auth config
+      const expire = this.$auth.strategies.local.options.token.maxAge || 1800;
+      this.setCache('userMap', this.userMap, expire * 1000);
     }
   }
 }
