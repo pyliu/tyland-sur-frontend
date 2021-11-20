@@ -22,7 +22,7 @@ Vue.mixin({
     isBusy: false,
   }),
   computed: {
-    ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList"]),
+    ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList", "userMap"]),
     today() {
       const now = new Date();
       return (
