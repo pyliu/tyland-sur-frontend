@@ -85,18 +85,18 @@ const mutations = {
 // support async operation
 const actions = {
   // Nuxt provided hook feature for Vuex, calling at server side when store initializing
-  async nuxtServerInit({ commit, dispatch }, nuxt) {
+  nuxtServerInit({ commit, dispatch }, nuxt) {
     try {
       commit(
         "ip",
         nuxt.req.connection.remoteAddress || nuxt.req.socket.remoteAddress
       );
-      await dispatch("queryUsers");
     } catch (e) {
       console.error(e);
     }
   },
-  queryUsers({ commit, getters }) {
+  prepareUserMap({ commit, getters }) {
+    isDev && console.log('查詢 user 以初始化 userMap ... ');
     this.$axios
       .post("/api/user", {})
       .then(({ data }) => {
@@ -108,7 +108,7 @@ const actions = {
               getters.userMap.set(user.id, user.name);
             });
           } else {
-            console.warn(`payload 不是陣列`, users);
+            console.warn(`payload 不是陣列，無法初始化 userMap。`, users);
           }
         }
       })

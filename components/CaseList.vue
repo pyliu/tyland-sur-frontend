@@ -72,27 +72,6 @@ export default {
     count() { return this.list.length; },
     caption() { return `找到 ${this.count} 筆案件資料`}
   },
-  mounted() {
-    
-    this.userMap.size === 0 && this.$axios
-      .post("/api/user", {})
-      .then(({ data }) => {
-        console.log(data.message);
-        if (data.statusCode > 0) {
-          const users = data.payload;
-          if (Array.isArray(users)) {
-            users.forEach((user) => {
-              this.userMap.set(user.id, user.name);
-            });
-          } else {
-            console.warn(`payload 不是陣列`, users);
-          }
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  },
   methods: {
     caseId(caseData) {
       return ("000" + caseData.year).slice(-3) + '-'

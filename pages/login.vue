@@ -77,11 +77,10 @@ export default {
     },
   },
   created() {
-    this.$auth.onError(function (error) {
-      console.error("👉 認證發生錯誤 ❗", error);
-    });
     if (this.loggedIn) {
       this.$router.push('/');
+    } else {
+      this.userMap.size === 0 && this.$store.dispatch('prepareUserMap');
     }
   },
   methods: {
