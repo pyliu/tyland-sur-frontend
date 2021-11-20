@@ -1,3 +1,5 @@
+import axios from '@nuxtjs/axios'
+
 const logerror = (error) => {
   if (error.response) {
     // The request was made and the server responded with a status code
@@ -60,25 +62,25 @@ const getters = {
 
 // only sync operation
 const mutations = {
-  ip (state, payload) { state.ip = payload; },
-  wip (state, payload) { state.wipCase = { ...payload }; },
-  wipList (state, payload) { state.wipList = [...payload]; }
+  ip(state, payload) { state.ip = payload; },
+  wip(state, payload) { state.wipCase = { ...payload }; },
+  wipList(state, payload) { state.wipList = [...payload]; }
 }
 
 // support async operation
 const actions = {
   // Nuxt provided hook feature for Vuex, calling at server side when store initializing
-  nuxtServerInit ({ commit, dispatch }, nuxt) {
+  nuxtServerInit({ commit, dispatch }, nuxt) {
     try {
       commit('ip', nuxt.req.connection.remoteAddress || nuxt.req.socket.remoteAddress)
-      // restore user session
-      // nuxt.req.session.user && commit('user', nuxt.req.session.user)
+      dispatch('restoreUserMap')
     } catch (e) {
       console.error(e)
     }
   },
-  // checkSession ({ commit, getters }) {
-  // }
+  restoreUserMap({ commit, getters }) {
+
+  }
 }
 
 export default {
