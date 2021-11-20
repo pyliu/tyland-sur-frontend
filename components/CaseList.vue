@@ -33,7 +33,7 @@ div(v-else)
       a.link(@click="saveWip(item)") {{ caseId(item) }}
     template(#cell(section)="{ item }") {{ sections.get(item.section) }}
     template(#row-details="{ item }")
-      .p-2: CaseItem(:raw="item" open)
+      .pl-3.py-1: CaseItem(:raw="item" open)
 </template>
 
 <script>
@@ -58,7 +58,7 @@ export default {
       },
       {
         key: 'section',
-        label: "段",
+        label: "段名",
         sortable: true
       },
       {
