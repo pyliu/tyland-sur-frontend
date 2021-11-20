@@ -79,6 +79,9 @@ const mutations = {
   },
   wipList(state, payload) {
     state.wipList = [...payload];
+  },
+  userMap(state, payload) {
+    state.userMap = payload;
   }
 };
 

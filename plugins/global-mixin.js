@@ -52,7 +52,6 @@ Vue.mixin({
       return this.user?.token.expire;
     },
   },
-  watch: {},
   methods: {
     ...mapActions(["checkSession"]),
     ...mapMutations([]),

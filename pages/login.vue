@@ -79,8 +79,6 @@ export default {
   created() {
     if (this.loggedIn) {
       this.$router.push('/');
-    } else {
-      this.userMap.size === 0 && this.$store.dispatch('prepareUserMap');
     }
   },
   methods: {
