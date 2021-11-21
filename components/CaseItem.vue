@@ -1,6 +1,9 @@
 <template lang="pug">
 .text-left
-  .d-flex.align-items-center.justify-content-between(:title="caseId")
+  .d-flex.align-items-center.justify-content-between(
+    v-if="!open"
+    :title="caseId"
+  )
     a.link(@click="saveWip") {{ formatedCaseId }}
 
     span(v-if="!detail") {{ section }}
@@ -8,7 +11,6 @@
     span(v-if="!detail") {{ creator }}
 
     b-button.border-0.ml-auto(
-      v-if="!open"
       title="顯示詳情",
       size="sm",
       variant="outline-secondary",
@@ -18,9 +20,9 @@
     )
   b-collapse.mt-1(v-model="detail")
     b-card.text-left
-      template(#header): .d-flex.justify-content-between.align-items-center
-        .mr-1 {{ sectionCode }} {{ section }}
-        div
+      template(#header): .d-flex.justify-content-between.align-items-center.small
+        strong(v-b-popover.focus.hover.top="formatedCaseId") {{ caseId }}
+        strong(v-b-popover.focus.hover.top="sectionCode") {{ section }}
 
       b-carousel#carousel-1(v-model="slide" :interval="4000" controls="" indicators="" background="#ababab" img-width="256" img-height="120" style="text-shadow: 1px 1px 2px #333;" @sliding-start="(function(){})()" @sliding-end="(function(){})()")
         // Text slides with image
@@ -41,9 +43,9 @@
             | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
             | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
 
-      template(#footer): .d-flex.justify-content-between.align-items-center
-        .mr-1 {{ creator }}
-        div {{ opdate }}
+      template(#footer): .d-flex.justify-content-between.align-items-center.text-muted.small
+        strong(v-b-popover.focus.hover.top="'建案人'") {{ creator }}
+        strong(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 </template>
 
 <script>

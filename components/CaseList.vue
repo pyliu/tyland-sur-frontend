@@ -16,6 +16,7 @@ div(v-else)
     :per-page="perPage"
     :current-page="currentPage"
     :fields="fields"
+    :busy.sync="isBusy"
     responsive="sm"
     select-mode="single"
     selected-variant="warning"
@@ -30,8 +31,9 @@ div(v-else)
     template(#cell(#)="row")
       b-checkbox(v-model="row.detailsShowing" @change="row.toggleDetails")
     template(#cell(num)="{ item }")
-      a.link(@click="saveWip(item)") {{ caseId(item) }}
-    template(#cell(section)="{ item }") {{ sections.get(item.section) }}
+      a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
+    template(#cell(section)="{ item }")
+      span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
     template(#row-details="{ item }")
       .pl-3.py-1: CaseItem(:raw="item" open)
 </template>
@@ -77,6 +79,9 @@ export default {
       return ("000" + caseData.year).slice(-3) + '-'
         + ("XXXX" + caseData.code).slice(-4) + '-'
         + ("000000" + caseData.num).slice(-6)
+    },
+    formatedCaseId(caseData) {
+      return `${("000" + caseData.year).slice(-3)} 年 ${this.codes.get(caseData.code)}(${caseData.code}) 字 ${("000000" + caseData.num).slice(-6)} 號`;
     },
     saveWip(caseData) {
       this.$store.commit("wip", caseData);
