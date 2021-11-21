@@ -4,7 +4,8 @@ div
     v-model="year",
     type="number",
     :max="maxYear",
-    min="87"
+    min="87",
+    :state="yearOK"
   )
   b-input-group.my-1(prepend="　字"): b-select(v-model="code", :options="codeOpts")
   b-input-group(prepend="　號"): b-input(
@@ -12,15 +13,18 @@ div
     type="number",
     max="999999",
     min="100",
-    step="100"
+    step="100",
+    :state="numOK"
   )
   .d-flex.my-1
     b-input-group.mr-1(prepend="地段"): b-select(
       v-model="section",
       :options="sectionOpts"
     )
-    b-input-group(prepend="地號"): b-input(v-model="landNum")
-  b-button(@click="search", variant="outline-primary", block) 🔎 搜尋
+    b-input-group(prepend="地號"): b-input(v-model="landNum", :state="landOK")
+  .d-flex.justify-content-center
+    b-button(@click="search", variant="outline-primary") 🔎 搜尋
+    b-button(@click="clear", variant="outline-secondary") 🗑 清除
   hr
   h5 搜尋結果
   CaseList(:list="searchedData", :loading="isBusy", :per-page="10")
@@ -51,10 +55,30 @@ export default {
     };
   },
   computed: {
-    caseId() {
-      return `${this.year}${this.code}${this.num}`;
+    yearOK() {
+      if (isEmpty(this.year)) {
+        return null;
+      }
+      const iYear = parseInt(this.year);
+      return iYear >= 87 && iYear <= this.maxYear;
+    },
+    numOK() {
+      if (isEmpty(this.num)) {
+        return null;
+      }
+      const iNum = parseInt(this.num);
+      return iNum > 0 && iNum < 1000000;
+    },
+    landOK() {
+      if (isEmpty(this.landNum)) {
+        return null;
+      }
+      return !isEmpty(this.formatedLandNum);
     },
     formatedLandNum() {
+      if (this.landNum.length > 9) {
+        return "";
+      }
       if (this.landNum.includes("-")) {
         const numbers = this.landNum.split("-");
         const parent = parseInt(numbers[0]);
@@ -84,7 +108,27 @@ export default {
       return filter;
     }
   },
-  created() {
+  watch: {
+    year(val) {
+      this.setCache('search_case_year', val);
+    },
+    code(val) {
+      this.setCache('search_case_code', val);
+    },
+    num(val) {
+      this.setCache('search_case_num', val);
+    },
+    section(val) {
+      this.setCache('search_case_section', val);
+    },
+    landNum(val) {
+      this.setCache('search_case_landNum', val);
+    },
+    opdate(val) {
+      this.setCache('search_case_opdate', val);
+    }
+  },
+  async created() {
     // codes/sections which is Map structure from global mixin
     this.codeOpts = [{ text: "", value: "" }];
     this.codes.forEach((val, key, map) => {
@@ -100,12 +144,19 @@ export default {
         value: key,
       });
     });
+    this.year = await this.getCache('search_case_year') || "";
+    this.code = await this.getCache('search_case_code') || "";
+    this.num = await this.getCache('search_case_num') || "";
+    this.section = await this.getCache('search_case_section') || "";
+    this.landNum = await this.getCache('search_case_landNum') || "";
+    this.opdate = await this.getCache('search_case_opdate') || "";
   },
-  mounted() {
+  beforeDestroy() {
     // this.$emit("data-update", { message: "收到案件查詢回傳DATA" });
+    this.$store.commit('wipList', []);
   },
   methods: {
-    search () {
+    search() {
       console.log("搜尋條件", this.filter);
       this.isBusy = true;
       this.searchedData = [];
@@ -126,6 +177,20 @@ export default {
         .finally(() => {
           this.isBusy = false;
         });
+    },
+    clear() {
+      this.removeCache('search_case_year');
+      this.removeCache('search_case_code');
+      this.removeCache('search_case_num');
+      this.removeCache('search_case_section');
+      this.removeCache('search_case_landNum');
+      this.removeCache('search_case_opdate');
+      this.year = "";
+      this.code = "";
+      this.num = "";
+      this.section = "";
+      this.landNum = "";
+      this.opdate = "";
     }
   }
 };
