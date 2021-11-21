@@ -26,6 +26,7 @@ div(v-else)
     hover
     no-border-collapse
     borderless
+    small
   )
     template(#table-busy) 讀取中...
     template(#cell(#)="row")
@@ -34,6 +35,8 @@ div(v-else)
       a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
+    template(#cell(opdate)="{ item }")
+      span(v-b-popover.hover.focus.top="'複丈日期'") {{ item.opdate }}
     template(#row-details="{ item }")
       .pl-3.py-1: CaseItem(:raw="item" card)
 </template>
