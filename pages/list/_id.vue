@@ -19,7 +19,7 @@ div(v-if="dataReady")
         b-button.mt-1(
           v-if="isOwner",
           :variant="ok ? 'primary' : 'outline-secondary'",
-          :disabled="!ok",
+          :disabled="!ok || isBusy",
           @click="modify",
           pill
         )

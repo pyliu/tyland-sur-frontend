@@ -52,6 +52,7 @@ const state = () => ({
     FAIL_DUPLICATED: -3,
     FAIL_EXPIRE: -4,
     FAIL_NOT_IMPLEMENTED: -5,
+    FAIL_NOT_CHANGED: -6
   },
   wipCase: {},
   wipList: [],
