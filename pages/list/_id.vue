@@ -1,5 +1,5 @@
 <template lang="pug">
-b-card(v-if="dataReady", :title="formatedCaseId", :sub-title="`建案者：${creator}`")
+b-card(v-if="dataReady", :title="formatedCaseId", :sub-title="`立案者：${creator}`")
   b-card-text
     b-input-group.my-1(prepend="　　地段"): b-select(
       v-model="caseData.section",
@@ -39,8 +39,12 @@ export default {
     maxOpdate: "",
   }),
   computed: {
-    sectionOK() { return !isEmpty(this.caseData.section); },
-    opdateOK() { return !isEmpty(this.caseData.opdate); },
+    sectionOK() {
+      return !isEmpty(this.caseData.section);
+    },
+    opdateOK() {
+      return !isEmpty(this.caseData.opdate);
+    },
     ok() {
       return this.sectionOK && this.opdateOK;
     },
@@ -131,7 +135,25 @@ export default {
     }
   },
   methods: {
-    modify() {},
+    modify() {
+      this.$axios
+        .post("/api/update", { ...this.caseData })
+        .then(({ data }) => {
+          if (data.statusCode === this.statusCode.SUCCESS) {
+            this.$store.commit("wip", this.caseData);
+            this.$store.commit("wipList", []);
+            this.notify(data.message);
+          } else {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+          this.isBusy = false;
+        });
+    },
   },
 };
 </script>
