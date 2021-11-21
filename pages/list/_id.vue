@@ -1,26 +1,35 @@
 <template lang="pug">
-b-card(v-if="dataReady", :title="formatedCaseId", :sub-title="`立案者：${creator}`")
-  b-card-text
-    b-input-group.my-1(prepend="　　地段"): b-select(
-      v-model="caseData.section",
-      :options="sectionOpts",
-      :state="sectionOK"
-    )
-    b-input-group(prepend="複丈日期"): b-input(
-      v-model="caseData.opdate",
-      type="date",
-      :max="maxOpdate",
-      :state="opdateOK"
-    )
-    b-button.mt-1(
-      v-if="isOwner",
-      block,
-      :variant="ok ? 'primary' : 'outline-secondary'",
-      :disabled="!ok",
-      @click="modify"
-    )
-      b-icon.mr-1(icon="pencil-square")
-      span 修改
+div(v-if="dataReady")
+  b-card(:title="formatedCaseId", :sub-title="`立案者：${creator}`")
+    b-card-text
+      b-input-group.my-1(prepend="　　地段"): b-select(
+        v-model="caseData.section",
+        :options="sectionOpts",
+        :state="sectionOK"
+        :disabled="!isOwner"
+      )
+      b-input-group(prepend="複丈日期"): b-input(
+        v-model="caseData.opdate",
+        type="date",
+        :max="maxOpdate",
+        :state="opdateOK"
+        :disabled="!isOwner"
+      )
+      .d-flex.justify-content-center.mt-2
+        b-button.mt-1(
+          v-if="isOwner",
+          :variant="ok ? 'primary' : 'outline-secondary'",
+          :disabled="!ok",
+          @click="modify",
+          pill
+        )
+          b-icon.mr-1(icon="pencil-square")
+          span 修改
+  hr
+  b-card
+    template(#header): .d-flex.justify-content-between
+      span 地號
+    b-card-text TODO
 .text-center.mt-5(v-else-if="isBusy")
   b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
 h4.text-center.mt-5(v-else) ⚠ 找不到資料 ‼
@@ -43,7 +52,7 @@ export default {
       return !isEmpty(this.caseData.section);
     },
     opdateOK() {
-      return !isEmpty(this.caseData.opdate);
+      return !isEmpty(this.caseData.opdate) && this.opdate <= this.today;
     },
     ok() {
       return this.sectionOK && this.opdateOK;
@@ -141,6 +150,7 @@ export default {
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
             this.$store.commit("wip", this.caseData);
+            // clear list to re-query cases forcely
             this.$store.commit("wipList", []);
             this.notify(data.message);
           } else {
