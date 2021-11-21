@@ -35,7 +35,7 @@ div(v-else)
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
     template(#row-details="{ item }")
-      .pl-3.py-1: CaseItem(:raw="item" open)
+      .pl-3.py-1: CaseItem(:raw="item" card)
 </template>
 
 <script>

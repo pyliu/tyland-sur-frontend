@@ -1,7 +1,7 @@
 <template lang="pug">
 .text-left
   .d-flex.align-items-center.justify-content-between(
-    v-if="!open"
+    v-if="!card"
     :title="caseId"
   )
     a.link(@click="saveWip") {{ formatedCaseId }}
@@ -44,7 +44,7 @@
             | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted.small
-        strong(v-b-popover.focus.hover.top="'建案人'") {{ creator }}
+        strong(v-b-popover.focus.hover.top="'立案人'") {{ creator }}
         strong(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 </template>
 
@@ -52,7 +52,7 @@
 export default {
   props: {
     raw: { type: Object, require: true },
-    open: { type: Boolean, default: false }
+    card: { type: Boolean, default: false }
   },
   data: () => ({
     detail: false,
@@ -97,7 +97,7 @@ export default {
     },
   },
   created() {
-    this.detail = this.open;
+    this.detail = this.card;
   },
   methods: {
     saveWip() {
