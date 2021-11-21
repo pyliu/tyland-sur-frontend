@@ -2,15 +2,14 @@
 .text-left
   .d-flex.align-items-center.justify-content-between(
     v-if="!card"
-    :title="caseId"
+    :title="formatedCaseId"
   )
-    a.link(@click="saveWip") {{ formatedCaseId }}
-
-    span(v-if="!detail") {{ section }}
-    span(v-if="!detail") {{ opdate }}
-    span(v-if="!detail") {{ creator }}
-
-    b-button.border-0.ml-auto(
+    a.link(v-if="!detail" v-b-tooltip="formatedCaseId" @click="saveWip") {{ caseId }}
+    span(v-if="!detail" v-b-tooltip="sectionCode") {{ section }}
+    span(v-if="!detail" v-b-tooltip="'複丈日期'") {{ opdate }}
+    span(v-if="!detail" v-b-tooltip="'立案人'") {{ creator }}
+    span(v-if="detail")
+    b-button.border-0(
       title="顯示詳情",
       size="sm",
       variant="outline-secondary",
@@ -18,11 +17,12 @@
     ): b-icon(
       :icon="collapseIcon"
     )
+
   b-collapse.mt-1(v-model="detail")
     b-card.text-left
-      template(#header): .d-flex.justify-content-between.align-items-center.small
-        strong(v-b-popover.focus.hover.top="formatedCaseId") {{ caseId }}
-        strong(v-b-popover.focus.hover.top="sectionCode") {{ section }}
+      template(#header): .d-flex.justify-content-between.align-items-center
+        span(v-b-popover.focus.hover.top="sectionCode") {{ section }}
+        span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 
       b-carousel#carousel-1(v-model="slide" :interval="4000" controls="" indicators="" background="#ababab" img-width="256" img-height="120" style="text-shadow: 1px 1px 2px #333;" @sliding-start="(function(){})()" @sliding-end="(function(){})()")
         // Text slides with image
@@ -43,9 +43,9 @@
             | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
             | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
 
-      template(#footer): .d-flex.justify-content-between.align-items-center.text-muted.small
+      template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
+        strong(v-b-popover.focus.hover.top="caseId") {{ formatedCaseId }}
         strong(v-b-popover.focus.hover.top="'立案人'") {{ creator }}
-        strong(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 </template>
 
 <script>
