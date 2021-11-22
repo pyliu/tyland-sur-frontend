@@ -150,10 +150,11 @@ export default {
     this.section = await this.getCache('search_case_section') || "";
     this.landNum = await this.getCache('search_case_landNum') || "";
     this.opdate = await this.getCache('search_case_opdate') || "";
+    this.searchedData = [...this.wipList];
   },
   beforeDestroy() {
     // this.$emit("data-update", { message: "收到案件查詢回傳DATA" });
-    this.$store.commit('wipList', []);
+    // this.$store.commit('wipList', []);
   },
   methods: {
     search() {
