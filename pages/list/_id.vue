@@ -1,6 +1,6 @@
 <template lang="pug">
 div(v-if="dataReady")
-  b-card(:title="formatedCaseId", :sub-title="`立案者：${creator}`")
+  b-card(:title="formatedCaseId", :sub-title="`立案者：${userMap.get(creator) || creator}`")
     b-card-text
       b-input-group.my-1(prepend="　　地段"): b-select(
         v-model="caseData.section",
@@ -19,7 +19,7 @@ div(v-if="dataReady")
         b-button.mt-1(
           v-if="isOwner",
           :variant="ok ? 'primary' : 'outline-secondary'",
-          :disabled="!ok || isBusy",
+          :disabled="btnDisabled",
           @click="modify",
           pill
         )
@@ -46,8 +46,22 @@ export default {
     caseData: {},
     sectionOpts: [],
     maxOpdate: "",
+    origSection: "",
+    origOpdate: ""
   }),
   computed: {
+    btnDisabled() {
+      if (this.sectionChanged || this.opdateChanged) {
+        return !this.ok || this.isBusy;
+      }
+      return true
+    },
+    sectionChanged() {
+      return this.caseData.section !== this.origSection; 
+    },
+    opdateChanged() {
+      return this.caseData.opdate !== this.origOpdate; 
+    },
     sectionOK() {
       return !isEmpty(this.caseData.section);
     },
@@ -56,6 +70,9 @@ export default {
     },
     ok() {
       return this.sectionOK && this.opdateOK;
+    },
+    _id() {
+      return this.caseData._id;
     },
     queryCaseId() {
       return this.$route.params.id;
@@ -140,19 +157,43 @@ export default {
         })
         .finally(() => {
           this.isBusy = false;
+          this.origSection = this.caseData.section;
+          this.origOpdate = this.caseData.opdate;
         });
     }
+    this.origSection = this.caseData.section;
+    this.origOpdate = this.caseData.opdate;
   },
   methods: {
+    refreshList() {
+      // refresh list data
+      if (this.wipList.length > 0) {
+        let found = -1;
+        this.wipList.find((val, idx, arr) => {
+          val._id === this.caseData._id && (found = idx);
+          return val._id === this.caseData._id
+        })
+        if (found !== -1) {
+          this.wipList[found] = this.caseData;
+        }
+      }
+    },
     modify() {
+      this.isBusy = true;
       this.$axios
-        .post("/api/update", { ...this.caseData })
+        .post("/api/update", {
+          _id: this.caseData._id,
+          section: this.caseData.section,
+          opdate: this.caseData.opdate
+        })
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
             this.$store.commit("wip", this.caseData);
-            // clear list to re-query cases forcely
-            this.$store.commit("wipList", []);
             this.notify(data.message);
+            // refresh orig data to new ones
+            this.origSection = this.caseData.section;
+            this.origOpdate = this.caseData.opdate;
+            this.refreshList();
           } else {
             this.warning(data.message, { subtitle: this.queryCaseId });
           }
