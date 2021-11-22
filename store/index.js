@@ -80,9 +80,6 @@ const mutations = {
   },
   wipList(state, payload) {
     state.wipList = [...payload];
-  },
-  userMap(state, payload) {
-    state.userMap = payload;
   }
 };
 
@@ -99,7 +96,7 @@ const actions = {
       console.error(e);
     }
   },
-  prepareUserMap({ commit, getters }) {
+  repareUserMap({ commit, getters }) {
     isDev && console.log('查詢 user 以初始化 userMap ... ');
     this.$axios
       .post("/api/user", {})
