@@ -23,8 +23,8 @@ div
     )
     b-input-group(prepend="地號"): b-input(v-model="landNum", :state="landOK")
   .d-flex.justify-content-center.mt-2
-    b-button.mr-2(@click="search", variant="outline-primary", pill) 🔎 搜尋
-    b-button(@click="clear", variant="outline-secondary", pill) 🗑 清除
+    b-button.mr-2(@click="search", variant="outline-primary", :disabled="isBusy", pill) 🔎 搜尋
+    b-button(@click="clear", variant="outline-secondary", :disabled="isBusy", pill) 🗑 清除
   hr
   h5 搜尋結果
   CaseList(:list="searchedData", :loading="isBusy", :per-page="10")
