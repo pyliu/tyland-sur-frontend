@@ -9,7 +9,7 @@ b-container(v-cloak fluid)
 export default {
   async created() {
     const map = await this.getCache('userMap');
-    if (map) {
+    if (map && map.size > 0) {
       this.$store.commit('userMap', map);
     } else {
       await this.$store.dispatch('prepareUserMap');
