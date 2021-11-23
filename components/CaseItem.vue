@@ -24,31 +24,70 @@
         span(v-b-popover.focus.hover.top="sectionCode") {{ section }}
         span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 
-      b-carousel#carousel-1(v-model="slide" :interval="4000" controls="" indicators="" background="#ababab" img-width="256" img-height="120" style="text-shadow: 1px 1px 2px #333;" @sliding-start="(function(){})()" @sliding-end="(function(){})()")
-        // Text slides with image
-        b-carousel-slide(caption="First slide" text="Nulla vitae elit libero, a pharetra augue mollis interdum." img-src="https://picsum.photos/1024/480/?image=52")
-        // Slides with custom text
-        b-carousel-slide(img-src="https://picsum.photos/1024/480/?image=54")
-          h1 Hello world!
-        // Slides with image only
-        b-carousel-slide(img-src="https://picsum.photos/1024/480/?image=58")
-        // Slides with img slot
-        // Note the classes .d-block and .img-fluid to prevent browser default image alignment
-        b-carousel-slide
-          template(#img="")
-            img.d-block.img-fluid.w-100(width="1024" height="480" src="https://picsum.photos/1024/480/?image=55" alt="image slot")
-        // Slide with blank fluid image to maintain slide aspect ratio
-        b-carousel-slide(caption="Blank Image" img-blank="" img-alt="Blank image")
-          p
-            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-            | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
+      .d-flex.justify-content-start.align-items-center
+        h6 地號
+        b-button.mt-n2(variant="outline-light", v-b-modal="modalUUID"): b-icon(
+          size="sm",
+          icon="plus-circle-fill",
+          variant="primary",
+          font-scale="1.25"
+        )
+      
+      b-list-group(v-if="raw.lands.length > 0", flush)
+        b-list-group-item(
+          v-for="(land, idx) in raw.lands",
+          :key="`land_${idx}`"
+        )
+          LandItem(
+            :raw="land"
+            @remove="removeLandNumber"
+          )
+      .text-center.my-3(v-else) ⚠ 無資料
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
         strong(v-b-popover.focus.hover.top="caseId") {{ formatedCaseId }}
         strong(v-b-popover.focus.hover.top="'立案人'") {{ creator }}
+
+  b-modal(
+    :id="modalUUID"
+    ref="add-land-modal",
+    :title="`新增地號 - ${section} - ${formatedCaseId}`"
+    centered
+  )
+    div 地號
+    .d-flex.align-items-center
+      b-input(
+        type="number",
+        min="0",
+        max="9999",
+        v-model="landParent",
+        :state="landParentOK",
+        placeholder="母號",
+        trim
+      )
+      .mx-1 -
+      b-input(
+        type="number",
+        min="0",
+        max="9999",
+        v-model="landChild",
+        :state="landChildOK",
+        placeholder="子號",
+        trim
+      )
+    b-form-text.text-right.text-muted {{ formatedLandNum }}
+    template(#modal-footer="{ ok, cancel, hide }")
+      b-button(
+        @click="addLandNumber",
+        :variant="landBtnDisabled ? 'outline-secondary' : 'primary'"
+        :disabled="landBtnDisabled"
+      ) 確認
+
 </template>
 
 <script>
+import isEmpty from "lodash/isEmpty";
+
 export default {
   props: {
     raw: { type: Object, require: true },
@@ -57,8 +96,29 @@ export default {
   data: () => ({
     detail: false,
     slide: 0,
+    numberRegex: /^[\d]{1,4}$/i,
+    landParent: "",
+    landChild: "",
+    modalUUID: ""
   }),
   computed: {
+    landParentOK() {
+      return this.numberRegex.test(this.landParent);
+    },
+    landChildOK() {
+      if (isEmpty(this.landChild)) {
+        return null;
+      }
+      return this.numberRegex.test(this.landChild);
+    },
+    formatedLandNum() {
+      const parent = ("0000" + this.landParent).slice(-4);
+      const child = ("0000" + this.landChild).slice(-4);
+      return `${parent}${child}`;
+    },
+    landBtnDisabled() {
+      return this.landParentOK === false || this.landChildOK === false || this.isBusy;
+    },
     formatedYear() {
       return ("000" + this.raw.year).slice(-3);
     },
@@ -98,6 +158,7 @@ export default {
   },
   created() {
     this.detail = this.card;
+    this.modalUUID = this.uuid();
   },
   methods: {
     saveWip() {
@@ -108,6 +169,79 @@ export default {
       event.stopPropagation();
       event.preventDefault();
       this.detail = !this.detail;
+    },
+    updateLandData() {
+      this.$axios
+        .post("/api/update", {
+          _id: this.raw._id,
+          setData: {
+            lands: this.raw.lands
+          }
+        })
+        .then(({ data }) => {
+          if (data.statusCode === this.statusCode.SUCCESS) {
+            this.$store.commit("wip", this.raw);
+            console.log(this.caseId, data.message);
+          } else {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+        });
+    },
+    addLandNumber() {
+      try {
+        this.isBusy = true;
+        if (!Array.isArray(this.raw.lands)) {
+          this.raw.lands = [];
+        }
+        const existed = this.raw.lands.find((element) => {
+          return element.number === this.formatedLandNum;
+        });
+        if (existed) {
+          this.warning(`⚠ 地號 ${this.formatedLandNum} 已存在。`);
+        } else {
+          this.raw.lands.push({
+            number: this.formatedLandNum,
+            creator: this.userId,
+            marks: []
+          });
+          this.updateLandData();
+        }
+        this.landChild = "";
+        this.landParent = "";
+        this.$refs["add-land-modal"].hide();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isBusy = false
+      }
+    },
+    removeLandNumber(number) {
+      try {
+        this.isBusy = true;
+        let foundIdx = -1;
+        const existed = this.raw.lands?.find((element, idx) => {
+          if (element.number === number) {
+            foundIdx = idx;
+            return true;
+          }
+          return false;
+        });
+        if (foundIdx !== -1) {
+          this.raw.lands.splice(foundIdx, 1);
+          this.updateLandData();
+        } else {
+          this.warning(`⚠ 找不到 ${number} 地號。`);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isBusy = false
+      }
     },
   },
 };

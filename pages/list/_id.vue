@@ -1,9 +1,19 @@
 <template lang="pug">
 div(v-if="dataReady")
-  b-card(
-    :title="formatedCaseId",
-    :sub-title="`立案者：${userMap.get(creator) || creator}`"
-  )
+  b-card
+    b-card-title {{ formatedCaseId }}
+    b-card-sub-title.d-flex.justify-content-between.align-items-center
+      span {{ `立案者：${userMap.get(creator) || creator}` }}
+      b-button.mt-1(
+        v-if="isOwner",
+        size="sm",
+        :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
+        :disabled="modifyBtnDisabled",
+        @click="modify",
+        pill
+      )
+        b-icon.mr-1(icon="pencil-square")
+        span 修改
     b-card-text
       b-input-group.my-1(prepend="　　地段"): b-select(
         v-model="caseData.section",
@@ -18,52 +28,58 @@ div(v-if="dataReady")
         :state="opdateOK",
         :disabled="!isOwner"
       )
-      .d-flex.justify-content-center.mt-2
-        b-button.mt-1(
-          v-if="isOwner",
-          :variant="ok ? 'primary' : 'outline-secondary'",
-          :disabled="btnDisabled",
-          @click="modify",
-          pill
-        )
-          b-icon.mr-1(icon="pencil-square")
-          span 修改
   hr
-  b-card
-    template(#header): .d-flex.justify-content-between.align-items-center
-      span 地號
-      b-button(variant="outline-light", v-b-modal.add-land-modal): b-icon.mr-2(
-        icon="plus-circle-fill",
-        variant="primary",
-        font-scale="1.25"
-      )
-      b-modal#add-land-modal(
-        ref="add-land-modal",
-        :title="`新增地號 - ${section} - ${formatedCaseId}`"
-      )
-        b-input-group.my-1(prepend="地號"): b-input(
-          id="input-live"
-          v-model="landNum",
-          :state="landNumOK"
-          placeholder="輸入地號 ... "
+  .d-flex.justify-content-start.align-items-center
+    h5 地號
+    b-button(variant="outline-light", v-b-modal.add-land-modal): b-icon(
+      icon="plus-circle-fill",
+      variant="primary",
+      font-scale="1.25"
+    )
+    b-modal#add-land-modal(
+      ref="add-land-modal",
+      :title="`新增地號 - ${section} - ${formatedCaseId}`"
+      centered
+    )
+      div 地號
+      .d-flex.align-items-center
+        b-input(
+          type="number",
+          min="0",
+          max="9999",
+          v-model="landParent",
+          :state="landParentOK",
+          placeholder="母號",
           trim
         )
-        b-form-text.text-right(id="input-live-help") {{ formatedLandNum }}
-        template(#modal-footer="{ ok, cancel, hide }")
-          b-button(
-            @click="addLandNumber",
-            variant="outline-primary",
-            :disabled="!landNumOK"
-          ) 確認
+        .mx-1 -
+        b-input(
+          type="number",
+          min="0",
+          max="9999",
+          v-model="landChild",
+          :state="landChildOK",
+          placeholder="子號",
+          trim
+        )
+      b-form-text.text-right.text-muted {{ formatedLandNum }}
+      template(#modal-footer="{ ok, cancel, hide }")
+        b-button(
+          @click="addLandNumber",
+          :variant="landBtnDisabled ? 'outline-secondary' : 'primary'"
+          :disabled="landBtnDisabled"
+        ) 確認
 
-    b-card-text
-      b-list-group(v-if="caseData.lands.length > 0", flush)
-        b-list-group-item(
-          v-for="(land, idx) in caseData.lands",
-          :key="`land_${idx}`"
-        ).
-          AAA
-      .text-center.my-3(v-else) ⚠ 無資料
+  b-list-group(v-if="caseData.lands.length > 0", flush)
+    b-list-group-item(
+      v-for="(land, idx) in caseData.lands",
+      :key="`land_${idx}`"
+    )
+      LandItem(
+        :raw="land"
+        @remove="removeLandNumber"
+      )
+  .text-center.my-3(v-else) ⚠ 無資料
 .text-center.mt-5(v-else-if="isBusy")
   b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
 h4.text-center.mt-5(v-else) ⚠ 找不到資料 ‼
@@ -77,48 +93,34 @@ export default {
     title: "案件詳情-界標閱覽系統",
   },
   data: () => ({
+    numberRegex: /^[\d]{1,4}$/i,
     caseData: {},
     sectionOpts: [],
     maxOpdate: "",
     origSection: "",
     origOpdate: "",
-    landNum: "",
+    landParent: "",
+    landChild: "",
   }),
   computed: {
-    landNumOK() {
-      return !isEmpty(this.formatedLandNum);
+    landParentOK() {
+      return this.numberRegex.test(this.landParent);
+    },
+    landChildOK() {
+      if (isEmpty(this.landChild)) {
+        return null;
+      }
+      return this.numberRegex.test(this.landChild);
     },
     formatedLandNum() {
-      if (this.landNum.length > 9) {
-        return "";
-      }
-      if (this.landNum.includes("-")) {
-        const numbers = this.landNum.split("-");
-        if (numbers[0].length > 4) {
-          this.warning(`母號格是不正確 ${number[0]}`);
-          return "";
-        }
-        if (numbers[1].length > 4) {
-          this.warning(`子號格是不正確 ${number[1]}`);
-          return "";
-        }
-        const parent = parseInt(numbers[0]);
-        const child = parseInt(numbers[1]);
-        if (parent > 9999 || parent < 0 || child < 0 || child > 9999) {
-          console.warn("地號格式不正確", `${parent}-${child}`);
-          return "";
-        }
-        return ("0000" + parent).slice(-4) + ("0000" + child).slice(-4);
-      } else {
-        const number = parseInt(this.landNum);
-        if (number > 0 && number < 10000) {
-          return ("0000" + number).slice(-4) + "0000";
-        }
-        console.warn("地號格式不正確", `${number}-0000`);
-        return "";
-      }
+      const parent = ("0000" + this.landParent).slice(-4);
+      const child = ("0000" + this.landChild).slice(-4);
+      return `${parent}${child}`;
     },
-    btnDisabled() {
+    landBtnDisabled() {
+      return this.landParentOK === false || this.landChildOK === false || this.isBusy;
+    },
+    modifyBtnDisabled() {
       if (this.sectionChanged || this.opdateChanged) {
         return !this.ok || this.isBusy;
       }
@@ -251,8 +253,10 @@ export default {
       this.$axios
         .post("/api/update", {
           _id: this.caseData._id,
-          section: this.caseData.section,
-          opdate: this.caseData.opdate,
+          setData: {
+            section: this.caseData.section,
+            opdate: this.caseData.opdate
+          }
         })
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
@@ -273,19 +277,79 @@ export default {
           this.isBusy = false;
         });
     },
+    updateLandData() {
+      this.$axios
+        .post("/api/update", {
+          _id: this.caseData._id,
+          setData: {
+            lands: this.caseData.lands
+          }
+        })
+        .then(({ data }) => {
+          if (data.statusCode === this.statusCode.SUCCESS) {
+            this.$store.commit("wip", this.caseData);
+            this.notify(data.message);
+            this.refreshList();
+          } else {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+        });
+    },
     addLandNumber() {
-      if (!Array.isArray(this.caseData.lands)) {
-        this.caseData.lands = [];
+      try {
+        this.isBusy = true;
+        if (!Array.isArray(this.caseData.lands)) {
+          this.caseData.lands = [];
+        }
+        const existed = this.caseData.lands.find((element) => {
+          return element.number === this.formatedLandNum;
+        });
+        if (existed) {
+          this.warning(`⚠ 地號 ${this.formatedLandNum} 已存在。`);
+        } else {
+          this.caseData.lands.push({
+            number: this.formatedLandNum,
+            creator: this.userId,
+            marks: []
+          });
+          this.updateLandData();
+        }
+        this.landChild = "";
+        this.landParent = "";
+        this.$refs["add-land-modal"].hide();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isBusy = false
       }
-      const existed = this.caseData.lands.find((element) => {
-        return element.number === this.landNum;
-      });
-      if (existed) {
-        this.warning(`⚠ 地號 ${this.landNum} 已存在。`);
-      } else {
+    },
+    removeLandNumber(number) {
+      try {
+        this.isBusy = true;
+        let foundIdx = -1;
+        const existed = this.caseData.lands?.find((element, idx) => {
+          if (element.number === number) {
+            foundIdx = idx;
+            return true;
+          }
+          return false;
+        });
+        if (foundIdx !== -1) {
+          this.caseData.lands.splice(foundIdx, 1);
+          this.updateLandData();
+        } else {
+          this.warning(`⚠ 找不到 ${number} 地號。`);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isBusy = false
       }
-      this.landNum = "";
-      this.$refs["add-land-modal"].hide();
     },
   },
 };
