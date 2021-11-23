@@ -20,7 +20,7 @@ export default {
         const expire = this.$auth.strategies.local.options.token.maxAge || 1800;
         this.setCache('usersCache', array, expire * 1000);
         process.env.NODE_ENV !== 'production' && console.log(`儲存使用者資料 ${expire} 秒後到期`, array);
-      }, 400);
+      }, 800);
     }
   }
 }
