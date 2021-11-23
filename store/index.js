@@ -96,7 +96,7 @@ const actions = {
       console.error(e);
     }
   },
-  repareUserMap({ commit, getters }) {
+  prepareUserMap({ commit, getters }) {
     isDev && console.log('查詢 user 以初始化 userMap ... ');
     this.$axios
       .post("/api/user", {})
