@@ -82,7 +82,6 @@
         :variant="landBtnDisabled ? 'outline-secondary' : 'primary'"
         :disabled="landBtnDisabled"
       ) 確認
-
 </template>
 
 <script>
