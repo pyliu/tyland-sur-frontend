@@ -31,7 +31,7 @@ div(v-if="dataReady")
   hr
   .d-flex.justify-content-start.align-items-center
     h5 地號
-    b-button(variant="outline-light", v-b-modal.add-land-modal): b-icon(
+    b-button.mt-n1(variant="outline-light", v-b-modal.add-land-modal): b-icon(
       icon="plus-circle-fill",
       variant="primary",
       font-scale="1.25"
