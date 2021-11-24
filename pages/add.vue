@@ -178,6 +178,8 @@ export default {
             if (data.statusCode === this.statusCode.SUCCESS) {
               this.success(data.message);
               this.loadRecentCases();
+              // clear wip list because of new case added
+              this.$store.commit("wipList", []);
             } else {
               this.warning(data.message);
             }
