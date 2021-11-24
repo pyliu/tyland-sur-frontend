@@ -1,8 +1,8 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    div {{ landNumber.substring(0, 4) }}-{{ landNumber.substring(4) }}
-    b-button(
+    .mr-auto {{ landNumber.substring(0, 4) }}-{{ landNumber.substring(4) }}
+    b-button.mr-2(
       v-if="isOwner",
       size="sm",
       variant="outline-danger",

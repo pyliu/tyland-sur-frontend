@@ -190,27 +190,35 @@ export default {
       }
     },
     removeLandNumber(number) {
-      try {
-        this.isBusy = true;
-        let foundIdx = -1;
-        const existed = this.raw.lands?.find((element, idx) => {
-          if (element.number === number) {
-            foundIdx = idx;
-            return true;
+      this.confirm('這一個動作將刪除本地號下所有界標資料，請確認執行？', (YN) => {
+        if(YN) {
+          try {
+            this.isBusy = true;
+            let foundIdx = -1;
+            const existed = this.raw.lands?.find((element, idx) => {
+              if (element.number === number) {
+                foundIdx = idx;
+                return true;
+              }
+              return false;
+            });
+            if (foundIdx !== -1) {
+              if (Array.isArray(this.raw.lands[foundIdx].marks) && this.raw.lands[foundIdx].marks.length > 0) {
+                this.alert(`⚠ 無法刪除本地號資料(尚有還 ${this.raw.lands[foundIdx].marks.length} 筆界標資料)。`);
+              } else {
+                this.raw.lands.splice(foundIdx, 1);
+                this.updateLandData();
+              }
+            } else {
+              this.warning(`⚠ 找不到 ${number} 地號。`);
+            }
+          } catch (e) {
+            console.error(e);
+          } finally {
+            this.isBusy = false
           }
-          return false;
-        });
-        if (foundIdx !== -1) {
-          this.raw.lands.splice(foundIdx, 1);
-          this.updateLandData();
-        } else {
-          this.warning(`⚠ 找不到 ${number} 地號。`);
         }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.isBusy = false
-      }
+      });
     },
   },
 };
