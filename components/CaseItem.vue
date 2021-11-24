@@ -39,7 +39,9 @@
           :key="`land_${idx}`"
         )
           LandItem(
-            :raw="land"
+            :raw="raw"
+            :land-number="land.number"
+            :creator="land.creator"
             @remove="removeLandNumber"
           )
       .text-center.my-3(v-else) ⚠ 無資料
@@ -86,12 +88,13 @@
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import CaseBase from "~/components/CaseBase.js"
 
 export default {
   props: {
-    raw: { type: Object, require: true },
     card: { type: Boolean, default: false }
   },
+  mixins: [CaseBase],
   data: () => ({
     detail: false,
     slide: 0,
@@ -117,39 +120,6 @@ export default {
     },
     landBtnDisabled() {
       return this.landParentOK === false || this.landChildOK === false || this.isBusy;
-    },
-    formatedYear() {
-      return ("000" + this.raw.year).slice(-3);
-    },
-    formatedCode() {
-      return ("XXXX" + this.raw.code).slice(-4);
-    },
-    formatedNum() {
-      return ("000000" + this.raw.num).slice(-6);
-    },
-    caseId() {
-      return `${this.formatedYear}-${this.formatedCode}-${this.formatedNum}`;
-    },
-    formatedCaseId() {
-      return `${this.formatedYear} 年 ${this.code}(${this.formatedCode}) 字 ${this.formatedNum} 號`;
-    },
-    rawCaseId() {
-      return this.caseId.replaceAll("-", "");
-    },
-    opdate() {
-      return this.raw.opdate;
-    },
-    sectionCode() {
-      return this.raw.section;
-    },
-    section() {
-      return this.sections.get(this.raw.section);
-    },
-    code() {
-      return this.codes.get(this.raw.code);
-    },
-    creator() {
-      return this.raw.creator;
     },
     collapseIcon() {
       return this.detail ? "caret-down" : "caret-right";

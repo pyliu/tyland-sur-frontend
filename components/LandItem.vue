@@ -1,12 +1,12 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    div {{ number.substring(0, 4) }}-{{ number.substring(4) }}
+    div {{ landNumber.substring(0, 4) }}-{{ landNumber.substring(4) }}
     b-button(
       v-if="isOwner",
       size="sm",
       variant="outline-danger",
-      @click="removeLandNumber()"
+      @click="removeLandNumber"
     ) ❌
     b-button.border-0(
       title="顯示詳情",
@@ -20,7 +20,7 @@
   b-collapse.mt-1(v-model="detail")
     b-card.text-left
       template(#header): .d-flex.justify-content-between.align-items-center
-        span AAA
+        span {{ formatedCaseId }}
 
       b-carousel#carousel-1(
         v-model="slide",
@@ -70,30 +70,33 @@
 </template>
 
 <script>
+import CaseBase from "~/components/CaseBase.js"
+
 export default {
   emit: ["remove"],
   props: {
-    raw: { type: Object, require: true },
+    landNumber: { type: String, require: true },
+    creator: { type: String, require: true }
   },
+  mixins: [CaseBase],
   data: () => ({
     detail: false,
     slide: 0,
   }),
   computed: {
-    number() {
-      return this.raw?.number;
-    },
     isOwner() {
-      return this.raw?.creator === this.userId;
+      return this.creator === this.userId;
     },
     collapseIcon() {
       return this.detail ? "caret-down" : "caret-right";
     },
   },
-  created() {},
+  created() {
+    console.log(this.raw, this.landNumber, this.creator);
+  },
   methods: {
     removeLandNumber() {
-      this.$emit("remove", this.number);
+      this.$emit("remove", this.landNumber);
     },
     toggleDetail(event) {
       event.stopPropagation();
