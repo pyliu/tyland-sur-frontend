@@ -19,14 +19,14 @@ div(v-if="dataReady")
         v-model="caseData.section",
         :options="sectionOpts",
         :state="sectionOK",
-        :disabled="!isOwner"
+        :readonly="!isOwner"
       )
       b-input-group(prepend="複丈日期"): b-input(
         v-model="caseData.opdate",
         type="date",
         :max="maxOpdate",
         :state="opdateOK",
-        :disabled="!isOwner"
+        :readonly="!isOwner"
       )
   hr
   .d-flex.justify-content-start.align-items-center
