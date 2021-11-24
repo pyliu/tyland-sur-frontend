@@ -41,7 +41,7 @@
           LandItem(
             :raw="raw"
             :land-number="land.number"
-            :creator="land.creator"
+            :land-creator="land.creator"
             @remove="removeLandNumber"
           )
       .text-center.my-3(v-else) ⚠ 無資料
