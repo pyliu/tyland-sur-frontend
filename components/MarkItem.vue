@@ -75,8 +75,7 @@ import CaseBase from "~/components/CaseBase.js"
 export default {
   emit: ["remove"],
   props: {
-    landNumber: { type: String, require: true },
-    creator: { type: String, require: true }
+    landNumber: { type: String, require: true }
   },
   mixins: [CaseBase],
   data: () => ({

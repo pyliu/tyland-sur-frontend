@@ -3,31 +3,32 @@
   .d-flex.justify-content-between.align-items-center
     div {{ formatedLandNumber }}
     b-badge.mx-1(variant="secondary", pill, title="界標數") {{ markCount }}
-    b-button.border-0(
+    b-button.border-0.p-0(
       v-if="isOwner && markCount === 0",
       size="sm",
       variant="outline-danger",
       :title="`刪除地號 ${formatedLandNumber}`",
       @click="removeLandNumber"
     ) ❌
-    b-button.ml-auto.border-0(
-      title="顯示詳情",
+    b-button.ml-auto(
       size="sm",
-      variant="outline-secondary",
-      @click="toggleDetail"
-    ): b-icon(
-      :icon="collapseIcon"
-    )
-
-  b-collapse.mt-1(v-model="detail")
-    b-card
-      template(#header): .d-flex.justify-content-between.align-items-center
-        span {{ formatedCaseId }}
-
-      div ...
-
-      template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
-        span BBB
+      variant="outline-primary",
+      :title="`在地號 ${formatedLandNumber} 裡新增界標`",
+      v-b-modal="addMarkModalId"
+    ) 新增界標
+  b-modal(
+    ref="add-mark-modal"
+    :id="addMarkModalId"
+    :title="`新增界標 - ${formatedLandNumber}`"
+    centered
+  )
+    span TODO ...
+    template(#modal-footer="{ ok, cancel, hide }")
+      b-button(
+        @click="addMark",
+        :variant="addBtnDisabled ? 'outline-secondary' : 'primary'"
+        :disabled="addBtnDisabled"
+      ) 確認
 </template>
 
 <script>
@@ -41,8 +42,7 @@ export default {
   },
   mixins: [CaseBase],
   data: () => ({
-    detail: false,
-    slide: 0,
+    addMarkModalId: ""
   }),
   computed: {
     isOwner() {
@@ -60,7 +60,13 @@ export default {
       });
       const marks = found?.marks || [];
       return marks.length;
+    },
+    addBtnDisabled() {
+      return false;
     }
+  },
+  created() {
+    this.addMarkModalId = this.uuid();
   },
   methods: {
     removeLandNumber() {
@@ -71,6 +77,9 @@ export default {
       event.preventDefault();
       this.detail = !this.detail;
     },
+    addMark() {
+      this.$refs["add-mark-modal"].hide();
+    }
   },
 };
 </script>
