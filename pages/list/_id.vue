@@ -76,7 +76,9 @@ div(v-if="dataReady")
       :key="`land_${idx}`"
     )
       LandItem(
-        :raw="land"
+        :raw="caseData"
+        :land-number="land.number"
+        :land-creator="land.creator"
         @remove="removeLandNumber"
       )
   .text-center.my-3(v-else) ⚠ 無資料
@@ -94,7 +96,6 @@ export default {
   },
   data: () => ({
     numberRegex: /^[\d]{1,4}$/i,
-    caseData: {},
     sectionOpts: [],
     maxOpdate: "",
     origSection: "",
@@ -103,6 +104,9 @@ export default {
     landChild: "",
   }),
   computed: {
+    caseData() {
+      return this.wip;
+    },
     landParentOK() {
       return this.numberRegex.test(this.landParent);
     },
@@ -187,11 +191,6 @@ export default {
       return this.creator === this.userId;
     },
   },
-  watch: {
-    wip(val) {
-      this.caseData = { ...val };
-    },
-  },
   created() {
     this.maxOpdate = this.today;
     this.sections.forEach((val, key, map) => {
@@ -200,7 +199,6 @@ export default {
         value: key,
       });
     });
-    this.caseData = { ...this.wip };
     if (!this.dataReady) {
       this.isBusy = true;
       console.warn(
@@ -265,7 +263,7 @@ export default {
             // refresh orig data to new ones
             this.origSection = this.caseData.section;
             this.origOpdate = this.caseData.opdate;
-            this.refreshList();
+            // this.refreshList();
           } else {
             this.warning(data.message, { subtitle: this.queryCaseId });
           }
@@ -289,7 +287,7 @@ export default {
           if (data.statusCode === this.statusCode.SUCCESS) {
             this.$store.commit("wip", this.caseData);
             this.notify(data.message);
-            this.refreshList();
+            // this.refreshList();
           } else {
             this.warning(data.message, { subtitle: this.queryCaseId });
           }
@@ -329,27 +327,35 @@ export default {
       }
     },
     removeLandNumber(number) {
-      try {
-        this.isBusy = true;
-        let foundIdx = -1;
-        const existed = this.caseData.lands?.find((element, idx) => {
-          if (element.number === number) {
-            foundIdx = idx;
-            return true;
+      this.confirm(`這一個動作將刪除 ${number} 地號下所有界標資料，請確認執行？`).then((YN) => {
+        if(YN) {
+          try {
+            this.isBusy = true;
+            let foundIdx = -1;
+            const existed = this.caseData.lands?.find((element, idx) => {
+              if (element.number === number) {
+                foundIdx = idx;
+                return true;
+              }
+              return false;
+            });
+            if (foundIdx !== -1) {
+              if (Array.isArray(this.caseData.lands[foundIdx].marks) && this.caseData.lands[foundIdx].marks.length > 0) {
+                this.alert(`⚠ 無法刪除本地號資料(尚有 ${this.caseData.lands[foundIdx].marks.length} 筆界標資料)。`);
+              } else {
+                this.caseData.lands.splice(foundIdx, 1);
+                this.updateLandData();
+              }
+            } else {
+              this.warning(`⚠ 找不到 ${number} 地號。`);
+            }
+          } catch (e) {
+            console.error(e);
+          } finally {
+            this.isBusy = false
           }
-          return false;
-        });
-        if (foundIdx !== -1) {
-          this.caseData.lands.splice(foundIdx, 1);
-          this.updateLandData();
-        } else {
-          this.warning(`⚠ 找不到 ${number} 地號。`);
         }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.isBusy = false
-      }
+      });
     },
   },
 };
