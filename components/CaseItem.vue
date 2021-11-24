@@ -190,7 +190,7 @@ export default {
       }
     },
     removeLandNumber(number) {
-      this.confirm('這一個動作將刪除本地號下所有界標資料，請確認執行？', (YN) => {
+      this.confirm('這一個動作將刪除本地號下所有界標資料，請確認執行？').then((YN) => {
         if(YN) {
           try {
             this.isBusy = true;
@@ -204,7 +204,7 @@ export default {
             });
             if (foundIdx !== -1) {
               if (Array.isArray(this.raw.lands[foundIdx].marks) && this.raw.lands[foundIdx].marks.length > 0) {
-                this.alert(`⚠ 無法刪除本地號資料(尚有還 ${this.raw.lands[foundIdx].marks.length} 筆界標資料)。`);
+                this.alert(`⚠ 無法刪除本地號資料(尚有 ${this.raw.lands[foundIdx].marks.length} 筆界標資料)。`);
               } else {
                 this.raw.lands.splice(foundIdx, 1);
                 this.updateLandData();
