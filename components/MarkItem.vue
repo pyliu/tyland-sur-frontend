@@ -1,9 +1,9 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    span(v-if="!detail") 序號 \#{{ markSerial }}
-    span(v-if="!detail") 種類 {{ markType }}
-    //- span(v-if="!detail") 建立人 {{ markCreator }}
+    span(v-if="!detail") \#{{ markSerial }}
+    span(v-if="!detail") {{ markType }}
+    //- span(v-if="!detail") {{ markCreator }}
     span 
     //- b-button.p-0.border-0.mx-1(
     //-   v-if="isOwner && !detail",
@@ -11,14 +11,17 @@
     //-   variant="outline-danger",
     //-   @click="$emit('remove', mark)"
     //- ) ❌
-    b-button.p-0.border-0(
-      title="顯示圖片",
-      size="sm",
-      variant="outline-secondary",
+    .d-flex(
+      v-b-tooltip="'切換顯示'",
       @click="toggleDetail"
-    ): b-icon(
-      :icon="collapseIcon"
     )
+      a(href="#").mr-1 {{ detail ? "收起" : "查看" }}
+      b-button.p-0.border-0(
+        size="sm",
+        variant="outline-secondary"
+      ): b-icon(
+        :icon="collapseIcon"
+      )
 
   b-collapse.mt-1(v-model="detail")
     b-card.text-left
@@ -99,7 +102,7 @@ export default {
       return this.creator === this.userId;
     },
     collapseIcon() {
-      return this.detail ? "caret-down" : "caret-right";
+      return this.detail ? "caret-up" : "caret-down";
     },
     markSerial() {
       return this.mark.serial;

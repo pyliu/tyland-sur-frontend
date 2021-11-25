@@ -1,26 +1,28 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
+    .mr-1 地號
     div(v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`") {{ formatedLandNumber }}
-    b-badge.mx-1(variant="secondary", pill, title="界標數") {{ markCount }}
-    b-button.border-0(
+    b-badge.mx-1(v-if="markCount > 0", variant="secondary", pill, title="界標數") {{ markCount }}
+    b-button.p-1.border-0.ml-auto(
       size="sm",
-      variant="outline-secondary",
+      variant="outline-success",
       :title="`在地號 ${formatedLandNumber} 裡新增界標`",
       v-b-modal="addMarkModalId"
-    ): b-icon(
-      size="sm",
-      icon="plus-circle-fill",
-      font-scale="1.25"
     )
-    b-button.border-0.p-0.ml-auto(
+      b-icon(
+        size="sm",
+        icon="plus-circle-fill",
+        font-scale="1.3"
+      )
+      span.ml-1 界標
+    b-button.border-0.p-0.ml-1(
       v-if="isOwner && markCount === 0",
       size="sm",
       variant="outline-danger",
       :title="`刪除地號 ${formatedLandNumber}`",
       @click="removeLandNumber"
     ) ❌
-    .ml-auto(v-else)
 
   b-modal(
     ref="add-mark-modal",

@@ -10,7 +10,7 @@
     span(v-if="!detail" v-b-tooltip="'立案人'") {{ creator }}
     span(v-if="detail")
     b-button.p-0.border-0(
-      title="顯示詳情",
+      :title="detail ? '收起' : '顯示詳情'",
       size="sm",
       variant="outline-secondary",
       @click="toggleDetail"
@@ -25,13 +25,13 @@
         span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 
       .d-flex.justify-content-start.align-items-center
-        h6 地號
         b-button.p-1.mt-n2(variant="outline-light", v-b-modal="modalUUID"): b-icon(
           size="sm",
           icon="plus-circle-fill",
           variant="primary",
           font-scale="1.25"
         )
+        h6 地號
       
       b-list-group(v-if="raw.lands.length > 0", flush)
         b-list-group-item(
@@ -122,7 +122,7 @@ export default {
       return this.landParentOK === false || this.landChildOK === false || this.isBusy;
     },
     collapseIcon() {
-      return this.detail ? "caret-down" : "caret-right";
+      return this.detail ? "caret-up" :  "caret-down";
     },
   },
   created() {
