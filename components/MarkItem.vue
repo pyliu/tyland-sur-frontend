@@ -1,15 +1,18 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    div {{ landNumber.substring(0, 4) }}-{{ landNumber.substring(4) }}
-    b-button(
-      v-if="isOwner",
-      size="sm",
-      variant="outline-danger",
-      @click="removeLandNumber"
-    ) ❌
-    b-button.border-0(
-      title="顯示詳情",
+    span(v-if="!detail") 序號 \#{{ markSerial }}
+    span(v-if="!detail") 種類 {{ markType }}
+    //- span(v-if="!detail") 建立人 {{ markCreator }}
+    span 
+    //- b-button.p-0.border-0.mx-1(
+    //-   v-if="isOwner && !detail",
+    //-   size="sm",
+    //-   variant="outline-danger",
+    //-   @click="$emit('remove', mark)"
+    //- ) ❌
+    b-button.p-0.border-0(
+      title="顯示圖片",
       size="sm",
       variant="outline-secondary",
       @click="toggleDetail"
@@ -20,7 +23,8 @@
   b-collapse.mt-1(v-model="detail")
     b-card.text-left
       template(#header): .d-flex.justify-content-between.align-items-center
-        span {{ formatedCaseId }}
+        span 序號：\#{{ markSerial }}
+        span 種類：{{ markType }}
 
       b-carousel#carousel-1(
         v-model="slide",
@@ -66,7 +70,14 @@
             | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
-        span BBB
+        span 建立人：{{ markCreator }}
+        b-button.p-0.border-0.mx-1(
+          v-if="isOwner",
+          size="sm",
+          variant="outline-danger",
+          v-b-popover.hover.focus.top="'刪除本界標'",
+          @click="removeMark"
+        ) ❌
 </template>
 
 <script>
@@ -75,7 +86,8 @@ import CaseBase from "~/components/CaseBase.js"
 export default {
   emit: ["remove"],
   props: {
-    landNumber: { type: String, require: true }
+    landNumber: { type: String, require: true },
+    mark: { type: Object, require: true }
   },
   mixins: [CaseBase],
   data: () => ({
@@ -89,13 +101,25 @@ export default {
     collapseIcon() {
       return this.detail ? "caret-down" : "caret-right";
     },
+    markSerial() {
+      return this.mark.serial;
+    },
+    markType() {
+      return this.mark.type;
+    },
+    markCreator() {
+      return this.userMap.get(this.mark.creator) || this.mark.creator;
+    }
   },
   created() {
     // console.log(this.raw, this.landNumber, this.creator);
   },
   methods: {
-    removeLandNumber() {
-      this.$emit("remove", this.landNumber);
+    removeMark() {
+      this.confirm(`確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`)
+      .then((YN) => {
+        YN && this.$emit("remove", this.mark);
+      });
     },
     toggleDetail(event) {
       event.stopPropagation();

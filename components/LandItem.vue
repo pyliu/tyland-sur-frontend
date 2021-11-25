@@ -3,23 +3,30 @@
   .d-flex.justify-content-between.align-items-center
     div(v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`") {{ formatedLandNumber }}
     b-badge.mx-1(variant="secondary", pill, title="界標數") {{ markCount }}
-    b-button.border-0.p-0(
+    b-button.border-0(
+      size="sm",
+      variant="outline-secondary",
+      :title="`在地號 ${formatedLandNumber} 裡新增界標`",
+      v-b-modal="addMarkModalId"
+    ): b-icon(
+      size="sm",
+      icon="plus-circle-fill",
+      font-scale="1.25"
+    )
+    b-button.border-0.p-0.ml-auto(
       v-if="isOwner && markCount === 0",
       size="sm",
       variant="outline-danger",
       :title="`刪除地號 ${formatedLandNumber}`",
       @click="removeLandNumber"
     ) ❌
-    b-button.ml-auto(
-      size="sm",
-      variant="outline-primary",
-      :title="`在地號 ${formatedLandNumber} 裡新增界標`",
-      v-b-modal="addMarkModalId"
-    ) 新增界標
+    .ml-auto(v-else)
+
   b-modal(
     ref="add-mark-modal",
     :id="addMarkModalId",
-    :title="`新增界標 - ${formatedLandNumber}`",
+    :title="`新增 #${nextMarkSerial} 界標 - ${formatedLandNumber}`",
+    size="sm",
     centered
   )
     b-form-group(label="種類")
@@ -28,7 +35,8 @@
         v-if="addMarkType === '其他'",
         v-model="addMarkOther",
         trim,
-        placeholder="... 自訂界標種類 ..."
+        placeholder="... 自訂界標種類 ...",
+        :state="addMarkOtherOK"
       )
     template(#modal-footer="{ ok, cancel, hide }")
       b-button(
@@ -36,10 +44,19 @@
         :variant="addBtnDisabled ? 'outline-secondary' : 'primary'",
         :disabled="addBtnDisabled"
       ) 確認
+  
+  b-list-group.small(v-if="marks.length > 0", flush)
+    b-list-group-item(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
+      :raw="raw",
+      :land-number="landNumber",
+      :mark="mark"
+      @remove="removeMark(idx)"
+    )
 </template>
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 import CaseBase from "~/components/CaseBase.js";
 
 export default {
@@ -56,10 +73,11 @@ export default {
     addMarkOther: ""
   }),
   computed: {
+    addMarkOtherOK() { return !isEmpty(this.addMarkOther); },
     addBtnDisabled() {
-      if (this.addMarkType === "其他" && isEmpty(this.addMarkOther)) {
+      if (this.addMarkType === "其他" && !this.addMarkOtherOK) {
         return true;
-      } else if (["鋼釘", "塑膠樁", "水泥樁"].includes(this.addMarkType)) {
+      } else if (["鋼釘", "塑膠樁", "水泥樁"].includes(this.addMarkType) || (this.addMarkType === "其他" && this.addMarkOtherOK)) {
         return false;
       }
       return true;
@@ -87,6 +105,10 @@ export default {
       });
       const marks = found?.marks || [];
       return marks.length;
+    },
+    nextMarkSerial() {
+      const max = parseInt(Math.max(...this.marks.map(mark => mark.serial))) || 0;
+      return max + 1;
     },
     markType() {
       if (this.addMarkType === "其他") {
@@ -128,12 +150,12 @@ export default {
         })
         .finally(() => {
         });
-  },
-  addMark() {
+    },
+    addMark() {
       try {
         this.isBusy = true;
         this.marks.push({
-          serial: this.markCount + 1,
+          serial: this.nextMarkSerial,
           creator: this.userId,
           type: this.markType
         });
@@ -144,8 +166,19 @@ export default {
       } finally {
         this.isBusy = false
       }
+    },
+    removeMark(index) {
+      try {
+        this.isBusy = true;
+        this.marks.splice(index, 1);
+        this.updateLandData();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.isBusy = false
+      }
     }
-  },
+  }
 };
 </script>
 

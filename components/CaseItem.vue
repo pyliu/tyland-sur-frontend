@@ -9,7 +9,7 @@
     span(v-if="!detail" v-b-tooltip="'複丈日期'") {{ opdate }}
     span(v-if="!detail" v-b-tooltip="'立案人'") {{ creator }}
     span(v-if="detail")
-    b-button.border-0(
+    b-button.p-0.border-0(
       title="顯示詳情",
       size="sm",
       variant="outline-secondary",
@@ -26,7 +26,7 @@
 
       .d-flex.justify-content-start.align-items-center
         h6 地號
-        b-button.mt-n2(variant="outline-light", v-b-modal="modalUUID"): b-icon(
+        b-button.p-1.mt-n2(variant="outline-light", v-b-modal="modalUUID"): b-icon(
           size="sm",
           icon="plus-circle-fill",
           variant="primary",
