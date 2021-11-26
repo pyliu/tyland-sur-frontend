@@ -34,7 +34,7 @@
         h6 地號
       
       b-list-group(v-if="raw.lands.length > 0", flush)
-        b-list-group-item(
+        b-list-group-item.p-1(
           v-for="(land, idx) in raw.lands",
           :key="`land_${idx}`"
         )

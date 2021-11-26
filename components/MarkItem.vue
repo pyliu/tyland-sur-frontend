@@ -1,7 +1,7 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    span(v-if="!detail") \#{{ markSerial }}
+    span(v-if="!detail") 📸\#{{ markSerial }}
     span(v-if="!detail") {{ markType }}
     //- span(v-if="!detail") {{ markCreator }}
     span 

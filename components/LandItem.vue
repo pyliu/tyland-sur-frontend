@@ -1,7 +1,6 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    .mr-1 地號
     div(v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`") {{ formatedLandNumber }}
     b-badge.mx-1(v-if="markCount > 0", variant="secondary", pill, title="界標數") {{ markCount }}
     b-button.p-1.border-0.ml-auto(
@@ -48,7 +47,7 @@
       ) 確認
   
   b-list-group.small(v-if="marks.length > 0", flush)
-    b-list-group-item(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
+    b-list-group-item.p-1(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
       :raw="raw",
       :land-number="landNumber",
       :mark="mark"
@@ -58,7 +57,6 @@
 
 <script>
 import isEmpty from "lodash/isEmpty";
-import isEqual from "lodash/isEqual";
 import CaseBase from "~/components/CaseBase.js";
 
 export default {
