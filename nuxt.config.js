@@ -121,6 +121,11 @@ export default {
       target: `http://${process.env.API_HOST}:${process.env.API_PORT}`,
       changeOrigin: true,
       pathRewrite: { '^/api': '' }
+    },
+    '/mark': {
+      target: `http://${process.env.API_HOST}:${process.env.API_PORT}`,
+      changeOrigin: true,
+      pathRewrite: { '^/mark': '' }
     }
   },
 
