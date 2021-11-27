@@ -44,7 +44,7 @@
         b-carousel-slide(
           text="遠距離",
           text-tag="h4",
-          content-visible-up="md",
+          content-visible-up="sm",
           caption-tag="h3",
           :caption="markCaption",
           :img-src="farImg"
@@ -52,7 +52,7 @@
         b-carousel-slide(
           text="近距離",
           text-tag="h4",
-          content-visible-up="md",
+          content-visible-up="sm",
           caption-tag="h3",
           :caption="markCaption",
           :img-src="nearImg"

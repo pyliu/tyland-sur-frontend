@@ -143,6 +143,11 @@ export default {
       this.$axios
         .post("/api/update", {
           _id: this.raw._id,
+          caseData: {
+            year: this.formatedYear,
+            code: this.formatedCode,
+            num: this.formatedNum
+          },
           setData: {
             lands: this.raw.lands
           }

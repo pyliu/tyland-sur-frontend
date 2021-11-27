@@ -1,6 +1,13 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
+    b-button.border-0.p-0.mr-1(
+      v-if="isOwner && markCount === 0",
+      size="sm",
+      variant="outline-danger",
+      :title="`刪除地號 ${formatedLandNumber}`",
+      @click="removeLandNumber"
+    ) ❌
     div(v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`") {{ formatedLandNumber }}
     b-badge.mx-1(v-if="markCount > 0", variant="secondary", pill, title="界標數") {{ markCount }}
     b-button.p-1.border-0.ml-auto(
@@ -15,13 +22,6 @@
         font-scale="1.3"
       )
       span.ml-1 界標
-    b-button.border-0.p-0.ml-1(
-      v-if="isOwner && markCount === 0",
-      size="sm",
-      variant="outline-danger",
-      :title="`刪除地號 ${formatedLandNumber}`",
-      @click="removeLandNumber"
-    ) ❌
 
   b-modal(
     ref="add-mark-modal",
@@ -133,6 +133,11 @@ export default {
       this.$axios
         .post("/api/update", {
           _id: this.raw._id,
+          caseData: {
+            year: this.formatedYear,
+            code: this.formatedCode,
+            num: this.formatedNum
+          },
           setData: {
             lands: this.raw.lands
           }
