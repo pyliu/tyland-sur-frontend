@@ -3,23 +3,17 @@
   .d-flex.justify-content-between.align-items-center
     span(v-if="!detail") 📸\#{{ markSerial }}
     span(v-if="!detail") {{ markType }}
-    //- span(v-if="!detail") {{ markCreator }}
-    span 
-    //- b-button.p-0.border-0.mx-1(
-    //-   v-if="isOwner && !detail",
-    //-   size="sm",
-    //-   variant="outline-danger",
-    //-   @click="$emit('remove', mark)"
-    //- ) ❌
-    .d-flex(
-      v-b-tooltip="'切換顯示'",
-      @click="toggleDetail"
+    b-button.p-0.border-0.mx-1(
+      v-if="isOwner && detail",
+      size="sm",
+      variant="outline-primary",
+      @click="$refs['upload-modal'].show()"
     )
-      a(href="#").mr-1 {{ detail ? "收起" : "查看" }}
-      b-button.p-0.border-0(
-        size="sm",
-        variant="outline-secondary"
-      ): b-icon(
+      b-icon.mr-1(icon="upload")
+      span 上傳
+    .d-flex(v-b-tooltip="'切換顯示'", @click="toggleDetail")
+      a.mr-1(href="#") {{ detail ? '收起' : '查看' }}
+      b-button.p-0.border-0(size="sm", variant="outline-secondary"): b-icon(
         :icon="collapseIcon"
       )
 
@@ -67,21 +61,57 @@
           v-b-popover.hover.focus.top="'刪除本界標'",
           @click="removeMark"
         ) ❌
+
+  b-modal(
+    ref="upload-modal",
+    :title="`${landNumber} - #${markSerial} ${markType}`",
+    hide-footer,
+    centered
+  )
+    b-input-group(prepend="分類"): b-select(
+      v-model="distance",
+      :options="distanceOpts"
+    )
+    b-input-group.my-1(prepend="檔案")
+      b-file(
+        v-model="uploadFile",
+        placeholder="支援上傳 JPG 圖檔",
+        browse-text="瀏覽",
+        :accept="supportTypes.join(',')"
+      ): template(
+        slot="file-name",
+        slot-scope="{ names }"
+      ): b-badge(
+        variant="primary"
+      ) {{ names[0] }}
+      b-button.ml-1(
+        @click="upload",
+        variant="outline-primary",
+        v-if="uploadFileOK"
+      ) 上傳
 </template>
 
 <script>
-import CaseBase from "~/components/CaseBase.js"
+import CaseBase from "~/components/CaseBase.js";
 
 export default {
   emit: ["remove"],
   props: {
     landNumber: { type: String, require: true },
-    mark: { type: Object, require: true }
+    mark: { type: Object, require: true },
   },
   mixins: [CaseBase],
   data: () => ({
     detail: false,
     slide: 0,
+    ts: +new Date(),
+    uploadFile: undefined,
+    supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
+    distance: "far",
+    distanceOpts: [
+      { text: "遠距離", value: "far" },
+      { text: "近距離", value: "near" },
+    ],
   }),
   computed: {
     isOwner() {
@@ -106,16 +136,28 @@ export default {
       return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`;
     },
     farImg() {
-      return `${this.basicImgPath}/far`;
+      return `${this.basicImgPath}/far?ts=${this.ts}`;
     },
     nearImg() {
-      return `${this.basicImgPath}/near`;
-    }
+      return `${this.basicImgPath}/near?ts=${this.ts}`;
+    },
+    uploadUrl() {
+      return `${this.basicImgPath}/${this.distance}`;
+    },
+    uploadFileOK() {
+      return this.uploadFile !== undefined;
+    },
+    subtitle() {
+      return `#${this.markSerial} / ${this.markType} / ${
+        this.distance === "far" ? "遠" : "近"
+      }`;
+    },
   },
   methods: {
     removeMark() {
-      this.confirm(`確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`)
-      .then((YN) => {
+      this.confirm(
+        `確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`
+      ).then((YN) => {
         YN && this.$emit("remove", this.mark);
       });
     },
@@ -123,6 +165,44 @@ export default {
       event.stopPropagation();
       event.preventDefault();
       this.detail = !this.detail;
+    },
+    upload() {
+      const type = this.uploadFile?.type;
+      if (this.supportTypes.includes(type)) {
+        this.isBusy = true;
+        const formData = new FormData();
+        formData.append("file", this.uploadFile);
+        formData.append("width", 1920);
+        formData.append("height", 1080);
+        formData.append("quality", 80);
+        this.$axios
+          .post(this.uploadUrl, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(({ data }) => {
+            if (this.statusCode.SUCCESS === data.statusCode) {
+              this.success(data.message, {
+                title: "上傳界標圖檔",
+                subtitle: this.subtitle,
+              });
+            } else {
+              this.warning(data.message, { title: "上傳界標圖檔" });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.$refs["upload-modal"].hide();
+            this.ts = +new Date();
+            this.isBusy = false;
+            this.uploadFile = undefined;
+          });
+      } else {
+        this.warning("僅支援 JPG 圖檔上傳");
+      }
     },
   },
 };
