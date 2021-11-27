@@ -41,36 +41,16 @@
         @sliding-start="(function () {})()",
         @sliding-end="(function () {})()"
       )
-        // Text slides with image
         b-carousel-slide(
-          caption="First slide",
-          text="Nulla vitae elit libero, a pharetra augue mollis interdum.",
-          img-src="https://picsum.photos/1024/480/?image=52"
+          text="遠距離",
+          :caption="`${markType}`",
+          :img-src="farImg"
         )
-        // Slides with custom text
-        b-carousel-slide(img-src="https://picsum.photos/1024/480/?image=54")
-          h1 Hello world!
-        // Slides with image only
-        b-carousel-slide(img-src="https://picsum.photos/1024/480/?image=58")
-        // Slides with img slot
-        // Note the classes .d-block and .img-fluid to prevent browser default image alignment
-        b-carousel-slide
-          template(#img="")
-            img.d-block.img-fluid.w-100(
-              width="1024",
-              height="480",
-              src="https://picsum.photos/1024/480/?image=55",
-              alt="image slot"
-            )
-        // Slide with blank fluid image to maintain slide aspect ratio
         b-carousel-slide(
-          caption="Blank Image",
-          img-blank="",
-          img-alt="Blank image"
+          text="近距離",
+          :caption="`${markType}`",
+          :img-src="nearImg"
         )
-          p
-            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-            | a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
         span 建立人：{{ markCreator }}
@@ -112,10 +92,16 @@ export default {
     },
     markCreator() {
       return this.userMap.get(this.mark.creator) || this.mark.creator;
+    },
+    basicImgPath() {
+      return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`;
+    },
+    farImg() {
+      return `${this.basicImgPath}/far`;
+    },
+    nearImg() {
+      return `${this.basicImgPath}/near`;
     }
-  },
-  created() {
-    // console.log(this.raw, this.landNumber, this.creator);
   },
   methods: {
     removeMark() {
