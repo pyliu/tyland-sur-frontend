@@ -43,11 +43,13 @@
       )
         b-carousel-slide(
           text="遠距離",
+          content-visible-up="md",
           :caption="`${markType}`",
           :img-src="farImg"
         )
         b-carousel-slide(
           text="近距離",
+          content-visible-up="md",
           :caption="`${markType}`",
           :img-src="nearImg"
         )
