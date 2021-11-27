@@ -1,6 +1,23 @@
 <template lang="pug">
 div(v-if="dataReady")
-  b-card
+  
+  .d-flex.justify-content-between.align-items-center
+    span(v-if="!modification") {{ formatedCaseId }}
+    span(v-if="!modification") {{ section }}
+    span(v-if="!modification") {{ opdate }}
+    span
+    .d-flex(
+      v-b-tooltip="'切換顯示/修改介面'",
+      @click="toggleModification"
+    )
+      a(href="#").mr-1 {{ modification ? "收起" : "修改" }}
+      b-button.p-0.border-0(
+        size="sm",
+        variant="outline-secondary"
+      ): b-icon(
+        :icon="collapseIcon"
+      )
+  b-collapse(v-model="modification"): b-card
     b-card-title {{ formatedCaseId }}
     b-card-sub-title.d-flex.justify-content-between.align-items-center
       span {{ `立案者：${userMap.get(creator) || creator}` }}
@@ -28,7 +45,9 @@ div(v-if="dataReady")
         :state="opdateOK",
         :readonly="!isOwner"
       )
+  
   hr
+  
   .d-flex.justify-content-start.align-items-center
     b-button.p-1.mt-n1(variant="outline-light", v-b-modal.add-land-modal): b-icon(
       icon="plus-circle-fill",
@@ -82,8 +101,10 @@ div(v-if="dataReady")
         @remove="removeLandNumber"
       )
   .text-center.my-3(v-else) ⚠ 無資料
+
 .text-center.mt-5(v-else-if="isBusy")
   b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
+
 h4.text-center.mt-5(v-else) ⚠ 找不到資料 ‼
 </template>
 
@@ -95,6 +116,7 @@ export default {
     title: "案件詳情-界標閱覽系統",
   },
   data: () => ({
+    modification: false,
     numberRegex: /^[\d]{1,4}$/i,
     sectionOpts: [],
     maxOpdate: "",
@@ -104,6 +126,9 @@ export default {
     landChild: "",
   }),
   computed: {
+    collapseIcon() {
+      return this.modification ? "caret-up" : "caret-down";
+    },
     caseData() {
       return this.wip;
     },
@@ -233,6 +258,11 @@ export default {
     this.origOpdate = this.caseData.opdate;
   },
   methods: {
+    toggleModification(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.modification = !this.modification;
+    },
     refreshList() {
       // refresh list data
       if (this.wipList.length > 0) {

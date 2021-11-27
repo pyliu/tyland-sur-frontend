@@ -43,17 +43,17 @@
       )
         b-carousel-slide(
           text="遠距離",
-          text-tag="h3",
+          text-tag="h4",
           content-visible-up="md",
-          caption-tag="h1",
+          caption-tag="h3",
           :caption="markCaption",
           :img-src="farImg"
         )
         b-carousel-slide(
           text="近距離",
-          text-tag="h3",
+          text-tag="h4",
           content-visible-up="md",
-          caption-tag="h1",
+          caption-tag="h3",
           :caption="markCaption",
           :img-src="nearImg"
         )
