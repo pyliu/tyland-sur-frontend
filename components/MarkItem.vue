@@ -37,20 +37,24 @@
         background="#ababab",
         img-width="256",
         img-height="120",
-        style="text-shadow: 1px 1px 2px #333",
+        style="text-shadow: 3px 3px 4px #333",
         @sliding-start="(function () {})()",
         @sliding-end="(function () {})()"
       )
         b-carousel-slide(
           text="遠距離",
+          text-tag="h3",
           content-visible-up="md",
-          :caption="`${markType}`",
+          caption-tag="h1",
+          :caption="markCaption",
           :img-src="farImg"
         )
         b-carousel-slide(
           text="近距離",
+          text-tag="h3",
           content-visible-up="md",
-          :caption="`${markType}`",
+          caption-tag="h1",
+          :caption="markCaption",
           :img-src="nearImg"
         )
 
@@ -94,6 +98,9 @@ export default {
     },
     markCreator() {
       return this.userMap.get(this.mark.creator) || this.mark.creator;
+    },
+    markCaption() {
+      return `序號：${this.markSerial} / 形式：${this.markType} / 上傳：${this.markCreator}`;
     },
     basicImgPath() {
       return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`;
