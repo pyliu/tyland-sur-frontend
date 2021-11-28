@@ -275,18 +275,30 @@ export default {
     },
     modify() {
       this.isBusy = true;
+      // prepare set data
+      const setData = {
+        section: this.caseData.section,
+        opdate: this.caseData.opdate
+      };
+      // recursive update marks data in the lands
+      this.caseData.lands.forEach((land, idx, arr) => {
+        arr[idx].marks.forEach((mark, idx2, arr2) => {
+          setData[`lands.${idx}.marks.${idx2}.section`] = this.caseData.section;
+          setData[`lands.${idx}.marks.${idx2}.opdate`] = this.caseData.opdate;
+        });
+      });
+
       this.$axios
         .post("/api/update", {
           _id: this.caseData._id,
           caseData: {
             year: this.formatedYear,
             code: this.formatedCode,
-            num: this.formatedNum
+            num: this.formatedNum,
+            origSection: this.origSection,
+            origOpdate: this.origOpdate
           },
-          setData: {
-            section: this.caseData.section,
-            opdate: this.caseData.opdate
-          }
+          setData: setData
         })
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
