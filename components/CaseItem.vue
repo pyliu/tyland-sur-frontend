@@ -181,7 +181,9 @@ export default {
           this.raw.lands.push({
             number: this.formatedLandNum,
             creator: this.userId,
-            marks: []
+            marks: [],
+            idx: this.raw.lands.length,
+            doc: this.raw._id
           });
           this.updateLandData();
         }
