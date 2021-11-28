@@ -6,17 +6,14 @@ div(v-if="dataReady")
     span(v-if="!modification") {{ section }}
     span(v-if="!modification") {{ opdate }}
     span
-    .d-flex(
+    b-button.p-1.border-0(
       v-b-tooltip="'切換顯示/修改介面'",
+      size="sm",
+      variant="outline-secondary",
       @click="toggleModification"
     )
-      a(href="#").mr-1 {{ modification ? "收起" : "修改" }}
-      b-button.p-0.border-0(
-        size="sm",
-        variant="outline-secondary"
-      ): b-icon(
-        :icon="collapseIcon"
-      )
+      b-icon.mr-1(:icon="collapseIcon")
+      span {{ modification ? "收起" : "修改" }}
   b-collapse(v-model="modification"): b-card
     b-card-title {{ formatedCaseId }}
     b-card-sub-title.d-flex.justify-content-between.align-items-center
@@ -214,7 +211,7 @@ export default {
     },
     isOwner() {
       return this.creator === this.userId;
-    },
+    }
   },
   created() {
     this.maxOpdate = this.today;

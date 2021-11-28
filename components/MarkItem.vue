@@ -1,24 +1,25 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    span(v-if="!detail") 📸\#{{ markSerial }}
+    h6(v-if="!detail") 📸\#{{ markSerial }}
     span(v-if="!detail") {{ markType }}
-    b-button.p-0.border-0.mx-1(
-      v-if="isOwner && detail",
+    b-button.p-1.border-0.mx-1(
+      v-if="isOwner",
       size="sm",
       variant="outline-primary",
       @click="$refs['upload-modal'].show()"
     )
       b-icon.mr-1(icon="upload")
       span 上傳
-    .d-flex(v-b-tooltip="'切換顯示'", @click="toggleDetail")
-      a.mr-1(href="#") {{ detail ? '收起' : '查看' }}
-      b-button.p-0.border-0(size="sm", variant="outline-secondary"): b-icon(
-        :icon="collapseIcon"
-      )
+    b-button.p-1.border-0(size="sm", variant="outline-secondary", @click="toggleDetail")
+      b-icon.mr-1(:icon="collapseIcon")
+      span {{ detail ? '收起' : '查看' }}
 
   b-collapse.mt-1(v-model="detail")
-    b-card.text-left
+    b-card.text-left(
+      header-bg-variant="secondary"
+      header-text-variant="white"
+    )
       template(#header): .d-flex.justify-content-between.align-items-center
         span 序號：\#{{ markSerial }}
         span 種類：{{ markType }}
@@ -85,9 +86,10 @@
         variant="primary"
       ) {{ names[0] }}
       b-button.ml-1(
-        @click="upload",
+        v-if="uploadFileOK",
         variant="outline-primary",
-        v-if="uploadFileOK"
+        @click="upload",
+        :disabled="isBusy"
       ) 上傳
 </template>
 
