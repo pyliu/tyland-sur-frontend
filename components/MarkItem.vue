@@ -65,7 +65,7 @@
 
   b-modal(
     ref="upload-modal",
-    :title="`${landNumber} - #${markSerial} ${markType}`",
+    :title="`地號：${formatedLandNumber} #${markSerial} ${markType}`",
     hide-footer,
     centered
   )
@@ -122,6 +122,9 @@ export default {
     collapseIcon() {
       return this.detail ? "caret-up" : "caret-down";
     },
+    formatedLandNumber() {
+      return `${this.landNumber.substring(0, 4)}-${this.landNumber.substring(4)}`
+    },
     markSerial() {
       return this.mark.serial;
     },
@@ -147,7 +150,7 @@ export default {
       return `${this.basicImgPath}/${this.distance}`;
     },
     uploadFileOK() {
-      return this.uploadFile !== undefined;
+      return Boolean(this.uploadFile);
     },
     subtitle() {
       return `#${this.markSerial} / ${this.markType} / ${
