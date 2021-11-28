@@ -38,7 +38,7 @@ div(v-else)
     template(#cell(opdate)="{ item }")
       span(v-b-popover.hover.focus.top="'複丈日期'") {{ item.opdate }}
     template(#row-details="{ item }")
-      .pl-3.py-1: CaseItem(:raw="item" card)
+      CaseItem(:raw="item" card)
 </template>
 
 <script>

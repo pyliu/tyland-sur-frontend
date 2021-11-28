@@ -15,8 +15,12 @@
       b-icon.mr-1(:icon="collapseIcon")
       span {{ detail ? '收起' : '查看' }}
 
-  b-collapse.mt-1(v-model="detail")
+  b-collapse.mt-1(
+    v-model="detail"
+    @shown="$refs['card-detail'].scrollIntoView()"
+  )
     b-card.text-left(
+      ref="card-detail"
       header-bg-variant="secondary"
       header-text-variant="white"
     )
