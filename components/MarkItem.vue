@@ -45,17 +45,25 @@
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
-          :caption="markCaption",
-          :img-src="farImg"
-        )
+          :caption="markCaption"
+        ): template(#img)
+          b-img(
+            class="d-block img-thumbnail img-fluid w-100"
+            :src="nearImg"
+            @click="openInNewWindow(farImg)"
+          )
         b-carousel-slide(
           text="近距離",
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
-          :caption="markCaption",
-          :img-src="nearImg"
-        )
+          :caption="markCaption"
+        ): template(#img)
+          b-img(
+            class="d-block img-thumbnail img-fluid w-100"
+            :src="nearImg"
+            @click="openInNewWindow(nearImg)"
+          )
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
         span 上傳者：{{ markCreator }}
@@ -80,7 +88,7 @@
     b-input-group.my-1(prepend="檔案")
       b-file(
         v-model="uploadFile",
-        placeholder="支援上傳 JPG 圖檔",
+        placeholder="請選擇圖檔",
         browse-text="瀏覽",
         :accept="supportTypes.join(',')"
       ): template(
@@ -112,7 +120,7 @@ export default {
     slide: 0,
     ts: +new Date(),
     uploadFile: undefined,
-    supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
+    supportTypes: ["image/*" /*, 'image/png', 'image/gif'*/],
     distance: "far",
     distanceOpts: [
       { text: "遠距離", value: "far" },
@@ -162,7 +170,16 @@ export default {
       }`;
     },
   },
+  watch: {
+    uploadFile(val) {
+
+    }
+  },
   methods: {
+    openInNewWindow(src) {
+      console.log(src)
+      window.open(src, '_blank').focus();
+    },
     removeMark() {
       this.confirm(
         `確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`
@@ -212,7 +229,7 @@ export default {
       } else {
         this.warning("僅支援 JPG 圖檔上傳");
       }
-    },
+    }
   },
 };
 </script>
