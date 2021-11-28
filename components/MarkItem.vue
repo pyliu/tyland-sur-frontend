@@ -47,9 +47,8 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img(
-            class="d-block img-thumbnail img-fluid w-100"
-            :src="nearImg"
+          b-img.d-block.img-thumbnail.img-fluid.w-100(
+            :src="farImg"
             @click="openInNewWindow(farImg)"
           )
         b-carousel-slide(
@@ -59,8 +58,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img(
-            class="d-block img-thumbnail img-fluid w-100"
+          b-img.d-block.img-thumbnail.img-fluid.w-100(
             :src="nearImg"
             @click="openInNewWindow(nearImg)"
           )
@@ -177,8 +175,7 @@ export default {
   },
   methods: {
     openInNewWindow(src) {
-      console.log(src)
-      window.open(src, '_blank').focus();
+      window.open(src, '_blank', 'noopener');
     },
     removeMark() {
       this.confirm(
@@ -193,42 +190,37 @@ export default {
       this.detail = !this.detail;
     },
     upload() {
-      const type = this.uploadFile?.type;
-      if (this.supportTypes.includes(type)) {
-        this.isBusy = true;
-        const formData = new FormData();
-        formData.append("file", this.uploadFile);
-        formData.append("width", 1920);
-        formData.append("height", 1080);
-        formData.append("quality", 80);
-        this.$axios
-          .post(this.uploadUrl, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(({ data }) => {
-            if (this.statusCode.SUCCESS === data.statusCode) {
-              this.success(data.message, {
-                title: "上傳界標圖檔",
-                subtitle: this.subtitle,
-              });
-            } else {
-              this.warning(data.message, { title: "上傳界標圖檔" });
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-          })
-          .finally(() => {
-            this.$refs["upload-modal"].hide();
-            this.ts = +new Date();
-            this.isBusy = false;
-            this.uploadFile = undefined;
-          });
-      } else {
-        this.warning("僅支援 JPG 圖檔上傳");
-      }
+      this.isBusy = true;
+      const formData = new FormData();
+      formData.append("file", this.uploadFile);
+      formData.append("width", 1920);
+      formData.append("height", 1080);
+      formData.append("quality", 80);
+      this.$axios
+        .post(this.uploadUrl, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(({ data }) => {
+          if (this.statusCode.SUCCESS === data.statusCode) {
+            this.success(data.message, {
+              title: "上傳界標圖檔",
+              subtitle: this.subtitle,
+            });
+          } else {
+            this.warning(data.message, { title: "上傳界標圖檔" });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.$refs["upload-modal"].hide();
+          this.ts = +new Date();
+          this.isBusy = false;
+          this.uploadFile = undefined;
+        });
     }
   },
 };
