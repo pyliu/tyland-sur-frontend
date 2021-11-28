@@ -7,7 +7,7 @@
       v-if="isOwner",
       size="sm",
       variant="outline-primary",
-      @click="$refs['upload-modal'].show()"
+      @click="showModal"
     )
       b-icon.mr-1(icon="upload")
       span 上傳
@@ -47,9 +47,12 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img.d-block.img-thumbnail.img-fluid.w-100(
+          b-img(
             :src="farImg"
             @click="openInNewWindow(farImg)"
+            thumbnail
+            fluid
+            block
           )
         b-carousel-slide(
           text="近距離",
@@ -58,9 +61,12 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img.d-block.img-thumbnail.img-fluid.w-100(
+          b-img(
             :src="nearImg"
             @click="openInNewWindow(nearImg)"
+            thumbnail
+            fluid
+            block
           )
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
@@ -101,10 +107,21 @@
         @click="upload",
         :disabled="isBusy"
       ) 上傳
+    
+    .text-center.mt-2(v-if="uploadFileOK && !uploadFileBlob")
+      b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="2")
+    b-img.mt-2.mx-auto(
+      v-else-if="uploadFileOK && uploadFileBlob"
+      :src="uploadFileBlobUrl"
+      thumbnail
+      fluid
+      block
+    )
 </template>
 
 <script>
 import CaseBase from "~/components/CaseBase.js";
+import Reducer from "image-blob-reduce";
 
 export default {
   emit: ["remove"],
@@ -118,6 +135,7 @@ export default {
     slide: 0,
     ts: +new Date(),
     uploadFile: undefined,
+    uploadFileBlob: undefined,
     supportTypes: ["image/*" /*, 'image/png', 'image/gif'*/],
     distance: "far",
     distanceOpts: [
@@ -167,15 +185,40 @@ export default {
         this.distance === "far" ? "遠" : "近"
       }`;
     },
+    uploadFileBlobUrl() {
+      return URL.createObjectURL(this.uploadFileBlob);
+    }
   },
   watch: {
     uploadFile(val) {
-
+      if (val) {
+        const reducer = Reducer();
+        reducer.toBlob(val, {
+          max: 10240,
+          unsharpAmount: 80,
+          unsharpRadius: 0.6,
+          unsharpThreshold: 2,
+        }).then((blob) => {
+          // this.uploadFileBlob = URL.createObjectURL(blob);
+          this.uploadFileBlob = blob;
+        }).catch((err) => {
+          console.error(err);
+          this.uploadFileBlob = undefined;
+        });
+      } else {
+        this.uploadFileBlob = undefined;
+      }
     }
   },
   methods: {
     openInNewWindow(src) {
       window.open(src, '_blank', 'noopener');
+    },
+    showModal() {
+      this.isBusy = false;
+      this.uploadFile = undefined;
+      this.uploadFileBlob = undefined;
+      this.$refs['upload-modal']?.show();
     },
     removeMark() {
       this.confirm(
@@ -190,37 +233,38 @@ export default {
       this.detail = !this.detail;
     },
     upload() {
-      this.isBusy = true;
-      const formData = new FormData();
-      formData.append("file", this.uploadFile);
-      formData.append("width", 1920);
-      formData.append("height", 1080);
-      formData.append("quality", 80);
-      this.$axios
-        .post(this.uploadUrl, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(({ data }) => {
-          if (this.statusCode.SUCCESS === data.statusCode) {
-            this.success(data.message, {
-              title: "上傳界標圖檔",
-              subtitle: this.subtitle,
-            });
-          } else {
-            this.warning(data.message, { title: "上傳界標圖檔" });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => {
-          this.$refs["upload-modal"].hide();
-          this.ts = +new Date();
-          this.isBusy = false;
-          this.uploadFile = undefined;
-        });
+      if (this.uploadFile) {
+        this.isBusy = true;
+        const headers = {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${this.userTokenHash}`
+        };
+        const formData = new FormData();
+        // formData.append("file", URL.createObjectURL(blob));
+        formData.append("file", this.uploadFile);
+        this.$axios
+          .post(this.uploadUrl, formData, { headers: headers })
+          .then(({ data }) => {
+            if (this.statusCode.SUCCESS === data.statusCode) {
+              this.success(data.message, {
+                title: "上傳界標圖檔成功",
+                subtitle: this.subtitle,
+              });
+            } else {
+              this.warning(data.message, { title: "上傳界標圖檔失敗" });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.$refs["upload-modal"].hide();
+            this.ts = +new Date();
+            this.isBusy = false;
+            this.uploadFile = undefined;
+            this.uploadFileBlob = undefined;
+          });
+      }
     }
   },
 };
