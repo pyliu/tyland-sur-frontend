@@ -92,7 +92,7 @@
     b-input-group.my-1(prepend="檔案")
       b-file(
         v-model="uploadFile",
-        placeholder="請選擇圖檔",
+        placeholder="請選擇 JPG 圖檔",
         browse-text="瀏覽",
         :accept="supportTypes.join(',')"
       ): template(
@@ -101,12 +101,6 @@
       ): b-badge(
         variant="primary"
       ) {{ names[0] }}
-      b-button.ml-1(
-        v-if="uploadFileOK",
-        variant="outline-primary",
-        @click="upload",
-        :disabled="isBusy"
-      ) 上傳
     
     .text-center.mt-2(v-if="uploadFileOK && !uploadFileBlob")
       b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="2")
@@ -117,6 +111,13 @@
       fluid
       block
     )
+    .d-flex.justify-content-center.align-items-center(v-if="uploadFileOK && uploadFileBlob")
+      b-button(
+        variant="primary",
+        @click="sendRaw ? uploadRaw() : uploadResized()",
+        :disabled="isBusy"
+      ) 上傳
+      b-checkbox.ml-1(v-model="sendRaw", size="sm") 原始檔
 </template>
 
 <script>
@@ -131,12 +132,13 @@ export default {
   },
   mixins: [CaseBase],
   data: () => ({
+    sendRaw: false,
     detail: false,
     slide: 0,
     ts: +new Date(),
     uploadFile: undefined,
     uploadFileBlob: undefined,
-    supportTypes: ["image/*" /*, 'image/png', 'image/gif'*/],
+    supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
     distance: "far",
     distanceOpts: [
       { text: "遠距離", value: "far" },
@@ -194,7 +196,7 @@ export default {
       if (val) {
         const reducer = Reducer();
         reducer.toBlob(val, {
-          max: 10240,
+          max: 1920,  // max dimension is 1920 x 1920 pixels
           unsharpAmount: 80,
           unsharpRadius: 0.6,
           unsharpThreshold: 2,
@@ -232,7 +234,15 @@ export default {
       event.preventDefault();
       this.detail = !this.detail;
     },
-    upload() {
+    clearUploading() {
+      this.$refs["upload-modal"].hide();
+      this.ts = +new Date();
+      this.isBusy = false;
+      this.uploadFile = undefined;
+      this.uploadFileBlob = undefined;
+      this.sendRaw = false;
+    },
+    uploadRaw() {
       if (this.uploadFile) {
         this.isBusy = true;
         const headers = {
@@ -258,13 +268,44 @@ export default {
             console.error(err);
           })
           .finally(() => {
-            this.$refs["upload-modal"].hide();
-            this.ts = +new Date();
-            this.isBusy = false;
-            this.uploadFile = undefined;
-            this.uploadFileBlob = undefined;
+            this.clearUploading();
           });
       }
+    },
+    base64Encoded(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(blob);
+      });
+    },
+    uploadResized() {
+      this.base64Encoded(this.uploadFileBlob).then((b64) => {
+        this.isBusy = true;
+        this.$axios
+          .put(this.uploadUrl, { b64 })
+          .then(({ data }) => {
+            if (this.statusCode.SUCCESS === data.statusCode) {
+              this.success(data.message, {
+                title: "上傳界標圖檔成功",
+                subtitle: this.subtitle,
+              });
+            } else {
+              this.warning(data.message, { title: "上傳界標圖檔失敗" });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          })
+          .finally(() => {
+            this.clearUploading();
+          });
+
+
+      }).catch((err) => {
+        console.error(err);
+      });
     }
   },
 };
