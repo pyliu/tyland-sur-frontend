@@ -17,7 +17,7 @@
 
   b-collapse.mt-1(
     v-model="detail"
-    @shown="$refs['card-detail'].scrollIntoView()"
+    @shown="$refs['card-detail'].scrollIntoView({ behavior: 'smooth' })"
   )
     b-card.text-left(
       ref="card-detail"
