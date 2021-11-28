@@ -4,6 +4,9 @@ export default {
         raw: { type: Object, require: true }
     },
     computed: {
+        _id() {
+            return this.raw?._id;
+        },
         formatedYear() {
             return ("000" + this.raw?.year).slice(-3);
         },

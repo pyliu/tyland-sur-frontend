@@ -54,7 +54,7 @@
         )
 
       template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
-        span 建立人：{{ markCreator }}
+        span 上傳者：{{ markCreator }}
         b-button.p-0.border-0.mx-1(
           v-if="isOwner",
           size="sm",

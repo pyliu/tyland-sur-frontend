@@ -160,9 +160,16 @@ export default {
       try {
         this.isBusy = true;
         this.marks.push({
+          doc: this._id,  // parent doc _id
+          year: this.formatedYear,
+          code: this.formatedCode,
+          num: this.formatedNum,
+          opdate: this.opdate,
+          section: this.sectionCode,
           serial: this.nextMarkSerial,
           creator: this.userId,
-          type: this.markType
+          type: this.markType,
+          idx: this.marks.length  // for quickly know the position of this mark in the array
         });
         this.updateLandData();
         this.$refs["add-mark-modal"].hide();
