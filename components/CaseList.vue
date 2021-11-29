@@ -88,8 +88,8 @@ export default {
     },
     saveWip(caseData) {
       this.$store.commit("wip", caseData);
-      this.$router.push(`/list/${this.caseId(caseData)}`);
-    },
+      this.$router.push(`/case/${this.caseId(caseData)}/${caseData.section}/${caseData.opdate}`);
+    }
   }
 };
 </script>

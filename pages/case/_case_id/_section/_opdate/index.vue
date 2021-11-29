@@ -126,9 +126,6 @@ export default {
     collapseIcon() {
       return this.modification ? "caret-up" : "caret-down";
     },
-    caseData() {
-      return this.wip;
-    },
     landParentOK() {
       return this.numberRegex.test(this.landParent);
     },
@@ -167,11 +164,29 @@ export default {
     ok() {
       return this.sectionOK && this.opdateOK;
     },
+    paramCaseId() {
+      return this.$route.params.case_id;
+    },
+    paramCaseYear() {
+      return this.paramCaseId.substring(0, 3);
+    },
+    paramCaseCode() {
+      return this.paramCaseId.substring(4, 8);
+    },
+    paramCaseNum() {
+      return this.paramCaseId.substring(9);
+    },
+    paramSection() {
+      return this.$route.params.section;
+    },
+    paramOpdate() {
+      return this.$route.params.opdate;
+    },
+    caseData() {
+      return this.wip;
+    },
     _id() {
       return this.caseData._id;
-    },
-    queryCaseId() {
-      return this.$route.params.id;
     },
     formatedYear() {
       return ("000" + this.caseData.year).slice(-3);
@@ -207,7 +222,7 @@ export default {
       return this.caseData.creator;
     },
     dataReady() {
-      return !isEmpty(this.wip) && this.$route.params.id === this.caseId;
+      return !isEmpty(this.wip) && this.paramCaseId === this.caseId && this.paramOpdate === this.opdate && this.paramSection === this.sectionCode;
     },
     isOwner() {
       return this.creator === this.userId;
@@ -221,25 +236,41 @@ export default {
         value: key,
       });
     });
-    if (!this.dataReady) {
+    if (this.dataReady) {
+      this.origSection = this.caseData.section;
+      this.origOpdate = this.caseData.opdate;
+    } else {
       this.isBusy = true;
       console.warn(
-        `STORE資料(${this.caseId})與查詢案件資料(${this.queryCaseId})不同，重新查詢DB ... `
+        `STORE資料(${this.caseId})與查詢案件資料(${this.paramCaseId})不同，重新查詢DB ... `
       );
-      const parts = this.queryCaseId.split("-");
+      /**
+       * this.$route：
+       *   fullPath: "/110-HA46-000201/0001/2021-11-24"
+       *   name: "case_id-section-opdate"
+       *   params:
+       *     case_id: "110-HA46-000201"
+       *     opdate: "2021-11-24"
+       *     section: "0001"
+       */
       this.$axios
         .post("/api/search", {
-          year: parts[0],
-          code: parts[1],
-          num: parts[2],
+          year: this.paramCaseYear,
+          code: this.paramCaseCode,
+          num: this.paramCaseNum,
+          opdate: this.paramOpdate,
+          section: this.paramSection,
           limit: 1,
         })
         .then(({ data }) => {
           if (data.statusCode !== this.statusCode.SUCCESS) {
-            this.warning(data.message, { subtitle: this.queryCaseId });
+            this.warning(data.message, { subtitle: this.paramCaseId });
           } else {
             this.$store.commit("wip", data.payload[0]);
-            this.notify(data.message);
+            this.notify(data.message, {
+              title: "查詢案件",
+              subtitle: this.paramCaseId
+            });
           }
         })
         .catch((err) => {
@@ -251,8 +282,6 @@ export default {
           this.origOpdate = this.caseData.opdate;
         });
     }
-    this.origSection = this.caseData.section;
-    this.origOpdate = this.caseData.opdate;
   },
   methods: {
     toggleModification(event) {

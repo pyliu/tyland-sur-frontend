@@ -135,7 +135,7 @@ export default {
   methods: {
     saveWip() {
       this.$store.commit("wip", this.raw);
-      this.$router.push(`/list/${this.caseId}`);
+      this.$router.push(`/case/${this.caseId}`);
     },
     toggleDetail(event) {
       event.stopPropagation();
