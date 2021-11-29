@@ -268,11 +268,11 @@ export default {
           .then(({ data }) => {
             if (this.statusCode.SUCCESS === data.statusCode) {
               this.success(data.message, {
-                title: "上傳界標圖檔成功",
+                title: "上傳界標圖檔(RAW)成功",
                 subtitle: this.subtitle,
               });
             } else {
-              this.warning(data.message, { title: "上傳界標圖檔失敗" });
+              this.warning(data.message, { title: "上傳界標圖檔(RAW)失敗" });
             }
           })
           .catch((err) => {
@@ -312,8 +312,6 @@ export default {
           .finally(() => {
             this.clearUploading();
           });
-
-
       }).catch((err) => {
         console.error(err);
       });
