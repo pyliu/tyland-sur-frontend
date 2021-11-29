@@ -48,6 +48,7 @@
           :caption="markCaption"
         ): template(#img)
           b-img.mx-auto(
+            title="點擊開新視窗顯示"
             :src="farImg"
             @click="openInNewWindow(farImg)"
             thumbnail
@@ -62,6 +63,7 @@
           :caption="markCaption"
         ): template(#img)
           b-img.mx-auto(
+            title="點擊開新視窗顯示"
             :src="nearImg"
             @click="openInNewWindow(nearImg)"
             thumbnail
