@@ -192,7 +192,7 @@ export default {
     },
     uploadFileRawSize() {
       if (!this.uploadFile) {
-        teturn "";
+        return "";
       }
       const KB = (this.uploadFile?.size / 1024.0 || 0).toFixed(2);
       if (KB < 1000) {
