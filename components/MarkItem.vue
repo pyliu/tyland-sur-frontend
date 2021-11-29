@@ -281,7 +281,7 @@ export default {
     },
     removeMark() {
       this.confirm(
-        `確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`
+        `確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料(此動作無法復原)？`
       ).then((YN) => {
         // YN && this.$emit("remove", this.mark);
         if (YN) {
