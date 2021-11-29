@@ -152,6 +152,17 @@ export default {
       });
       return found?.marks;
     },
+    markIdx() {
+      let foundIdx = -1;
+      this.marks?.find((mark, idx, arr) => {
+        const found = mark.serial === this.markSerial;
+        if (found) {
+          foundIdx = idx;
+        }
+        return found;
+      });
+      return found?.marks;
+    },
     isOwner() {
       return this.creator === this.userId;
     },
@@ -238,6 +249,33 @@ export default {
       this.uploadFile = undefined;
       this.uploadFileBlob = undefined;
       this.$refs['upload-modal']?.show();
+    },
+    updateMarkData() {
+      this.$axios
+        .post("/api/update", {
+          _id: this.raw._id,
+          caseData: {
+            year: this.formatedYear,
+            code: this.formatedCode,
+            num: this.formatedNum
+          },
+          setData: {
+            lands: this.raw.lands
+          }
+        })
+        .then(({ data }) => {
+          if (data.statusCode === this.statusCode.SUCCESS) {
+            this.$store.commit("wip", this.raw);
+            console.log(this.caseId, data.message);
+          } else {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+        });
     },
     removeMark() {
       this.confirm(
