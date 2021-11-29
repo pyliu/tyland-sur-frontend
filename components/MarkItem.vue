@@ -117,7 +117,7 @@
         @click="sendRaw ? uploadRaw() : uploadResized()",
         :disabled="isBusy"
       ) 上傳
-      b-checkbox.ml-1(v-model="sendRaw", size="sm") 原始檔
+      b-checkbox.ml-1(v-model="sendRaw", size="sm") 原始檔 ({{ uploadFileRawSize }} MB)
 </template>
 
 <script>
@@ -189,11 +189,15 @@ export default {
     },
     uploadFileBlobUrl() {
       return URL.createObjectURL(this.uploadFileBlob);
+    },
+    uploadFileRawSize() {
+      return (this.uploadFile?.size / 1024.0 /1024.0).toFixed(2) || 0;
     }
   },
   watch: {
     uploadFile(val) {
       if (val) {
+        console.log(val);
         const reducer = Reducer();
         reducer.toBlob(val, {
           max: 1920,  // max dimension is 1920 x 1920 pixels
