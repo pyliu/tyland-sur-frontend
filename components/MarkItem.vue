@@ -163,6 +163,17 @@ export default {
       });
       return foundIdx;
     },
+    landIdx() {
+      let foundIdx = -1;
+      this.raw.lands?.find((land, idx, arr) => {
+        const found = land.number === this.landNumber;
+        if (found) {
+          foundIdx = idx;
+        }
+        return found;
+      });
+      return foundIdx;
+    },
     isOwner() {
       return this.creator === this.userId;
     },
