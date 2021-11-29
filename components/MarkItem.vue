@@ -146,6 +146,12 @@ export default {
     ],
   }),
   computed: {
+    marks() {
+      const found = this.raw.lands?.find((land, idx, arr) => {
+        return land.number === this.landNumber;
+      });
+      return found?.marks;
+    },
     isOwner() {
       return this.creator === this.userId;
     },
