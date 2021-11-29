@@ -1,108 +1,106 @@
 <template lang="pug">
-div(v-if="dataReady")
-  
-  .d-flex.justify-content-between.align-items-center
-    span(v-if="!modification") {{ formatedCaseId }}
-    span(v-if="!modification") {{ section }}
-    span(v-if="!modification") {{ opdate }}
-    span
-    b-button.p-1.border-0(
-      v-b-tooltip="'切換顯示/修改介面'",
-      size="sm",
-      variant="outline-secondary",
-      @click="toggleModification"
-    )
-      b-icon.mr-1(:icon="collapseIcon")
-      span {{ modification ? "收起" : "修改" }}
-  b-collapse(v-model="modification"): b-card
-    b-card-title {{ formatedCaseId }}
-    b-card-sub-title.d-flex.justify-content-between.align-items-center
-      span {{ `立案者：${userMap.get(creator) || creator}` }}
-      b-button.mt-1(
-        v-if="isOwner",
+div
+  .text-center.mt-5(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
+  div(v-if="dataReady")
+    
+    .d-flex.justify-content-between.align-items-center
+      span(v-if="!modification") {{ formatedCaseId }}
+      span(v-if="!modification") {{ section }}
+      span(v-if="!modification") {{ opdate }}
+      span
+      b-button.p-1.border-0(
+        v-b-tooltip="'切換顯示/修改介面'",
         size="sm",
-        :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
-        :disabled="modifyBtnDisabled",
-        @click="modify",
-        pill
+        variant="outline-secondary",
+        @click="toggleModification"
       )
-        b-icon.mr-1(icon="pencil-square")
-        span 修改
-    b-card-text
-      b-input-group.my-1(prepend="　　地段"): b-select(
-        v-model="caseData.section",
-        :options="sectionOpts",
-        :state="sectionOK",
-        :readonly="!isOwner"
-      )
-      b-input-group(prepend="複丈日期"): b-input(
-        v-model="caseData.opdate",
-        type="date",
-        :max="maxOpdate",
-        :state="opdateOK",
-        :readonly="!isOwner"
-      )
-  
-  hr
-  
-  .d-flex.justify-content-start.align-items-center
-    b-button.p-1.mt-n1(variant="outline-light", v-b-modal.add-land-modal): b-icon(
-      icon="plus-circle-fill",
-      variant="primary",
-      font-scale="1.25"
-    )
-    h5 地號
-    b-modal#add-land-modal(
-      ref="add-land-modal",
-      :title="`新增地號 - ${section} - ${formatedCaseId}`"
-      centered
-    )
-      div 地號
-      .d-flex.align-items-center
-        b-input(
-          type="number",
-          min="0",
-          max="9999",
-          v-model="landParent",
-          :state="landParentOK",
-          placeholder="母號",
-          trim
+        b-icon.mr-1(:icon="collapseIcon")
+        span {{ modification ? "收起" : "修改" }}
+    b-collapse(v-model="modification"): b-card
+      b-card-title {{ formatedCaseId }}
+      b-card-sub-title.d-flex.justify-content-between.align-items-center
+        span {{ `立案者：${userMap.get(creator) || creator}` }}
+        b-button.mt-1(
+          v-if="isOwner",
+          size="sm",
+          :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
+          :disabled="modifyBtnDisabled",
+          @click="modify",
+          pill
         )
-        .mx-1 -
-        b-input(
-          type="number",
-          min="0",
-          max="9999",
-          v-model="landChild",
-          :state="landChildOK",
-          placeholder="子號",
-          trim
+          b-icon.mr-1(icon="pencil-square")
+          span 修改
+      b-card-text
+        b-input-group.my-1(prepend="　　地段"): b-select(
+          v-model="caseData.section",
+          :options="sectionOpts",
+          :state="sectionOK",
+          :readonly="!isOwner"
         )
-      b-form-text.text-right.text-muted {{ formatedLandNum }}
-      template(#modal-footer="{ ok, cancel, hide }")
-        b-button(
-          @click="addLandNumber",
-          :variant="landBtnDisabled ? 'outline-secondary' : 'primary'"
-          :disabled="landBtnDisabled"
-        ) 確認
-
-  b-list-group(v-if="caseData.lands.length > 0", flush)
-    b-list-group-item(
-      v-for="(land, idx) in caseData.lands",
-      :key="`land_${idx}`"
-    )
-      LandItem(
-        :raw="caseData"
-        :land-number="land.number"
-        :land-creator="land.creator"
-        @remove="removeLandNumber"
+        b-input-group(prepend="複丈日期"): b-input(
+          v-model="caseData.opdate",
+          type="date",
+          :max="maxOpdate",
+          :state="opdateOK",
+          :readonly="!isOwner"
+        )
+    
+    hr
+    
+    .d-flex.justify-content-start.align-items-center
+      b-button.p-1.mt-n1(variant="outline-light", v-b-modal.add-land-modal): b-icon(
+        icon="plus-circle-fill",
+        variant="primary",
+        font-scale="1.25"
       )
-  .text-center.my-3(v-else) ⚠ 無資料
+      h5 地號
+      b-modal#add-land-modal(
+        ref="add-land-modal",
+        :title="`新增地號 - ${section} - ${formatedCaseId}`"
+        centered
+      )
+        div 地號
+        .d-flex.align-items-center
+          b-input(
+            type="number",
+            min="0",
+            max="9999",
+            v-model="landParent",
+            :state="landParentOK",
+            placeholder="母號",
+            trim
+          )
+          .mx-1 -
+          b-input(
+            type="number",
+            min="0",
+            max="9999",
+            v-model="landChild",
+            :state="landChildOK",
+            placeholder="子號",
+            trim
+          )
+        b-form-text.text-right.text-muted {{ formatedLandNum }}
+        template(#modal-footer="{ ok, cancel, hide }")
+          b-button(
+            @click="addLandNumber",
+            :variant="landBtnDisabled ? 'outline-secondary' : 'primary'"
+            :disabled="landBtnDisabled"
+          ) 確認
 
-.text-center.mt-5(v-else-if="isBusy")
-  b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
-
-h4.text-center.mt-5(v-else) ⚠ 找不到資料 ‼
+    b-list-group(v-if="caseData.lands.length > 0", flush)
+      b-list-group-item(
+        v-for="(land, idx) in caseData.lands",
+        :key="`land_${idx}`"
+      )
+        LandItem(
+          :raw="caseData"
+          :land-number="land.number"
+          :land-creator="land.creator"
+          @remove="removeLandNumber"
+        )
+    .text-center.my-3(v-else) ⚠ 無資料
+  h4.text-center.mt-5(v-else-if="!isBusy") ⚠ 找不到資料 ‼
 </template>
 
 <script>
@@ -185,6 +183,9 @@ export default {
     caseData() {
       return this.wip;
     },
+    dataReady() {
+      return !isEmpty(this.caseData);
+    },
     _id() {
       return this.caseData._id;
     },
@@ -221,9 +222,6 @@ export default {
     creator() {
       return this.caseData.creator;
     },
-    dataReady() {
-      return !isEmpty(this.wip) && this.paramCaseId === this.caseId && this.paramOpdate === this.opdate && this.paramSection === this.sectionCode;
-    },
     isOwner() {
       return this.creator === this.userId;
     }
@@ -236,14 +234,13 @@ export default {
         value: key,
       });
     });
-    if (this.dataReady) {
-      this.origSection = this.caseData.section;
-      this.origOpdate = this.caseData.opdate;
-    } else {
+    if (
+      this.paramCaseId !== this.caseId ||
+      this.paramOpdate !== this.opdate ||
+      this.paramSection !== this.sectionCode
+    ) {
       this.isBusy = true;
-      console.warn(
-        `STORE資料(${this.caseId})與查詢案件資料(${this.paramCaseId})不同，重新查詢DB ... `
-      );
+      console.warn('STORE資料未同步，重新讀取案件資料 ... ');
       /**
        * this.$route：
        *   fullPath: "/110-HA46-000201/0001/2021-11-24"
@@ -281,6 +278,9 @@ export default {
           this.origSection = this.caseData.section;
           this.origOpdate = this.caseData.opdate;
         });
+    } else {
+      this.origSection = this.caseData.section;
+      this.origOpdate = this.caseData.opdate;
     }
   },
   methods: {
