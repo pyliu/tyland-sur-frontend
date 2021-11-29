@@ -266,12 +266,33 @@ export default {
         .post("/api/update", {
           _id: this.raw._id,
           setData: {
-            `lands.${landIdx}.marks`: this.marks
+            `lands.${this.landIdx}.marks`: this.marks
           }
         })
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
             this.$store.commit("wip", this.raw);
+            console.log(this.caseId, data.message);
+          } else {
+            this.warning(data.message, { subtitle: this.queryCaseId });
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        })
+        .finally(() => {
+        });
+    },
+    deleteMarkImages() {
+      this.$axios
+        .delete(`/api/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`, {
+          _id: this.raw._id,
+          setData: {
+            `lands.${this.landIdx}.marks`: this.marks
+          }
+        })
+        .then(({ data }) => {
+          if (data.statusCode === this.statusCode.SUCCESS) {
             console.log(this.caseId, data.message);
           } else {
             this.warning(data.message, { subtitle: this.queryCaseId });
@@ -291,7 +312,9 @@ export default {
         if (YN) {
           this.$emit("remove", this.mark);
           this.marks.splice(this.markIdx, 1);
+          this.$store.commit("wip", this.raw);
           this.updateMarkData();
+          this.deleteMarkImages();
         }
       });
     },
