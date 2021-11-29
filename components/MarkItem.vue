@@ -265,13 +265,8 @@ export default {
       this.$axios
         .post("/api/update", {
           _id: this.raw._id,
-          caseData: {
-            year: this.formatedYear,
-            code: this.formatedCode,
-            num: this.formatedNum
-          },
           setData: {
-            lands: this.raw.lands
+            `lands.${landIdx}.marks`: this.marks
           }
         })
         .then(({ data }) => {
@@ -292,7 +287,12 @@ export default {
       this.confirm(
         `確認刪除 ${this.landNumber} - #${this.markSerial} 界標資料？`
       ).then((YN) => {
-        YN && this.$emit("remove", this.mark);
+        // YN && this.$emit("remove", this.mark);
+        if (YN) {
+          this.$emit("remove", this.mark);
+          this.marks.splice(this.markIdx, 1);
+          this.updateMarkData();
+        }
       });
     },
     toggleDetail(event) {
