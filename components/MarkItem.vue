@@ -47,7 +47,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img(
+          b-img.mx-auto(
             :src="farImg"
             @click="openInNewWindow(farImg)"
             thumbnail
@@ -61,7 +61,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img(
+          b-img.mx-auto(
             :src="nearImg"
             @click="openInNewWindow(nearImg)"
             thumbnail
@@ -261,36 +261,9 @@ export default {
       this.uploadFileBlob = undefined;
       this.$refs['upload-modal']?.show();
     },
-    updateMarkData() {
-      this.$axios
-        .post("/api/update", {
-          _id: this.raw._id,
-          setData: {
-            `lands.${this.landIdx}.marks`: this.marks
-          }
-        })
-        .then(({ data }) => {
-          if (data.statusCode === this.statusCode.SUCCESS) {
-            this.$store.commit("wip", this.raw);
-            console.log(this.caseId, data.message);
-          } else {
-            this.warning(data.message, { subtitle: this.queryCaseId });
-          }
-        })
-        .catch((err) => {
-          console.warn(err);
-        })
-        .finally(() => {
-        });
-    },
     deleteMarkImages() {
       this.$axios
-        .delete(`/api/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`, {
-          _id: this.raw._id,
-          setData: {
-            `lands.${this.landIdx}.marks`: this.marks
-          }
-        })
+        .delete(`/api/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`)
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
             console.log(this.caseId, data.message);
@@ -311,9 +284,6 @@ export default {
         // YN && this.$emit("remove", this.mark);
         if (YN) {
           this.$emit("remove", this.mark);
-          this.marks.splice(this.markIdx, 1);
-          this.$store.commit("wip", this.raw);
-          this.updateMarkData();
           this.deleteMarkImages();
         }
       });
