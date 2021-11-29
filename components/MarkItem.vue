@@ -161,7 +161,7 @@ export default {
         }
         return found;
       });
-      return found?.marks;
+      return foundIdx;
     },
     isOwner() {
       return this.creator === this.userId;
