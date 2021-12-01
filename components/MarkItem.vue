@@ -1,7 +1,7 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    h6(v-if="!detail") 📸\#{{ markSerial }}
+    h6(v-if="!detail", @click="toggleDetail", style="cursor:pointer", title="查看照片") 📸\#{{ markSerial }}
     span(v-if="!detail") {{ markType }}
     b-button.p-1.border-0.mx-1(
       v-if="isOwner",
@@ -26,6 +26,7 @@
     )
       template(#header): .d-flex.justify-content-between.align-items-center
         span 序號：\#{{ markSerial }}
+        span {{ slide === 1 ? "近距離" : "遠距離"}}
         span 種類：{{ markType }}
 
       b-carousel#carousel-1(
