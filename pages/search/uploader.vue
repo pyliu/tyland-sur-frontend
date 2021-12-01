@@ -25,7 +25,7 @@ export default {
     opdate: "",
     maxOpdate: "",
     uploader: "",
-    uploaderOpts: [],
+    uploaderOpts: [{ text: "", value: "" }],
     searchedData: []
   }),
   computed: {
