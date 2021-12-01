@@ -166,6 +166,7 @@ export default {
           num: this.formatedNum,
           opdate: this.opdate,
           section: this.sectionCode,
+          number: this.landNumber,
           serial: this.nextMarkSerial,
           creator: this.userId,
           type: this.markType,

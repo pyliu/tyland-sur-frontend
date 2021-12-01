@@ -13,6 +13,7 @@ div(v-else)
     ref="caseList"
     :caption="caption"
     :items="list"
+    :fields="fields"
     :per-page="perPage"
     :current-page="currentPage"
     :busy.sync="isBusy"
@@ -31,16 +32,25 @@ div(v-else)
     template(#cell(#)="row")
       b-checkbox(v-model="row.detailsShowing" @change="row.toggleDetails")
     template(#cell(num)="{ item }")
-      a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
+      b-button.p-1.border-0(
+        variant="outline-primary",
+        size="sm",
+        @click="clearWipOpen(item)",
+        v-b-popover.hover.focus.top="formatedCaseId(item)"
+      ): b-icon(icon="caret-right-fill")
+    template(#cell(creator)="{ item }")
+      span(v-b-popover.hover.focus.top="item.creator") {{ userMap.get(item.creator) || item.creator }}
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
-    template(#cell(opdate)="{ item }")
-      span(v-b-popover.hover.focus.top="'複丈日期'") {{ item.opdate }}
+    template(#cell(number)="{ item }")
+      span {{ formatedNumber(item) }}
     template(#row-details="{ item }")
-      CaseItem(:raw="item" card)
+      MarkItem(:raw="item" :land-number="item.number")
 </template>
 
 <script>
+import isEmpty from "lodash/isEmpty";
+
 export default {
   props: {
     list: { type: Array, require: true },
@@ -50,14 +60,14 @@ export default {
   data: () => ({
     currentPage: 1,
     fields: [
+      // {
+      //   key: '#',
+      //   label: '詳情',
+      //   sortable: false
+      // },
       {
-        key: '#',
-        label: '詳情',
-        sortable: false
-      },
-      {
-        key: 'num',
-        label: "案號",
+        key: 'opdate',
+        label: "複丈日期",
         sortable: true
       },
       {
@@ -66,9 +76,29 @@ export default {
         sortable: true
       },
       {
-        key: 'opdate',
-        label: "日期",
+        key: 'number',
+        label: "地號",
         sortable: true
+      },
+      {
+        key: 'serial',
+        label: "序號",
+        sortable: true
+      },
+      {
+        key: 'type',
+        label: "類型",
+        sortable: true
+      },
+      {
+        key: 'creator',
+        label: "上傳人",
+        sortable: true
+      },
+      {
+        key: 'num',
+        label: "#",
+        sortable: false
       }
     ]
   }),
@@ -77,17 +107,26 @@ export default {
     caption() { return `找到 ${this.count} 筆界標資料`}
   },
   methods: {
-    caseId(caseData) {
-      return ("000" + caseData.year).slice(-3) + '-'
-        + ("XXXX" + caseData.code).slice(-4) + '-'
-        + ("000000" + caseData.num).slice(-6)
+    caseId(markData) {
+      return ("000" + markData.year).slice(-3) + '-'
+        + ("XXXX" + markData.code).slice(-4) + '-'
+        + ("000000" + markData.num).slice(-6)
     },
-    formatedCaseId(caseData) {
-      return `${("000" + caseData.year).slice(-3)} 年 ${this.codes.get(caseData.code)}(${caseData.code}) 字 ${("000000" + caseData.num).slice(-6)} 號`;
+    formatedCaseId(markData) {
+      return `${("000" + markData.year).slice(-3)} 年 ${this.codes.get(markData.code)}(${markData.code}) 字 ${("000000" + markData.num).slice(-6)} 號`;
     },
-    saveWip(caseData) {
-      this.$store.commit("wip", caseData);
-      this.$router.push(`/case/${this.caseId(caseData)}/${caseData.section}/${caseData.opdate}`);
+    formatedNumber(markData) {
+      const parent = parseInt(markData.number?.substring(0, 4));
+      const child = parseInt(markData.number?.substring(4));
+      if (isEmpty(child)) {
+        return parent;
+      } else {
+        return `${parent}-${child}`;
+      }
+    },
+    clearWipOpen(markData) {
+      this.$store.commit("wip", undefined);
+      window.open(`/case/${this.caseId(markData)}/${markData.section}/${markData.opdate}`, "_blank", "noopener");
     }
   }
 };
