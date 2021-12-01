@@ -47,7 +47,7 @@ div
         span 新增案件
   hr
   h5 最近案件
-  CaseList(:list="recentCases", :loading="isBusy" :per-page="3" :class="recentCases.length > 3 ? 'shift-up' : ''")
+  CaseList(:list="recentCases", :loading="isBusy" :per-page="5" :class="recentCases.length > 5 ? 'shift-up' : ''")
 </template>
 
 <script>

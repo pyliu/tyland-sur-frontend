@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  b-input-group.mr-1(prepend="　使用者"): b-select(
+  b-input-group.mr-1(prepend="　上傳者"): b-select(
     v-model="uploader",
     :options="uploaderOpts"
   )
@@ -10,19 +10,23 @@ div
     :max="maxOpdate"
   )
   b-button(variant="outline-primary", @click="search", block) 🔎 搜尋
+  hr
+  h5 搜尋結果
+  MarkList(:list="searchedData", :loading="isBusy", :per-page="10")
 </template>
 
 <script>
 export default {
   emit: ["data-update"],
   head: {
-    title: "查詢 BY 上傳使用者-界標閱覽系統",
+    title: "查詢界標 BY 上傳使用者-界標閱覽系統",
   },
   data: () => ({
     opdate: "",
     maxOpdate: "",
     uploader: "",
     uploaderOpts: [],
+    searchedData: []
   }),
   computed: {
     filter() {
@@ -35,7 +39,7 @@ export default {
   created() {
     this.uploader = this.userId;
     this.userMap.forEach((value, key, map) => {
-      this.uploaderOpts.push({ text: value, value: key });
+      this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
     });
     // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
     this.opdate = this.maxOpdate = this.today;
