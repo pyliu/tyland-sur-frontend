@@ -1,8 +1,8 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    h6(v-if="!detail", @click="toggleDetail", style="cursor:pointer", title="查看照片") 📸\#{{ markSerial }}
-    span(v-if="!detail") {{ markType }}
+    h6.clickable(@click="toggleDetail", title="查看照片") 📸\#{{ markSerial }}
+    .clickable(@click="toggleDetail", title="查看照片") {{ markType }}
     b-button.p-1.border-0.mx-1(
       v-if="isOwner",
       size="sm",
@@ -372,4 +372,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.clickable {
+  cursor: pointer;
+}
 </style>
