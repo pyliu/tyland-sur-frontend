@@ -10,9 +10,7 @@ export default {
   async created() {
     const users = await this.getCache('usersCache');
     if (Array.isArray(users) && users.length > 0 && this.userMap.size === 0) {
-      users.forEach(user => {
-        this.userMap.set(user.id, user.name);
-      });
+      users.forEach(user => this.userMap.set(user.id, user.name));
     } else {
       await this.$store.dispatch('prepareUserMap');
       setTimeout(() => {
