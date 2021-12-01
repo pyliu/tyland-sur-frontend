@@ -141,10 +141,10 @@ export default {
     uploadFile: undefined,
     uploadFileBlob: undefined,
     supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
-    distance: "far",
+    distance: "near",
     distanceOpts: [
-      { text: "遠距離", value: "far" },
       { text: "近距離", value: "near" },
+      { text: "遠距離", value: "far" }
     ],
   }),
   computed: {
