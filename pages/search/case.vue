@@ -162,7 +162,7 @@ export default {
       this.isBusy = true;
       this.searchedData = [];
       this.$axios
-        .post("/api/search", this.filter)
+        .post("/api/search/case", this.filter)
         .then(({ data }) => {
           if (Array.isArray(data.payload)) {
             this.success(data.message);

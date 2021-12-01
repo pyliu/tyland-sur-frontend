@@ -154,7 +154,7 @@ export default {
     loadRecentCases() {
       this.isBusy = true;
       this.$axios
-        .post("/api/search", { limit: 5 })
+        .post("/api/search/case", { limit: 5 })
         .then(({ data }) => {
           this.recentCases = [...data.payload];
         })

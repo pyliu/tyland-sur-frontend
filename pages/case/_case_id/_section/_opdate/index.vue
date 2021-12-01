@@ -251,7 +251,7 @@ export default {
        *     section: "0001"
        */
       this.$axios
-        .post("/api/search", {
+        .post("/api/search/case", {
           year: this.paramCaseYear,
           code: this.paramCaseCode,
           num: this.paramCaseNum,

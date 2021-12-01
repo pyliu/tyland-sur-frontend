@@ -31,7 +31,7 @@ export default {
     search(filter = {}) {
       this.isBusy = true;
       this.$axios
-        .post("/api/search", filter)
+        .post("/api/search/case", filter)
         .then(({ data }) => {
           this.searchedData = [...data.payload];
         })
