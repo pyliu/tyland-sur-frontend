@@ -234,10 +234,11 @@ export default {
         value: key,
       });
     });
+
     if (
       this.paramCaseId !== this.caseId ||
       this.paramOpdate !== this.opdate ||
-      this.paramSection !== this.sectionCode
+      this.paramSection !== String(this.sectionCode)
     ) {
       this.isBusy = true;
       console.warn('STORE資料未同步，重新讀取案件資料 ... ');
@@ -281,6 +282,7 @@ export default {
     } else {
       this.origSection = this.caseData.section;
       this.origOpdate = this.caseData.opdate;
+      this.isBusy = false;
     }
   },
   methods: {
