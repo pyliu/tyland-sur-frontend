@@ -94,7 +94,7 @@ export default {
       }
       if (this.addMarkType === "其他" && !this.addMarkOtherOK) {
         return true;
-      } else if (["鋼釘", "塑膠樁", "水泥樁"].includes(this.addMarkType) || (this.addMarkType === "其他" && this.addMarkOtherOK)) {
+      } else if (this.addMarkOpts.includes(this.addMarkType) || (this.addMarkType === "其他" && this.addMarkOtherOK)) {
         return false;
       }
       return true;
@@ -131,9 +131,12 @@ export default {
     }
   },
   created() {
-    this.addMarkSerial = (parseInt(Math.max(...this.marks.map(mark => mark.serial))) || 0) + 1;
+    this.incrementAddMarkSerial();
   },
   methods: {
+    incrementAddMarkSerial() {
+      this.addMarkSerial = (parseInt(Math.max(...this.marks.map(mark => mark.serial))) || 0) + 1;
+    },
     removeLandNumber() {
       this.$emit("remove", this.landNumber);
     },
@@ -187,6 +190,7 @@ export default {
         });
         this.updateLandData();
         this.$refs["add-mark-modal"].hide();
+        this.incrementAddMarkSerial();
       } catch (e) {
         console.error(e);
       } finally {

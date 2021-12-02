@@ -178,7 +178,7 @@ export default {
       return foundIdx;
     },
     isOwner() {
-      return this.creator === this.userId;
+      return this.mark.creator === this.userId;
     },
     collapseIcon() {
       return this.detail ? "caret-up" : "caret-down";
