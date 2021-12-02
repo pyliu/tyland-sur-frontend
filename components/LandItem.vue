@@ -69,7 +69,7 @@ export default {
   data: () => ({
     addMarkModalId: "",
     addMarkType: "其他",
-    addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "其他"],
+    addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
     addMarkOther: ""
   }),
   computed: {
