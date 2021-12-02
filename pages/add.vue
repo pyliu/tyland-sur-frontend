@@ -124,7 +124,7 @@ export default {
         code: this.formatedCode,
         num: this.formatedNum,
         opdate: this.opdate,
-        section: this.section,
+        section: this.section.toString(),
         creator: this.creator,
         lands: [],
       };
