@@ -25,7 +25,6 @@
 
   b-modal(
     ref="add-mark-modal",
-    :id="addMarkModalId",
     :title="`新增 ${addMarkType} 界標 - ${formatedLandNumber}`",
     size="sm",
     centered
@@ -34,6 +33,7 @@
       v-model="addMarkSerial"
       type="number"
       min="1"
+      :state="addMarkSerialOK"
     )
     b-form-group.my-1(label="種類")
       b-radio-group(v-model="addMarkType", :options="addMarkOpts", stacked)
@@ -72,7 +72,6 @@ export default {
   },
   mixins: [CaseBase],
   data: () => ({
-    addMarkModalId: "",
     addMarkType: "其他",
     addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
     addMarkOther: "",
@@ -80,7 +79,19 @@ export default {
   }),
   computed: {
     addMarkOtherOK() { return !isEmpty(this.addMarkOther); },
+    addMarkSerialOK() {
+      const found = this.marks.find((mark) => {
+        return parseInt(mark.serial) === parseInt(this.addMarkSerial);
+      });
+      if (found) {
+        return false;
+      }
+      return /^\+?(0|[1-9]\d*)$/.test(this.addMarkSerial);
+    },
     addBtnDisabled() {
+      if (!this.addMarkSerialOK) {
+        return true;
+      }
       if (this.addMarkType === "其他" && !this.addMarkOtherOK) {
         return true;
       } else if (["鋼釘", "塑膠樁", "水泥樁"].includes(this.addMarkType) || (this.addMarkType === "其他" && this.addMarkOtherOK)) {
@@ -112,10 +123,6 @@ export default {
       const marks = found?.marks || [];
       return marks.length;
     },
-    nextMarkSerial() {
-      const max = parseInt(Math.max(...this.marks.map(mark => mark.serial))) || 0;
-      return max + 1;
-    },
     markType() {
       if (this.addMarkType === "其他") {
         return this.addMarkOther;
@@ -124,7 +131,7 @@ export default {
     }
   },
   created() {
-    this.addMarkModalId = this.uuid();
+    this.addMarkSerial = (parseInt(Math.max(...this.marks.map(mark => mark.serial))) || 0) + 1;
   },
   methods: {
     removeLandNumber() {
@@ -173,7 +180,7 @@ export default {
           opdate: this.opdate,
           section: this.sectionCode.toString(),
           number: this.landNumber,
-          serial: this.nextMarkSerial,
+          serial: this.addMarkSerial.toString(),
           creator: this.userId,
           type: this.markType,
           idx: this.marks.length  // for quickly know the position of this mark in the array
