@@ -30,6 +30,7 @@ div
         :options="sectionOpts",
         :state="sectionOK"
       )
+
       b-input-group(prepend="複丈日期"): b-input(
         v-model="opdate",
         type="date",
@@ -87,7 +88,7 @@ export default {
       return iNum > 0 && iNum < 1000000;
     },
     sectionOK() {
-      return this.notEmpty(this.section);
+      return parseInt(this.section) > 0;
     },
     opdateOK() {
       return this.notEmpty(this.opdate);
