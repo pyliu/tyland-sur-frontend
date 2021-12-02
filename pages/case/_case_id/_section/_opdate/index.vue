@@ -154,7 +154,7 @@ export default {
       return this.caseData.opdate !== this.origOpdate;
     },
     sectionOK() {
-      return !isEmpty(this.caseData.section);
+      return parseInt(this.caseData.section) > 0;
     },
     opdateOK() {
       return !isEmpty(this.caseData.opdate) && this.opdate <= this.today;
