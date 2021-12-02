@@ -34,7 +34,7 @@ div(v-else)
     template(#cell(num)="{ item }")
       a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
     template(#cell(section)="{ item }")
-      span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
+      span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) || item.section }}
     template(#cell(opdate)="{ item }")
       span(v-b-popover.hover.focus.top="'複丈日期'") {{ item.opdate }}
     template(#row-details="{ item }")
