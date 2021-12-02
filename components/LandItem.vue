@@ -14,7 +14,7 @@
       size="sm",
       variant="outline-success",
       :title="`在地號 ${formatedLandNumber} 裡新增界標`",
-      v-b-modal="addMarkModalId"
+      @click="$refs['add-mark-modal'].show()"
     )
       b-icon(
         size="sm",
@@ -26,11 +26,16 @@
   b-modal(
     ref="add-mark-modal",
     :id="addMarkModalId",
-    :title="`新增 #${nextMarkSerial} 界標 - ${formatedLandNumber}`",
+    :title="`新增 ${addMarkType} 界標 - ${formatedLandNumber}`",
     size="sm",
     centered
   )
-    b-form-group(label="種類")
+    b-form-group(label="編號"): b-input(
+      v-model="addMarkSerial"
+      type="number"
+      min="1"
+    )
+    b-form-group.my-1(label="種類")
       b-radio-group(v-model="addMarkType", :options="addMarkOpts", stacked)
       b-input(
         v-if="addMarkType === '其他'",
@@ -70,7 +75,8 @@ export default {
     addMarkModalId: "",
     addMarkType: "其他",
     addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
-    addMarkOther: ""
+    addMarkOther: "",
+    addMarkSerial: 1
   }),
   computed: {
     addMarkOtherOK() { return !isEmpty(this.addMarkOther); },

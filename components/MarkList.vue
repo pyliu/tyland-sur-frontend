@@ -2,7 +2,10 @@
 .text-center.mt-5(v-if="loading")
   b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
 div(v-else)
-  .d-flex.justify-content-end(v-if="count > perPage")
+  .d-flex.justify-content-end(
+    v-if="count > perPage"
+    style="margin-top: -35px;"
+  )
     b-pagination(
       v-model="currentPage"
       :total-rows="count"
@@ -27,6 +30,7 @@ div(v-else)
     no-border-collapse
     borderless
     small
+    @row-selected="rowSelected"
   )
     template(#table-busy) 讀取中...
     template(#cell(#)="row")
@@ -45,7 +49,7 @@ div(v-else)
     template(#cell(number)="{ item }")
       span {{ formatedNumber(item) }}
     template(#row-details="{ item }")
-      MarkItem(:raw="item" :land-number="item.number")
+      span NOT IMPLEMENTED
 </template>
 
 <script>
@@ -82,7 +86,7 @@ export default {
       },
       {
         key: 'serial',
-        label: "序號",
+        label: "編號",
         sortable: true
       },
       {
@@ -97,7 +101,7 @@ export default {
       },
       {
         key: 'num',
-        label: "#",
+        label: "案件",
         sortable: false
       }
     ]
@@ -127,6 +131,17 @@ export default {
     clearWipOpen(markData) {
       this.$store.commit("wip", undefined);
       window.open(`/case/${this.caseId(markData)}/${markData.section}/${markData.opdate}`, "_blank", "noopener");
+    },
+    rowSelected(rowItems) {
+      const selected = rowItems[0];
+      if (selected) {
+        this.modal(this.$createElement("MarkCard", {
+          props: { raw: selected }
+        }), {
+          title: `界標圖片 - ${this.sections.get(selected.section)}`,
+          size: "xl"
+        });
+      }
     }
   }
 };

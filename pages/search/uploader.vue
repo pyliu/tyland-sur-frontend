@@ -12,7 +12,7 @@ div
   b-button(variant="outline-primary", @click="search", block) 🔎 搜尋
   hr
   h5 搜尋結果
-  MarkList(:list="searchedData", :loading="isBusy", :per-page="10")
+  MarkList(:list="searchedData", :loading="isBusy", :per-page="5")
 </template>
 
 <script>
@@ -37,12 +37,13 @@ export default {
     }
   },
   created() {
+    this.prepareUserMap();
     this.uploader = this.userId;
     this.userMap.forEach((value, key, map) => {
       this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
     });
     // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
-    this.opdate = this.maxOpdate = this.today;
+    this.maxOpdate = this.today;
   },
   methods: {
     search() {

@@ -28,13 +28,13 @@
         span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 
       .d-flex.justify-content-start.align-items-center
-        b-button.p-1.mt-n2(variant="outline-light", v-b-modal="modalUUID"): b-icon(
-          size="sm",
-          icon="plus-circle-fill",
-          variant="primary",
-          font-scale="1.25"
-        )
-        h6 地號
+        b-button.p-1.mt-n2.border-0(variant="outline-primary", v-b-modal="modalUUID")
+          b-icon.mr-1(
+            size="sm",
+            icon="plus-circle-fill",
+            font-scale="1.25"
+          )
+          span 地號
       
       b-list-group(v-if="raw.lands.length > 0", flush)
         b-list-group-item.p-1(
