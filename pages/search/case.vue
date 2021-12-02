@@ -20,8 +20,9 @@ div
     b-input-group.mr-1(prepend="地段"): b-select(
       v-model="section",
       :options="sectionOpts"
+      v-b-popover.focus.top="sections.get(section)"
     )
-    b-input-group(prepend="地號"): b-input(v-model="landNum", :state="landOK")
+    b-input-group(prepend="地號"): b-input(v-model="landNum", :state="landOK", v-b-popover.focus.top="formatedLandNum")
   .d-flex.justify-content-center.mt-2
     b-button.mr-2(@click="search", variant="outline-primary", :disabled="isBusy", pill) 🔎 搜尋
     b-button(@click="clear", variant="outline-secondary", :disabled="isBusy", pill) 🗑 清除
@@ -76,9 +77,6 @@ export default {
       return !isEmpty(this.formatedLandNum);
     },
     formatedLandNum() {
-      if (this.landNum.length > 9) {
-        return "";
-      }
       if (this.landNum.includes("-")) {
         const numbers = this.landNum.split("-");
         const parent = parseInt(numbers[0]);
@@ -88,14 +86,12 @@ export default {
           return "";
         }
         return ('0000' + parent).slice(-4) + ('0000' + child).slice(-4);
-      } else {
-        const number = parseInt(this.landNum);
-        if (number > 0 && number < 10000) {
-          return ('0000' + number).slice(-4) + "0000";
-        }
-        console.warn("地號格式不正確", `${number}-0000`);
-        return "";
       }
+      if (this.landNum.length <= 4) {
+        return ('0000' + this.landNum).slice(-4) + "0000";
+      }
+      console.warn("地號格式不正確", this.landNum);
+      return "";
     },
     filter() {
       const filter = {};
@@ -104,7 +100,7 @@ export default {
       !isEmpty(this.num) && (filter.num = ("000000" + this.num).slice(-6));
       !isEmpty(this.section) && (filter.section = this.section);
       !isEmpty(this.opdate) && (filter.opdate = this.opdate);
-      !isEmpty(this.formatedLandNum) && (filter.lands = { number: this.formatedLandNum});
+      !isEmpty(this.formatedLandNum) && (filter["lands.number"] = this.formatedLandNum);
       return filter;
     }
   },

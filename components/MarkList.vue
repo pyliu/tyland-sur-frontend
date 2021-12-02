@@ -48,6 +48,8 @@ div(v-else)
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) }}
     template(#cell(number)="{ item }")
       span {{ formatedNumber(item) }}
+    template(#cell(type)="{ item }")
+      span 📷 {{ item.type }}
     template(#row-details="{ item }")
       span NOT IMPLEMENTED
 </template>
