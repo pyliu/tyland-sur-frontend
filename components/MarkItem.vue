@@ -88,7 +88,7 @@
     hide-footer,
     centered
   )
-    b-input-group(prepend="分類"): b-select(
+    b-input-group(prepend="分類"): b-radio-group.my-auto.ml-2(
       v-model="distance",
       :options="distanceOpts"
     )
