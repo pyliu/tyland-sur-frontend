@@ -477,7 +477,11 @@ Vue.mixin({
     async clearCache() {
       await this.$localForage.clear();
     },
-    async prepareUserMap() {
+    async prepareUserMap(force = false) {
+      if (force) {
+        this.removeCache('usersCache');
+        this.userMap.clear();
+      }
       const users = await this.getCache('usersCache');
       if (Array.isArray(users) && users.length > 0 ) {
         this.userMap.size !== users.length && users.forEach(user => this.userMap.set(user.id, user.name));

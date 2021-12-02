@@ -37,7 +37,8 @@ export default {
     }
   },
   created() {
-    this.prepareUserMap();
+    // force reload if currernt user not found in the Map
+    this.prepareUserMap(!this.userMap.has(this.userId));
     this.uploader = this.userId;
     this.userMap.forEach((value, key, map) => {
       this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
