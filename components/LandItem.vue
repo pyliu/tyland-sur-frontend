@@ -171,7 +171,7 @@ export default {
           code: this.formatedCode,
           num: this.formatedNum,
           opdate: this.opdate,
-          section: this.sectionCode,
+          section: this.sectionCode.toString(),
           number: this.landNumber,
           serial: this.nextMarkSerial,
           creator: this.userId,
