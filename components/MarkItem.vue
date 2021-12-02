@@ -48,7 +48,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img.mx-auto(
+          b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
             :src="farImg"
             @click="openInNewWindow(farImg)"
@@ -63,7 +63,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img.mx-auto(
+          b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
             :src="nearImg"
             @click="openInNewWindow(nearImg)"
