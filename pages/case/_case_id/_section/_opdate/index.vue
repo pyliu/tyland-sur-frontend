@@ -48,12 +48,12 @@ div
     hr
     
     .d-flex.justify-content-start.align-items-center
-      b-button.p-1.mt-n1(variant="outline-light", v-b-modal.add-land-modal): b-icon(
-        icon="plus-circle-fill",
-        variant="primary",
-        font-scale="1.25"
-      )
-      h5 地號
+      b-button.border-0.p-1(variant="outline-primary", v-b-modal.add-land-modal)
+        b-icon.mr-1(
+          icon="plus-circle-fill",
+          font-scale="1.25"
+        )
+        span 地號
       b-modal#add-land-modal(
         ref="add-land-modal",
         :title="`新增地號 - ${section} - ${formatedCaseId}`"
@@ -111,7 +111,7 @@ export default {
     title: "案件詳情-界標閱覽系統",
   },
   data: () => ({
-    modification: false,
+    modification: true,
     numberRegex: /^[\d]{1,4}$/i,
     sectionOpts: [],
     maxOpdate: "",
