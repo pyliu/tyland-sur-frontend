@@ -1,7 +1,7 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    h6.clickable(@click="toggleDetail", title="查看照片") 📸\#{{ markSerial }}
+    h6.clickable(@click="popupPhoto", title="查看照片") 📸\#{{ markSerial }}
     .clickable(@click="toggleDetail", title="查看照片") {{ markType }}
     b-button.p-1.border-0.mx-1(
       v-if="isOwner",
@@ -295,6 +295,14 @@ export default {
       event.stopPropagation();
       event.preventDefault();
       this.detail = !this.detail;
+    },
+    popupPhoto() {
+      this.modal(this.$createElement("MarkCard", {
+        props: { raw: this.mark }
+      }), {
+        title: `界標圖片 - ${this.section}`,
+        size: "xl"
+      });
     },
     clearUploading() {
       this.$refs["upload-modal"].hide();
