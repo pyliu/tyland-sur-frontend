@@ -68,7 +68,7 @@ export default {
       return `${this.raw?.year}-${this.raw?.code}-${this.raw?.num}`;
     },
     basicImgPath() {
-      return `/mark/${this.caseId}/${this.raw?.section}/${this.raw?.opdate}/${this.markSerial}`;
+      return `/mark/${this.caseId}/${this.raw?.section}/${this.raw?.opdate}/${this.raw?.number}/${this.markSerial}`;
     },
     farImg() {
       return `${this.basicImgPath}/far?ts=${this.ts}`;

@@ -199,7 +199,7 @@ export default {
       return `序號：${this.markSerial} / 形式：${this.markType} / 上傳：${this.markCreator}`;
     },
     basicImgPath() {
-      return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`;
+      return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.mark?.number || this.landNumber}/${this.markSerial}`;
     },
     farImg() {
       return `${this.basicImgPath}/far?ts=${this.ts}`;
@@ -266,7 +266,7 @@ export default {
     },
     deleteMarkImages() {
       this.$axios
-        .delete(`/api/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.markSerial}`)
+        .delete(`/api/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.mark?.number || this.landNumber}/${this.markSerial}`)
         .then(({ data }) => {
           if (data.statusCode === this.statusCode.SUCCESS) {
             console.log(this.caseId, data.message);
