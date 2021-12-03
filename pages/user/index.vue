@@ -64,23 +64,6 @@ export default {
     this.userMap.forEach((value, key, map) => {
       this.list.push({ name: value, id: key });
     });
-    // if (this.wipList.length > 0) {
-    //   this.list = this.wipList;
-    // } else {
-    //   this.isBusy = true;
-    //   this.$axios
-    //     .post("/api/search/case", { limit: 20 })
-    //     .then(({ data }) => {
-    //       this.list = [...data.payload];
-    //       this.$store.commit('wipList', this.list);
-    //     })
-    //     .catch((err) => {
-    //       console.warn(err);
-    //     })
-    //     .finally(() => {
-    //       this.isBusy = false;
-    //     });
-    // }
   },
   methods: {
     add() {},

@@ -66,6 +66,7 @@ export default {
   }),
   computed: {
     isDefaultAdmin() { return this.mongoData.id === 'HAADMIN' },
+    userNameChanged() { return this.userData.name !== this.mongoData.name },
     userNameOK() { return !isEmpty(this.mongoData.name); },
     userPasswordChanged() {
       return this.modifiedPwdMD5Hash !== this.mongoData.pwd;
@@ -116,7 +117,37 @@ export default {
     watchChanged() {
       console.log(this.userPasswordChanged, this.modifiedPwdMD5Hash)
     },
-    edit() {}
+    edit() {
+      const updateData = {
+        name: this.mongoData.name,
+        note: this.mongoData.note,
+        authority: this.mongoData.authority
+      };
+      if (this.modifiedPwdOK !== null && this.verifiedPwdOK) {
+        if (this.userPasswordChanged) {
+          // def: 2a4c124add170ac85243ab9649aa97f7
+          updateData.pwd = this.modifiedPwdMD5Hash;
+        } else {
+          this.notify("⚠ 密碼跟之前一樣，因此不會更新!");
+        }
+      }
+      this.$axios
+        .put(`/api/user/${this.userData.id}`, updateData)
+        .then(({ data }) => {
+          if (data.statusCode > 0) {
+            this.success(data.message);
+            if (this.userNameChanged) {
+              this.userData.name = this.mongoData.name;
+              this.prepareUserMap(true);
+            }
+          } else {
+            this.warning(data.message);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    }
   },
 };
 </script>

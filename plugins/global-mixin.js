@@ -204,10 +204,10 @@ Vue.mixin({
         } else {
           const defDelay =
             opts.variant === "danger"
-              ? 20000
+              ? 10000
               : opts.variant === "warning"
-              ? 15000
-              : 10000;
+              ? 7500
+              : 5000;
           if (typeof msg === "string") {
             opts.variant = opts.type || opts.variant || "info";
             opts.autoHideDelay = opts.duration || opts.delay || defDelay;
