@@ -68,9 +68,7 @@ export default {
     isDefaultAdmin() { return this.mongoData.id === 'HAADMIN' },
     userNameChanged() { return this.userData.name !== this.mongoData.name },
     userNameOK() { return !isEmpty(this.mongoData.name); },
-    userPasswordChanged() {
-      return this.modifiedPwdMD5Hash !== this.mongoData.pwd;
-    },
+    userPasswordChanged() { return this.modifiedPwdMD5Hash !== this.mongoData.pwd; },
     modifiedPwdOK() {
       if (isEmpty(this.modifiedPwd)) {
         return null;
@@ -125,7 +123,6 @@ export default {
       };
       if (this.modifiedPwdOK !== null && this.verifiedPwdOK) {
         if (this.userPasswordChanged) {
-          // def: 2a4c124add170ac85243ab9649aa97f7
           updateData.pwd = this.modifiedPwdMD5Hash;
         } else {
           this.notify("⚠ 密碼跟之前一樣，因此不會更新!");
