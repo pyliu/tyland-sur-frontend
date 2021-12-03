@@ -87,11 +87,19 @@
     hide-footer,
     centered
   )
+    h6 目前圖片
+    b-img(
+      :src="previewImg"
+      thumbnail
+      fluid
+      block
+    )
+    hr
     b-input-group(prepend="分類"): b-radio-group.my-auto.ml-2(
       v-model="distance",
       :options="distanceOpts"
     )
-    b-input-group.my-1(prepend="檔案")
+    b-input-group.my-1(prepend="更新")
       b-file(
         v-model="uploadFile",
         placeholder="請選擇 JPG 圖檔",
@@ -199,6 +207,9 @@ export default {
     },
     basicImgPath() {
       return `/mark/${this.caseId}/${this.sectionCode}/${this.opdate}/${this.mark?.number || this.landNumber}/${this.markSerial}`;
+    },
+    previewImg() {
+      return `${this.basicImgPath}/${this.distance}?ts=${this.ts}`;
     },
     farImg() {
       return `${this.basicImgPath}/far?ts=${this.ts}`;
