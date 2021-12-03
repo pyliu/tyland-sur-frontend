@@ -10,20 +10,18 @@
       span 種類：{{ markType }}
 
     h5 📸 遠照
-    b-img.clickable.mx-auto.shadow(
+    a(href="#", @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="farImg",
-      @click="openInNewWindow(farImg)",
       thumbnail,
       fluid,
       block
     )
     hr
     h5 📸 近照
-    b-img.clickable.mx-auto.shadow(
+    a(href="#", @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="nearImg",
-      @click="openInNewWindow(nearImg)",
       thumbnail,
       fluid,
       block
@@ -90,7 +88,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.clickable {
-  cursor: pointer;
-}
 </style>

@@ -314,6 +314,8 @@ export default {
       // recursive update marks data in the lands
       this.caseData.lands.forEach((land, idx, arr) => {
         arr[idx].marks.forEach((mark, idx2, arr2) => {
+          mark.section = this.caseData.section;
+          mark.opdate = this.caseData.opdate;
           setData[`lands.${idx}.marks.${idx2}.section`] = this.caseData.section;
           setData[`lands.${idx}.marks.${idx2}.opdate`] = this.caseData.opdate;
         });
@@ -339,6 +341,7 @@ export default {
             this.origSection = this.caseData.section;
             this.origOpdate = this.caseData.opdate;
             this.refreshList();
+            this.$router.push(`/case/${this.caseId}/${this.caseData.section}/${this.caseData.opdate}`);
           } else {
             this.warning(data.message, { subtitle: this.queryCaseId });
           }
