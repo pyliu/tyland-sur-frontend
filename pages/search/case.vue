@@ -87,6 +87,9 @@ export default {
         }
         return ('0000' + parent).slice(-4) + ('0000' + child).slice(-4);
       }
+      if (isEmpty(this.landNum)) {
+        return "";
+      }
       if (this.landNum.length <= 4) {
         return ('0000' + this.landNum).slice(-4) + "0000";
       }
