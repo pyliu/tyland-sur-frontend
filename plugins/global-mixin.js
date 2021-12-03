@@ -43,14 +43,18 @@ Vue.mixin({
       return this.user?.note;
     },
     userAuthority() {
-      return this.user?.authority;
+      const authInt = parseInt(this.user?.authority || 0);
+      const authority = {
+        isAdmin: (authInt & 1) === 1
+      };
+      return authority;
     },
     userTokenHash() {
       return this.user?.token.hash;
     },
     userExpire() {
       return this.user?.token.expire;
-    },
+    }
   },
   methods: {
     ...mapActions(["checkSession"]),
