@@ -48,10 +48,9 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img-lazy.mx-auto(
+          a(href="#",  @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
             :src="farImg"
-            @click="openInNewWindow(farImg)"
             thumbnail
             fluid
             block
@@ -63,7 +62,7 @@
           caption-tag="h3",
           :caption="markCaption"
         ): template(#img)
-          b-img-lazy.mx-auto(
+          a(href="#",  @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
             :src="nearImg"
             @click="openInNewWindow(nearImg)"

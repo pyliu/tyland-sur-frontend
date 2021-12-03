@@ -10,7 +10,7 @@
       span 種類：{{ markType }}
 
     h5 📸 遠照
-    b-img-lazy.clickable.mx-auto.shadow(
+    b-img.clickable.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="farImg",
       @click="openInNewWindow(farImg)",
@@ -20,7 +20,7 @@
     )
     hr
     h5 📸 近照
-    b-img-lazy.clickable.mx-auto.shadow(
+    b-img.clickable.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="nearImg",
       @click="openInNewWindow(nearImg)",
