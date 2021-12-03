@@ -10,6 +10,11 @@ b-card
     :state="newIdOK",
     trim
   )
+  b-input-group.my-1(prepend="姓名", size="sm"): b-input(
+    v-model="newName",
+    :state="newNameOK",
+    trim
+  )
   b-input-group(prepend="密碼", size="sm"): b-input(
     v-model="newPwd",
     type="password",
@@ -17,7 +22,11 @@ b-card
     placeholder="... 至少8個字元 ...",
     trim
   )
-  b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-3(v-model="newAuth", :options="newAuthOpts")
+  b-input-group.my-1(prepend="備註", size="sm"): b-input(
+    v-model="newNote"
+    trim
+  )
+  b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-1(v-model="newAuth", :options="newAuthOpts")
   hr
   h6 系統內使用者
   b-button.m-1(
@@ -33,6 +42,7 @@ b-card
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import MD5 from "crypto-js/md5";
 
 export default {
   head: {
@@ -40,8 +50,10 @@ export default {
   },
   data: () => ({
     newId: "",
+    newName: "",
     newPwd: "",
     newAuth: 0,
+    newNote: "",
     newAuthOpts: [
       { text: "一般", value: 0 },
       { text: "管理者", value: 1 }
@@ -54,19 +66,54 @@ export default {
     list: [],
   }),
   computed: {
+    newPwdHash() { return MD5(this.newPwd).toString(); },
     newIdOK() { return !isEmpty(this.newId) && !this.userMap.has(this.newId); },
+    newNameOK() { return !isEmpty(this.newName); },
     newPwdOK() { return !isEmpty(this.newPwd) && this.newPwd.length > 7; },
-    addBtnOK() { return this.newIdOK && this.newPwdOK; }
+    addBtnOK() { return this.newIdOK && this.newPwdOK && this.newNameOK; }
   },
   created() {
     // force reload if currernt user not found in the Map
-    this.prepareUserMap(!this.userMap.has(this.userId));
-    this.userMap.forEach((value, key, map) => {
-      this.list.push({ name: value, id: key });
-    });
+    this.prepareUserMap(true);
+    this.refreshList();
   },
   methods: {
-    add() {},
+    refreshList() {
+      setTimeout(() => {
+        this.list = [];
+        this.userMap.forEach((value, key, map) => {
+          this.list.push({ name: value, id: key });
+        });
+      }, 2000);
+    },
+    add() {
+      const insertData = {
+        id: this.newId,
+        name: this.newName,
+        pwd: this.newPwdHash,
+        authority: this.newAuth,
+        note: this.newNote,
+        token: { hash: MD5(+new Date()).toString(), expire: +new Date() }
+      };
+      this.$axios
+        .post(`/api/user/${this.newId}`, insertData)
+        .then(({ data }) => {
+          if (data.statusCode > 0) {
+            this.prepareUserMap(true);
+            this.newId = "";
+            this.newName = "";
+            this.newAuth = 0;
+            this.newNote = "";
+            this.success(data.message);
+            this.refreshList();
+          } else {
+            this.warning(data.message);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
     edit(user) {
       this.modal(this.$createElement("UserCard", {
         props: { userData: user }
