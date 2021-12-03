@@ -42,6 +42,7 @@ b-card.text-left(
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import MD5 from "crypto-js/md5"
 
 export default {
   props: {
@@ -65,11 +66,17 @@ export default {
   }),
   computed: {
     userNameOK() { return !isEmpty(this.mongoData.name); },
+    userPasswordChanged() {
+      return this.modifiedPwdMD5Hash !== this.mongoData.pwd;
+    },
     modifiedPwdOK() {
       if (isEmpty(this.modifiedPwd)) {
         return null;
       }
       return this.modifiedPwd.length > 7
+    },
+    modifiedPwdMD5Hash() {
+      return MD5(this.modifiedPwd).toString();
     },
     verifiedPwdOK() {
       return this.modifiedPwd === this.verifiedPwd;
@@ -85,10 +92,11 @@ export default {
       return false;
     }
   },
-  watch: {},
+  watch: {
+  },
   created() {
     this.$axios
-      .post("/api/user", { id: this.userData.id })
+      .get(`/api/user/${this.userData.id}`)
       .then(({ data }) => {
         if (data.statusCode > 0) {
           const users = data.payload;
@@ -104,6 +112,9 @@ export default {
       });
   },
   methods: {
+    watchChanged() {
+      console.log(this.userPasswordChanged, this.modifiedPwdMD5Hash)
+    },
     edit() {}
   },
 };
