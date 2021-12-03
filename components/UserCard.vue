@@ -7,13 +7,12 @@ b-card.text-left(
   template(#header): .d-flex.justify-content-between.align-items-center
     span 帳號：{{ userData.id }}
   
-  b-input-group(prepend="姓名", size="sm"): b-input(
+  b-input-group.my-1(v-if="!isDefaultAdmin", prepend="姓名", size="sm"): b-input(
     v-model="mongoData.name",
     :state="userNameOK",
     trim
   )
-  b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-3(v-model="mongoData.authority", :options="editAuthOpts")
-  b-input-group(prepend="備註", size="sm"): b-input(
+  b-input-group.my-1(v-if="!isDefaultAdmin", prepend="備註", size="sm"): b-input(
     v-model="mongoData.note"
     trim
   )
@@ -23,12 +22,13 @@ b-card.text-left(
     :state="modifiedPwdOK",
     trim
   )
-  b-input-group(v-if="modifiedPwdOK", prepend="驗證", size="sm"): b-input(
+  b-input-group.my-1(v-if="modifiedPwdOK", prepend="驗證", size="sm"): b-input(
     type="password"
     v-model="verifiedPwd",
     :state="verifiedPwdOK",
     trim
   )
+  b-input-group.my-1(v-if="!isDefaultAdmin", prepend="權限", size="sm"): b-radio-group.my-auto.mx-auto(v-model="mongoData.authority", :options="editAuthOpts")
 
   .text-center.mt-1: b-button.my-auto(:variant="editBtnOK ? 'primary' : 'outline-secondary'", size="sm", @click="edit", :disabled="!editBtnOK")
     b-icon.mr-1(icon="pencil-square")
@@ -65,6 +65,7 @@ export default {
     ]
   }),
   computed: {
+    isDefaultAdmin() { return this.mongoData.id === 'HAADMIN' },
     userNameOK() { return !isEmpty(this.mongoData.name); },
     userPasswordChanged() {
       return this.modifiedPwdMD5Hash !== this.mongoData.pwd;
