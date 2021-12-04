@@ -112,9 +112,6 @@ export default {
       });
   },
   methods: {
-    watchChanged() {
-      console.log(this.userPasswordChanged, this.modifiedPwdMD5Hash)
-    },
     edit() {
       const updateData = {
         name: this.mongoData.name,
