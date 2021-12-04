@@ -88,7 +88,7 @@
     centered
   )
     h6 目前圖片
-    a(href="#", @click="openInNewWindow(previewImg)"): b-img.mx-auto(
+    a(href="#", @click="openInNewWindow(previewImg)"): b-img.mx-auto.shadow(
       :src="previewImg"
       thumbnail
       fluid
