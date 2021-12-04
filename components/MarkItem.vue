@@ -88,7 +88,7 @@
     centered
   )
     h6 目前圖片
-    b-img(
+    a(href="#", @click="openInNewWindow(previewImg)"): b-img(
       :src="previewImg"
       thumbnail
       fluid
