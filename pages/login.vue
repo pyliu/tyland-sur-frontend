@@ -89,12 +89,12 @@ export default {
           .loginWith("local", {
             data: { ...this.loginInfo, maxAge: this.maxAge },
           })
-          .then((response) => {
-            this.notify("已登入系統", { type: "success" });
+          .then(({ data }) => {
+            this.notify(data.message, { type: "success" });
           })
           .catch((err) => {
             console.warn(err);
-            this.warning("登入失敗，請確認帳號密碼是否正確 ... ");
+            this.warning("⚠ 登入失敗，認帳號密碼正確？帳戶是否已停用？");
           })
           .finally(() => {
             this.loginInfo.userid = "";
