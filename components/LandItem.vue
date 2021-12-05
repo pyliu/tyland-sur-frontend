@@ -13,7 +13,7 @@
       b-icon.mr-1(:icon="collapseIcon")
     
     a(href="#", v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`", @click="toggleDetail") {{ formatedLandNumber }}
-    b-badge.mx-1(v-if="markCount > 0", variant="secondary", pill, title="界標數") {{ markCount }}
+    b-badge.mx-1(v-if="markCount > 0", variant="primary", pill, title="界標數") {{ markCount }}
     b-button.p-1.border-0.ml-auto(
       size="sm",
       variant="outline-success",

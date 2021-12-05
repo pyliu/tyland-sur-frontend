@@ -20,7 +20,7 @@
 
   b-collapse.mt-1(v-model="detail")
     b-card.text-left(
-      header-bg-variant="info"
+      header-bg-variant="secondary"
       header-text-variant="white"
     )
       template(#header): .d-flex.justify-content-between.align-items-center
@@ -28,7 +28,7 @@
         span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
 
       .d-flex.justify-content-start.align-items-center
-        b-button.p-1.mt-n2.border-0(variant="outline-primary", v-b-modal="modalUUID")
+        b-button.p-1.mt-n2.border-0(variant="outline-success", v-b-modal="modalUUID")
           b-icon.mr-1(
             size="sm",
             icon="plus-circle-fill",

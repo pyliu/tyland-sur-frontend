@@ -48,7 +48,7 @@ div
     hr
     
     .d-flex.justify-content-start.align-items-center
-      b-button.border-0.p-1(variant="outline-primary", v-b-modal.add-land-modal)
+      b-button.border-0.p-1(variant="outline-success", v-b-modal.add-land-modal)
         b-icon.mr-1(
           icon="plus-circle-fill",
           font-scale="1.25"
