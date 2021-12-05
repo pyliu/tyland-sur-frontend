@@ -8,7 +8,11 @@
       :title="`刪除地號 ${formatedLandNumber}`",
       @click="removeLandNumber"
     ) ❌
-    div(v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`") {{ formatedLandNumber }}
+
+    b-button.p-0.border-0(size="sm", variant="outline-secondary", @click="toggleDetail")
+      b-icon.mr-1(:icon="collapseIcon")
+    
+    a(href="#", v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`", @click="toggleDetail") {{ formatedLandNumber }}
     b-badge.mx-1(v-if="markCount > 0", variant="secondary", pill, title="界標數") {{ markCount }}
     b-button.p-1.border-0.ml-auto(
       size="sm",
@@ -51,13 +55,17 @@
         :disabled="addBtnDisabled"
       ) 確認
   
-  b-list-group.small(v-if="marks.length > 0", flush)
-    b-list-group-item.p-1(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
-      :raw="raw",
-      :land-number="landNumber",
-      :mark="mark"
-      @remove="removeMark(idx)"
-    )
+  b-collapse.mt-1(
+    v-model="detail"
+    @shown="$refs['marks-detail'].scrollIntoView({ behavior: 'smooth' })"
+  )
+    b-list-group.small(v-if="marks.length > 0 && detail", ref="marks-detail", flush)
+      b-list-group-item.p-1(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
+        :raw="raw",
+        :land-number="landNumber",
+        :mark="mark"
+        @remove="removeMark(idx)"
+      )
 </template>
 
 <script>
@@ -72,12 +80,14 @@ export default {
   },
   mixins: [CaseBase],
   data: () => ({
+    detail: false,
     addMarkType: "其他",
     addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
     addMarkOther: "",
     addMarkSerial: 1
   }),
   computed: {
+    collapseIcon() { return this.detail ? "caret-up" : "caret-down"; },
     addMarkOtherOK() { return !isEmpty(this.addMarkOther); },
     addMarkSerialOK() {
       const found = this.marks.find((mark) => {
