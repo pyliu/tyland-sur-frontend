@@ -20,6 +20,7 @@
     @shown="$refs['card-detail'].scrollIntoView({ behavior: 'smooth' })"
   )
     b-card.text-left(
+      v-if="detail"
       ref="card-detail"
       header-bg-variant="secondary"
       header-text-variant="white"
