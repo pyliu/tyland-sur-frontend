@@ -35,7 +35,8 @@ div(v-else)
       b-checkbox(v-model="row.detailsShowing" @change="row.toggleDetails")
     
     template(#cell(num)="{ item }")
-      a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
+      div(@click="onRowSelected(item)") {{ caseId(item) }}
+      b-button.p-0.border-0(@click="saveWip(item)", variant="outline-primary", v-b-popover.hover.focus.top="formatedCaseId(item)") #[b-icon(icon="caret-right")]
     
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) || item.section }}
