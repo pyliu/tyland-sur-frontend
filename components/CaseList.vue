@@ -26,6 +26,8 @@ div(v-else)
     no-border-collapse
     borderless
     small
+    selectable
+    @row-selected="onRowSelected"
   )
     template(#table-busy) 讀取中...
     template(#cell(#)="row")
@@ -50,11 +52,11 @@ export default {
   data: () => ({
     currentPage: 1,
     fields: [
-      {
-        key: '#',
-        label: '詳情',
-        sortable: false
-      },
+      // {
+      //   key: '#',
+      //   label: '詳情',
+      //   sortable: false
+      // },
       {
         key: 'num',
         label: "案號",
@@ -88,6 +90,13 @@ export default {
     saveWip(caseData) {
       this.$store.commit("wip", caseData);
       this.$router.push(`/case/${this.caseId(caseData)}/${caseData.section}/${caseData.opdate}`);
+    },
+    onRowSelected(items) {
+      this.modal(this.$createElement("CaseItem", {
+        props: { raw: items[0], card: true }
+      }), {
+        title: "案件地號列表"
+      });
     }
   }
 };
