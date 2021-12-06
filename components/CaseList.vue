@@ -30,14 +30,19 @@ div(v-else)
     @row-selected="onRowSelected"
   )
     template(#table-busy) 讀取中...
+
     template(#cell(#)="row")
       b-checkbox(v-model="row.detailsShowing" @change="row.toggleDetails")
+    
     template(#cell(num)="{ item }")
       a.link(@click="saveWip(item)" v-b-popover.hover.focus.top="formatedCaseId(item)") {{ caseId(item) }}
+    
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) || item.section }}
+    
     template(#cell(opdate)="{ item }")
       span(v-b-popover.hover.focus.top="'複丈日期'") {{ item.opdate }}
+    
     template(#row-details="{ item }")
       CaseItem(:raw="item" card)
 </template>
@@ -92,11 +97,13 @@ export default {
       this.$router.push(`/case/${this.caseId(caseData)}/${caseData.section}/${caseData.opdate}`);
     },
     onRowSelected(items) {
-      this.modal(this.$createElement("CaseItem", {
+      items[0] && this.modal(this.$createElement("CaseItem", {
         props: { raw: items[0], card: true }
       }), {
-        title: "案件地號列表"
+        title: "案件地號列表",
+        size: "lg"
       });
+      this.$refs.caseList?.clearSelected();
     }
   }
 };
