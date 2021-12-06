@@ -38,6 +38,7 @@ div(v-else)
       .d-flex.justify-content-center
         .link.mr-1(@click="saveWip(item)", :title="formatedCaseId(item)") {{ caseId(item) }}
         b-button.p-1.border-0(@click="onRowSelected([item])", variant="outline-primary", size="sm", title="打開視窗") #[b-icon(icon="window")]
+        b-button.p-1.border-0(v-if="isCaseCreator(item)", @click="remove(item)", variant="outline-danger", size="sm", title="刪除案件") ❌
     
     template(#cell(section)="{ item }")
       span(v-b-popover.hover.focus.top="item.section") {{ sections.get(item.section) || item.section }}
@@ -106,6 +107,41 @@ export default {
         size: "lg"
       });
       this.$refs.caseList?.clearSelected();
+    },
+    isCaseCreator(item) { return item?.creator === this.userId; },
+    remove(item) {
+      this.confirm(`此動作將會<b style="color: red">刪除</b>本案件下<b style="color:red">所有資料</b>，請確認是否刪除？`, {
+        title: this.formatedCaseId(item)
+      }).then((YN) => {
+        if (YN) {
+          this.$axios.delete(`/api/case/${this.caseId(item)}/${item.section}/${item.opdate}`, {
+            data: { _id: item._id }
+          })
+          // this.$axios.delete(`/api/case/${item._id}`)
+          .then(({ data }) => {
+            if (data.statusCode > 0) {
+              this.success(data.message);
+              let foundIdx = -1;
+              this.list.find((oitem, idx) => {
+                if (oitem._id === item._id) {
+                  foundIdx = idx;
+                  return true;
+                }
+                return false;
+              });
+              if (foundIdx !== -1) {
+                this.list.splice(foundIdx, 1);
+              }
+            } else {
+              this.warning(data.message);
+            }
+          }).catch((err) => {
+            this.alert(err.toString());
+          }).finally(() => {
+
+          });
+        }
+      });
     }
   }
 };
