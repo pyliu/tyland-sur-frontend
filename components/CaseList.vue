@@ -100,7 +100,7 @@ export default {
       items[0] && this.modal(this.$createElement("CaseItem", {
         props: { raw: items[0], card: true }
       }), {
-        title: "案件地號列表",
+        title: this.formatedCaseId(items[0]),
         size: "lg"
       });
       this.$refs.caseList?.clearSelected();
