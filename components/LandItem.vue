@@ -9,8 +9,8 @@
       @click="removeLandNumber"
     ) ❌
 
-    b-button.p-0.border-0(size="sm", variant="outline-secondary", @click="toggleDetail")
-      b-icon.mr-1(:icon="collapseIcon")
+    b-button.p-0.border-0.mr-1(size="sm", :variant="collapseVariant", @click="toggleDetail")
+      b-icon(:icon="collapseIcon")
     
     a(href="#", v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`", @click="toggleDetail") {{ formatedLandNumber }}
     b-badge.mx-1(v-if="markCount > 0", variant="primary", pill, title="界標數") {{ markCount }}
@@ -88,6 +88,7 @@ export default {
   }),
   computed: {
     collapseIcon() { return this.detail ? "caret-up" : "caret-down"; },
+    collapseVariant() { return this.detail ? "outline-primary" : "outline-secondary"; },
     addMarkOtherOK() { return !isEmpty(this.addMarkOther); },
     addMarkSerialOK() {
       const found = this.marks.find((mark) => {

@@ -26,16 +26,14 @@
       template(#header): .d-flex.justify-content-between.align-items-center
         span(v-b-popover.focus.hover.top="sectionCode") {{ section }}
         span(v-b-popover.focus.hover.top="'複丈日期'") {{ opdate }}
-
-      .d-flex.justify-content-start.align-items-center
-        b-button.p-1.mt-n2.border-0(variant="outline-success", v-b-modal="modalUUID")
+        b-button.p-0.border-0(variant="outline-light", @click="$refs['add-land-modal'].show()")
           b-icon.mr-1(
             size="sm",
             icon="plus-circle-fill",
             font-scale="1.25"
           )
           span 地號
-      
+
       b-list-group(v-if="raw.lands.length > 0", flush)
         b-list-group-item.p-1(
           v-for="(land, idx) in raw.lands",
@@ -54,7 +52,6 @@
         strong(v-b-popover.focus.hover.top="'立案人'") {{ creator }}
 
   b-modal(
-    :id="modalUUID"
     ref="add-land-modal",
     :title="`新增地號 - ${section} - ${formatedCaseId}`"
     centered
@@ -103,8 +100,7 @@ export default {
     slide: 0,
     numberRegex: /^[\d]{1,4}$/i,
     landParent: "",
-    landChild: "",
-    modalUUID: ""
+    landChild: ""
   }),
   computed: {
     landParentOK() {
@@ -130,7 +126,6 @@ export default {
   },
   created() {
     this.detail = this.card;
-    this.modalUUID = this.uuid();
   },
   methods: {
     saveWip() {
