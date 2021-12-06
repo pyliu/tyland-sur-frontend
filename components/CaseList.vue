@@ -21,7 +21,6 @@ div(v-else)
     select-mode="single"
     selected-variant="warning"
     head-variant="dark"
-    selectable
     striped
     hover
     no-border-collapse
