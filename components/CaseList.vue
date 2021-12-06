@@ -117,7 +117,6 @@ export default {
           this.$axios.delete(`/api/case/${this.caseId(item)}/${item.section}/${item.opdate}`, {
             data: { _id: item._id }
           })
-          // this.$axios.delete(`/api/case/${item._id}`)
           .then(({ data }) => {
             if (data.statusCode > 0) {
               this.success(data.message);
