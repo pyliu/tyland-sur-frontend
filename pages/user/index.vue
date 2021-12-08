@@ -44,11 +44,13 @@ b-card
 <script>
 import isEmpty from "lodash/isEmpty";
 import MD5 from "crypto-js/md5";
+import UserCard from "~/components/UserCard.vue";
 
 export default {
   head: {
     title: "使用者管理-界標閱覽系統"
   },
+  components: [UserCard],
   data: () => ({
     newId: "",
     newName: "",
@@ -119,7 +121,7 @@ export default {
         });
     },
     edit(user) {
-      this.modal(this.$createElement("UserCard", {
+      this.modal(this.$createElement(UserCard, {
         props: { userData: user }
       }), {
         title: `編輯 ${user.id} / ${user.name}`
