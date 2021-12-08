@@ -56,8 +56,10 @@ div(v-else)
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import MarkCard from "~/components/MarkCard.vue";
 
 export default {
+  components: { MarkCard },
   props: {
     list: { type: Array, require: true },
     loading: { type: Boolean, default: false },
@@ -137,7 +139,7 @@ export default {
     rowSelected(rowItems) {
       const selected = rowItems[0];
       if (selected) {
-        this.modal(this.$createElement("MarkCard", {
+        this.modal(this.$createElement(MarkCard, {
           props: { raw: selected }
         }), {
           title: `界標圖片 - ${this.sections.get(selected.section)}`,
