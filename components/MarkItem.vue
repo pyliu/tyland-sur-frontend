@@ -1,9 +1,9 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    h6.clickable(@click="popupPhoto", title="查看照片")
+    h6.clickable(@click="popupPhoto", v-b-tooltip="'彈出查看界標圖片'")
       span 📸\#{{ markSerial }}
-    .clickable(@click="toggleDetail", title="查看照片") {{ markType }}
+    .clickable(@click="toggleDetail", v-b-tooltip="detail ? '收起內嵌界標圖片' : '查看內嵌界標圖片'") {{ markType }}
     b-button-group(size="sm")
       b-button.p-1.border-0(
         v-if="isOwner",
@@ -14,7 +14,7 @@
       b-button.p-1.border-0(
         variant="outline-secondary",
         @click="toggleDetail",
-        :title="detail ? '收起' : '查看'"
+        :title="detail ? '收起內嵌界標圖片' : '查看內嵌界標圖片'"
       ): b-icon(:icon="collapseIcon")
 
   b-collapse.mt-1(
