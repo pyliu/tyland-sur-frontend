@@ -50,7 +50,7 @@ export default {
   head: {
     title: "使用者管理-界標閱覽系統"
   },
-  components: [UserCard],
+  components: { UserCard },
   data: () => ({
     newId: "",
     newName: "",
