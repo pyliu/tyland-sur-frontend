@@ -1,19 +1,21 @@
 <template lang="pug">
 .text-left
   .d-flex.justify-content-between.align-items-center
-    h6.clickable(@click="popupPhoto", title="查看照片") 📸\#{{ markSerial }}
+    h6.clickable(@click="popupPhoto", title="查看照片")
+      span 📸\#{{ markSerial }}
     .clickable(@click="toggleDetail", title="查看照片") {{ markType }}
-    b-button.p-1.border-0.mx-1(
-      v-if="isOwner",
-      size="sm",
-      variant="outline-primary",
-      @click="showModal"
-    )
-      b-icon.mr-1(icon="upload")
-      span 上傳
-    b-button.p-1.border-0(size="sm", variant="outline-secondary", @click="toggleDetail")
-      b-icon.mr-1(:icon="collapseIcon")
-      span {{ detail ? '收起' : '查看' }}
+    b-button-group(size="sm")
+      b-button.p-1.border-0(
+        v-if="isOwner",
+        variant="outline-primary",
+        @click="showModal"
+        title="上傳圖片"
+      ): b-icon(icon="upload")
+      b-button.p-1.border-0(
+        variant="outline-secondary",
+        @click="toggleDetail",
+        :title="detail ? '收起' : '查看'"
+      ): b-icon(:icon="collapseIcon")
 
   b-collapse.mt-1(
     v-model="detail"
