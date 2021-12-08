@@ -29,7 +29,8 @@ b-card
   b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-1(v-model="newAuth", :options="newAuthOpts")
   hr
   h6 使用者列表
-  b-button.m-1(
+  .text-center(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
+  div: b-button.m-1(
     v-for="user in list",
     :key="`${user.id}`",
     :title="`編輯 ${user.id} / ${user.name}`",
@@ -73,6 +74,7 @@ export default {
     addBtnOK() { return this.newIdOK && this.newPwdOK && this.newNameOK; }
   },
   created() {
+    this.isBusy = true;
     // force reload if currernt user not found in the Map
     this.prepareUserMap(true);
     this.refreshList();
@@ -84,9 +86,11 @@ export default {
         this.userMap.forEach((value, key, map) => {
           this.list.push({ name: value, id: key });
         });
+        this.isBusy = false;
       }, 2000);
     },
     add() {
+      this.isBusy = true;
       const insertData = {
         id: this.newId,
         name: this.newName,
