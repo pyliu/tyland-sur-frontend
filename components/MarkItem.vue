@@ -135,6 +135,7 @@
 
 <script>
 import CaseBase from "~/components/CaseBase.js";
+import Pica from "pica";
 import Reducer from "image-blob-reduce";
 
 export default {
@@ -249,8 +250,11 @@ export default {
   watch: {
     uploadFile(val) {
       if (val) {
-        const reducer = Reducer();
-        reducer.toBlob(val, {
+        // https://github.com/nodeca/image-blob-reduce/issues/17#issuecomment-751550135
+        // to fix production issue for toBlob function produces "referenceError: h is not defined" error
+        const pica = Pica({ features: ["js", "wasm", "cib"] });
+        const reducer = new Reducer({ pica });
+        reducer.toBlob(this.uploadFile, {
           max: 1920,  // max dimension is 1920 x 1920 pixels
           unsharpAmount: 80,
           unsharpRadius: 0.6,
