@@ -135,11 +135,13 @@
 
 <script>
 import CaseBase from "~/components/CaseBase.js";
+import MarkCard from "~/components/MarkCard.vue";
 import Pica from "pica";
 import Reducer from "image-blob-reduce";
 
 export default {
   emit: ["remove"],
+  components: { MarkCard },
   props: {
     landNumber: { type: String, require: true },
     mark: { type: Object, require: true },
@@ -314,7 +316,7 @@ export default {
       this.detail = !this.detail;
     },
     popupPhoto() {
-      this.modal(this.$createElement("MarkCard", {
+      this.modal(this.$createElement(MarkCard, {
         props: { raw: this.mark }
       }), {
         title: `界標圖片 - ${this.section}`,
