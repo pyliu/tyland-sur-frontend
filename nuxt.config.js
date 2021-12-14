@@ -1,9 +1,16 @@
+import path from 'path';
+import fs from 'fs';
+
 export default {
   ssr: false,
 
   server: {
     // bind to all possible addresses
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'key', 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'key', 'localhost.pem'))
+    }
   },
 
   dev: process.env.NODE_ENV !== 'production',
