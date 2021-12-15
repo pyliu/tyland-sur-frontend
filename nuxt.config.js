@@ -9,8 +9,8 @@ export default {
     host: '0.0.0.0',
     port: 443,
     https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'key', 'server.key')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'key', 'server.crt'))
+      key: fs.readFileSync(path.resolve(__dirname, 'key', process.env.NODE_ENV === 'production' ? 'server.key' : 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'key',  process.env.NODE_ENV === 'production' ? 'server.crt' : 'localhost.pem'))
     }
   },
 
