@@ -117,21 +117,21 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: process.env.baseUrl || `http://localhost:443`,
+    baseURL: process.env.baseUrl || `https://localhost:443`,
     proxy: true,
     credentials: false,
-    https: process.env.PROTOCOL === 'https',
+    https: true,
     debug: false
   },
 
   proxy: {
     '/api': {
-      target: `http://${process.env.API_HOST}:${process.env.API_PORT}`,
+      target: `https://${process.env.API_HOST}:${process.env.API_PORT}`,
       changeOrigin: true,
       pathRewrite: { '^/api': '' }
     },
     '/mark': {
-      target: `http://${process.env.API_HOST}:${process.env.API_PORT}`,
+      target: `https://${process.env.API_HOST}:${process.env.API_PORT}`,
       changeOrigin: true,
       pathRewrite: { '^/mark': '' }
     }
