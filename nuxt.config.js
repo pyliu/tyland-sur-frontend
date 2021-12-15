@@ -19,7 +19,7 @@ export default {
     }
   },
 
-  dev: process.env.NODE_ENV !== 'production',
+  dev: !isProd,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
