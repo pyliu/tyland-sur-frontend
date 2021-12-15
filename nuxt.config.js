@@ -13,10 +13,10 @@ export default {
     // bind to all possible addresses
     host: '0.0.0.0',
     port: process.env.PORT || 3000,
-    https: {
-      key: fs.readFileSync(path.resolve(__dirname, 'key', process.env.NODE_ENV === 'production' ? 'server.key' : 'localhost-key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'key',  process.env.NODE_ENV === 'production' ? 'server.crt' : 'localhost.pem'))
-    }
+    // https: {
+    //   key: fs.readFileSync(path.resolve(__dirname, 'key', process.env.NODE_ENV === 'production' ? 'server.key' : 'localhost-key.pem')),
+    //   cert: fs.readFileSync(path.resolve(__dirname, 'key',  process.env.NODE_ENV === 'production' ? 'server.crt' : 'localhost.pem'))
+    // }
   },
 
   dev: !isProd,
