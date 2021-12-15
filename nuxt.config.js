@@ -1,5 +1,10 @@
 import path from 'path';
 import fs from 'fs';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+const isProd = process.env.NODE_ENV === "production";
+const protocol = process.env.PROTOCOL === "https" ? "https" : "http";
+const apiHost = isProd ? process.env.API_HOST : "localhost";
+const apiPort = isProd ? process.env.API_PORT : "4500";
 
 export default {
   ssr: false,
@@ -7,7 +12,7 @@ export default {
   server: {
     // bind to all possible addresses
     host: '0.0.0.0',
-    port: 443,
+    port: process.env.PORT || 3000,
     https: {
       key: fs.readFileSync(path.resolve(__dirname, 'key', process.env.NODE_ENV === 'production' ? 'server.key' : 'localhost-key.pem')),
       cert: fs.readFileSync(path.resolve(__dirname, 'key',  process.env.NODE_ENV === 'production' ? 'server.crt' : 'localhost.pem'))
@@ -93,7 +98,7 @@ export default {
           property: 'token',
           type: 'Bearer',
           name: 'Authorization',
-          maxAge: process.env.NODE_ENV === 'production' ? 14400 : 28800,
+          maxAge: isProd ? 14400 : 28800,
           global: true,
           required: true,
           prefix: '_token.',
@@ -117,21 +122,23 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: process.env.baseUrl || `https://localhost:443`,
+    baseURL: process.env.baseUrl || `${protocol}://localhost:${process.env.PORT || 3000}`,
     proxy: true,
     credentials: false,
-    https: true,
+    https: protocol === "https",
     debug: false
   },
 
   proxy: {
     '/api': {
-      target: `https://${process.env.API_HOST}:${process.env.API_PORT}`,
+      target: `${protocol}://${apiHost}:${apiPort}`,
+      secure: false,  // ignore "UNABLE_TO_VERIFY_LEAF_SIGNATURE" fail
       changeOrigin: true,
       pathRewrite: { '^/api': '' }
     },
     '/mark': {
-      target: `https://${process.env.API_HOST}:${process.env.API_PORT}`,
+      target: `${protocol}://${apiHost}:${apiPort}`,
+      secure: false,  // ignore "UNABLE_TO_VERIFY_LEAF_SIGNATURE" fail
       changeOrigin: true,
       pathRewrite: { '^/mark': '' }
     }
@@ -144,5 +151,20 @@ export default {
      */
     extend (config, ctx) {},
     babel: { compact: true }
+  },
+  // should hold all env variables that are public as these will be exposed on the frontend.
+  // available using $config in both server and client.
+  publicRuntimeConfig: {
+    protocol: protocol,
+    serverPort: process.env.PORT,
+    apiHost: apiHost,
+    apiPort: apiPort,
+    isProd: isProd
+  },
+  // should hold all env variables that are private and that should not be exposed on the frontend.
+  // only available on server using same $config
+  // privateRuntimeConfig always overrides publicRuntimeConfig on server-side. $config in server mode is { ...public, ...private } but for client mode only { ...public }
+  privateRuntimeConfig: {
+    apiKey: "secret"
   }
 }
