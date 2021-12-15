@@ -7,6 +7,7 @@ export default {
   server: {
     // bind to all possible addresses
     host: '0.0.0.0',
+    port: 443,
     https: {
       key: fs.readFileSync(path.resolve(__dirname, 'key', 'localhost-key.pem')),
       cert: fs.readFileSync(path.resolve(__dirname, 'key', 'localhost.pem'))
@@ -116,7 +117,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: process.env.baseUrl || `http://localhost:3000`,
+    baseURL: process.env.baseUrl || `http://localhost:443`,
     proxy: true,
     credentials: false,
     https: process.env.PROTOCOL === 'https',
