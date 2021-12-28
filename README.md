@@ -1,6 +1,6 @@
 # tyland-sur-fe
 
-<img src="snap.jpg" style="margin: 0 auto; max-width: 400px;"/>
+<img src="snap.jpg" width="400" style="margin: 0 auto; max-width: 400px;"/>
 
 ## Build Setup
 
