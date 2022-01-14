@@ -48,6 +48,12 @@ section
         b-icon.mr-2(icon="people-fill", variant="danger")
         NuxtLink(to="/user") 使用者管理
       hr
+    ul: li.h5
+      b-icon.mr-2(icon="key", variant="danger" rotate="315")
+      //- NuxtLink(to="#", @click="changePassword") 變更密碼
+      //- a 變更密碼
+      b-button.p-0(@click="changePassword", variant="link", size="lg") 變更密碼
+    hr
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
         b-button.mr-2(
@@ -66,7 +72,9 @@ section
 </template>
 
 <script>
+import Password from "~/components/Password.vue"
 export default {
+  components: { Password },
   data: () => ({
     disabled: false,
   }),
@@ -79,6 +87,9 @@ export default {
   methods: {
     toIndex() {
       this.$router.push("/");
+    },
+    changePassword() {
+      this.modal(this.$createElement(Password)).then((opts) => { console.warn(opts); });
     },
     logout() {
       this.disabled = true;

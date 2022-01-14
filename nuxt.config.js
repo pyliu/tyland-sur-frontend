@@ -4,7 +4,7 @@ import fs from 'fs';
 const isProd = process.env.NODE_ENV === "production";
 const protocol = process.env.PROTOCOL === "https" ? "https" : "http";
 const apiHost = isProd ? process.env.API_HOST : "localhost";
-const apiPort = isProd ? process.env.API_PORT : "4500";
+const apiPort = process.env.API_PORT || "4500";
 
 export default {
   ssr: false,
