@@ -50,10 +50,15 @@ section
       hr
     ul: li.h5
       b-icon.mr-2(icon="key", variant="danger" rotate="315")
-      //- NuxtLink(to="#", @click="changePassword") 變更密碼
-      //- a 變更密碼
-      b-button.p-0(@click="changePassword", variant="link", size="lg") 變更密碼
+      b-button.p-0(@click="$refs.password.show()", variant="link", size="lg") 變更密碼
     hr
+    b-modal(
+      ref="password",
+      :title="`修改 ${userName} 密碼`",
+      size="sm",
+      centered,
+      hide-footer
+    ): Password(@close="$refs.password.hide()")
     template(#footer="{ hide }")
       .d-flex.align-items-center.justify-content-between.p-2
         b-button.mr-2(
@@ -87,9 +92,6 @@ export default {
   methods: {
     toIndex() {
       this.$router.push("/");
-    },
-    changePassword() {
-      this.modal(this.$createElement(Password)).then((opts) => { console.warn(opts); });
     },
     logout() {
       this.disabled = true;
