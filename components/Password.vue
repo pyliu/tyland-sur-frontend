@@ -53,9 +53,6 @@ export default {
       return false;
     },
     isVerified() {
-      if (isEmpty(this.password)) {
-        return null;
-      }
       if (this.isPasswordOK) {
         return this.password === this.verify;
       } else {
