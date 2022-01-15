@@ -42,7 +42,7 @@ b-card.text-left(
 
 <script>
 import isEmpty from "lodash/isEmpty";
-import MD5 from "crypto-js/md5"
+import MD5 from "crypto-js/md5";
 
 export default {
   props: {
