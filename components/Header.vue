@@ -1,7 +1,7 @@
 <template lang="pug">
 section
   .d-flex.align-items-center.justify-content-between.mt-2
-    b-img.logo(src="~/assets/images/logo_sm.png", @click="toIndex")
+    b-img.logo(src="~/assets/images/logo_bureau.png", @click="toIndex")
     b-button.sidebar.ml-2(
       v-if="loggedIn",
       v-b-toggle.sidebar-1,
@@ -27,15 +27,13 @@ section
     hr
     ul
       li.h5
-        b-icon.mr-2(icon="plus-circle-fill", variant="primary")
-        NuxtLink(to="/add") 新增案件
-    hr
-    ul
-      li.h5
         b-icon.mr-2(icon="card-list", variant="success")
         NuxtLink(to="/case") 案件列表
     hr
     ul
+      li.h5
+        b-icon.mr-2(icon="plus-circle-fill", variant="primary")
+        NuxtLink(to="/add") 新增案件
       li.h5
         b-icon.mr-2(icon="briefcase-fill", variant="info")
         NuxtLink(to="/search/case") 搜尋案件
@@ -71,7 +69,7 @@ section
           b-icon(v-if="disabled", icon="three-dots", animation="cylon")
           span(v-else) 登出
         b-img.logo.img-fluid(
-          src="~/assets/images/logo_lg.png",
+          src="~/assets/images/logo_bureau.png",
           @click="toIndex"
         )
 </template>
@@ -116,7 +114,7 @@ export default {
 }
 .logo {
   cursor: pointer;
-  max-width: 200px;
+  max-width: 300px;
 }
 #sidebar-1 {
   hr {
@@ -128,6 +126,9 @@ export default {
     li {
       list-style: none;
     }
+  }
+  .logo {
+    max-width: 200px;
   }
 }
 </style>
