@@ -57,7 +57,8 @@ const state = () => ({
   wipCase: {},
   wipList: [],
   userMap: new Map(),
-  site: 'H0'
+  codes: new Map(),
+  sections: new Map()
 });
 
 const getters = {
@@ -69,7 +70,9 @@ const getters = {
   wip: (state) => state.wipCase,
   wipList: (state) => state.wipList,
   userMap: (state) => state.userMap,
-  site: (state) => state.site
+  codes: (state) => state.codes,
+  sections: (state) => state.sections,
+  loaded: (state) => state.codes.size !== 0 && state.sections.size !== 0 
 };
 
 // only sync operation
@@ -85,6 +88,12 @@ const mutations = {
   },
   site(state, payload) {
     state.site = site;
+  },
+  codes(state, payload) {
+    state.codes = payload;
+  },
+  sections(state, payload) {
+    state.sections = payload;
   }
 };
 

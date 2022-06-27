@@ -120,6 +120,7 @@ export default {
     postBody() {
       return {
         token: this.userTokenHash,
+        site: this.site,
         year: this.formatedYear,
         code: this.formatedCode,
         num: this.formatedNum,
@@ -134,6 +135,7 @@ export default {
     this.creator = this.userId;
     this.opdate = this.maxOpdate = this.today;
     this.loadRecentCases();
+    this.calcCodeSection();
     // codes/sections which is Map structure from global mixin
     this.codes.forEach((val, key, map) => {
       this.codeOpts.push({
@@ -155,7 +157,7 @@ export default {
     loadRecentCases() {
       this.isBusy = true;
       this.$axios
-        .post("/api/search/case", { limit: 5 })
+        .post("/api/search/case", { limit: 5, code: `^${this.site}` })
         .then(({ data }) => {
           this.recentCases = [...data.payload];
         })

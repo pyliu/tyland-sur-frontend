@@ -90,6 +90,13 @@ export default {
             data: { ...this.loginInfo, maxAge: this.maxAge },
           })
           .then(({ data }) => {
+            const site = this.loginInfo.userid?.substring(0, 2);
+            if (site) {
+              this.$store.commit('site', site?.toUpperCase());
+              this.calcCodeSection();
+            } else {
+              this.alert(`無法辨識所別，目前登入使用者為 ${this.loginInfo.userid}`);
+            }
             this.notify(data.message, { type: "success" });
           })
           .catch((err) => {

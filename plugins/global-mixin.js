@@ -2,27 +2,27 @@ import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import isEmpty from "lodash/isEmpty";
 
-import tycode from "~/assets/json/tycode.json";
-import tysection from "~/assets/json/tysection.json";
+// import tycode from "~/assets/json/HACode.json";
+// import tysection from "~/assets/json/HASection.json";
 
-const codeMap = new Map();
-tycode?.forEach((element) => {
-  codeMap.set(element.value, element.text);
-});
-const sectionMap = new Map();
-tysection?.forEach((element) => {
-  sectionMap.set(element.value, element.text);
-});
+// const codeMap = new Map();
+// tycode?.forEach((element) => {
+//   codeMap.set(element.value, element.text);
+// });
+// const sectionMap = new Map();
+// tysection?.forEach((element) => {
+//   sectionMap.set(element.value, element.text);
+// });
 
 // inject to all Vue instances
 Vue.mixin({
   data: () => ({
-    codes: codeMap,
-    sections: sectionMap,
+    // codes: codeMap,
+    // sections: sectionMap,
     isBusy: false,
   }),
   computed: {
-    ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList", "userMap", "site"]),
+    ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList", "userMap", "codes", "sections", "loaded"]),
     today() {
       const now = new Date();
       return (
@@ -54,6 +54,10 @@ Vue.mixin({
     },
     userExpire() {
       return this.user?.token.expire;
+    },
+    site() {
+      const site = this.userId?.substring(0, 2);
+      return site?.toUpperCase();
     }
   },
   methods: {
@@ -498,6 +502,20 @@ Vue.mixin({
           process.env.NODE_ENV !== 'production' && console.log(`儲存使用者資料 ${expire} 秒後到期`, array);
         }, 2000);
       }
+    },
+    async calcCodeSection() {
+      if (!this.loaded) {
+        const siteCodes = await import(`~/assets/json/${this.site}Code.json`);
+        const siteSections = await import(`~/assets/json/${this.site}Section.json`);
+        this.codes.clear();
+        siteCodes?.default?.forEach((element) => {
+          this.codes.set(element.value, element.text);
+        });
+        this.sections.clear();
+        siteSections?.default?.forEach((element) => {
+          this.sections.set(element.value, element.text);
+        });
+      }
     }
-  },
+  }
 });
