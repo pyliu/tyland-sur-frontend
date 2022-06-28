@@ -135,7 +135,7 @@ export default {
     this.creator = this.userId;
     this.opdate = this.maxOpdate = this.today;
     this.loadRecentCases();
-    this.calcCodeSection();
+    this.loadSiteData();
     // codes/sections which is Map structure from global mixin
     this.codes.forEach((val, key, map) => {
       this.codeOpts.push({

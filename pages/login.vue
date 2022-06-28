@@ -92,12 +92,11 @@ export default {
           .then(({ data }) => {
             const site = this.loginInfo.userid?.substring(0, 2);
             if (site) {
-              this.$store.commit('site', site?.toUpperCase());
-              this.calcCodeSection();
+              this.notify(data.message, { type: "success" });
+              this.loadSiteData(true);
             } else {
               this.alert(`無法辨識所別，目前登入使用者為 ${this.loginInfo.userid}`);
             }
-            this.notify(data.message, { type: "success" });
           })
           .catch((err) => {
             console.warn(err);

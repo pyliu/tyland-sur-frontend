@@ -51,8 +51,8 @@ Vue.mixin({
   },
   mounted() {
     // workaround for the site data dynamic loading
-    const debounceCalcCodeSection = debounce(this.calcCodeSection, 200);
-    debounceCalcCodeSection();
+    const debounceLoadSiteData = debounce(this.loadSiteData, 200);
+    debounceLoadSiteData();
   },
   methods: {
     ...mapActions(["checkSession"]),
@@ -497,18 +497,22 @@ Vue.mixin({
         }, 2000);
       }
     },
-    async calcCodeSection() {
-      if (!this.loaded) {
-        const siteCodes = await import(`~/assets/json/${this.site}Code.json`);
-        const siteSections = await import(`~/assets/json/${this.site}Section.json`);
-        this.codes.clear();
-        siteCodes?.default?.forEach((element) => {
-          this.codes.set(element.value, element.text);
-        });
-        this.sections.clear();
-        siteSections?.default?.forEach((element) => {
-          this.sections.set(element.value, element.text);
-        });
+    async loadSiteData(force = false) {
+      try {
+        if (this.site && (force || !this.loaded)) {
+          const siteCodes = await import(`~/assets/json/${this.site}Code.json`);
+          const siteSections = await import(`~/assets/json/${this.site}Section.json`);
+          this.codes.clear();
+          siteCodes?.default?.forEach((element) => {
+            this.codes.set(element.value, element.text);
+          });
+          this.sections.clear();
+          siteSections?.default?.forEach((element) => {
+            this.sections.set(element.value, element.text);
+          });
+        }
+      } catch (e) {
+        console.warn(e);
       }
     }
   }
