@@ -41,7 +41,9 @@ export default {
     this.prepareUserMap(!this.userMap.has(this.userId));
     this.uploader = this.userId;
     this.userMap.forEach((value, key, map) => {
-      this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
+      if (key?.startsWith(this.site)) {
+        this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
+      }
     });
     // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
     this.maxOpdate = this.today;
