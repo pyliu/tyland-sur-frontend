@@ -41,14 +41,14 @@ export default {
     // force reload if currernt user not found in the Map
     this.prepareUserMap(!this.userMap.has(this.userId));
     this.uploader = this.userId;
-    // add default search criteria for own site users
-    this.uploaderOpts.push({ text: "", value: `^${this.site}` });
     this.userMap.forEach((value, key, map) => {
       if (key?.startsWith(this.site)) {
         this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
       }
     });
     this.uploaderOpts = [...sortBy(this.uploaderOpts, ['value'])]
+    // add default search criteria for own site users
+    this.uploaderOpts.unshift({ text: "", value: `^${this.site}` });
     // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
     this.maxOpdate = this.today;
   },
