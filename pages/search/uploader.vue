@@ -16,6 +16,7 @@ div
 </template>
 
 <script>
+import sortBy from 'lodash/sortBy';
 export default {
   emit: ["data-update"],
   head: {
@@ -45,6 +46,7 @@ export default {
         this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });
       }
     });
+    this.uploaderOpts = [...sortBy(this.uploaderOpts, ['value'])]
     // this.$emit('data-update', { message: '接收使用者查詢回傳DATA' })
     this.maxOpdate = this.today;
   },
