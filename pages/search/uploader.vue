@@ -26,7 +26,7 @@ export default {
     opdate: "",
     maxOpdate: "",
     uploader: "",
-    uploaderOpts: [{ text: "", value: "" }],
+    uploaderOpts: [],
     searchedData: []
   }),
   computed: {
@@ -41,6 +41,8 @@ export default {
     // force reload if currernt user not found in the Map
     this.prepareUserMap(!this.userMap.has(this.userId));
     this.uploader = this.userId;
+    // add default search criteria for own site users
+    this.uploaderOpts.push({ text: "", value: `^${this.site}` });
     this.userMap.forEach((value, key, map) => {
       if (key?.startsWith(this.site)) {
         this.uploaderOpts.push({ text: `${key} / ${value}`, value: key });

@@ -129,7 +129,7 @@ export default {
   },
   async created() {
     // codes/sections which is Map structure from global mixin
-    this.codeOpts = [{ text: "", value: "" }];
+    this.codeOpts = [{ text: "", value: `^${this.site}` }];
     this.codes.forEach((val, key, map) => {
       this.codeOpts.push({
         text: `${key} ${val}`,
