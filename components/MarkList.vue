@@ -114,6 +114,11 @@ export default {
     count() { return this.list.length; },
     caption() { return `找到 ${this.count} 筆界標資料`}
   },
+  watch: {
+    loading (flag) {
+      flag && (this.currentPage = 1);
+    }
+  },
   methods: {
     caseId(markData) {
       return ("000" + markData.year).slice(-3) + '-'
