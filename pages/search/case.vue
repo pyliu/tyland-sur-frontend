@@ -144,7 +144,7 @@ export default {
       });
     });
     this.year = await this.getCache('search_case_year') || "";
-    this.code = await this.getCache('search_case_code') || "";
+    this.code = await this.getCache('search_case_code') || `^${this.site}`;
     this.num = await this.getCache('search_case_num') || "";
     this.section = await this.getCache('search_case_section') || "";
     this.landNum = await this.getCache('search_case_landNum') || "";
