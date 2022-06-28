@@ -12,10 +12,6 @@ b-card.text-left(
     :state="userNameOK",
     trim
   )
-  b-input-group.my-1(v-if="!isDefaultAdmin", prepend="備註", size="sm"): b-input(
-    v-model="mongoData.note"
-    trim
-  )
   b-input-group.my-1(prepend="密碼", size="sm"): b-input(
     type="password"
     v-model="modifiedPwd",
@@ -29,7 +25,10 @@ b-card.text-left(
     trim
   )
   b-input-group.my-1(v-if="!isDefaultAdmin", prepend="權限", size="sm"): b-radio-group.my-auto.mx-auto(v-model="mongoData.authority", :options="editAuthOpts")
-
+  b-input-group.my-1(v-if="!isDefaultAdmin", prepend="備註", size="sm"): b-input(
+    v-model="mongoData.note"
+    trim
+  )
   .text-center.mt-1: b-button.my-auto(:variant="editBtnOK ? 'primary' : 'outline-secondary'", size="sm", @click="edit", :disabled="!editBtnOK")
     b-icon.mr-1(icon="pencil-square")
     span 更新
