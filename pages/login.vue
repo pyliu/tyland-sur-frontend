@@ -85,6 +85,7 @@ export default {
     userLogin() {
       try {
         this.isBusy = true;
+        this.clearStoreState();
         this.$auth
           .loginWith("local", {
             data: { ...this.loginInfo, maxAge: this.maxAge },

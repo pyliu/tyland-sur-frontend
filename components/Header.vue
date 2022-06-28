@@ -98,11 +98,7 @@ export default {
         .then(() => {
           this.notify("已登出", { type: "success" });
           this.$router.push("/login");
-          // clear store state
-          this.$store.commit("wip", {});
-          this.$store.commit("wipList", []);
-          this.codes?.clear();
-          this.sections?.clear();
+          this.clearStoreState();
         })
         .finally(() => {
           this.disabled = false;
