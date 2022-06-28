@@ -257,7 +257,7 @@ export default {
         const pica = Pica({ features: ["js", "wasm", "cib"] });
         const reducer = new Reducer({ pica });
         reducer.toBlob(this.uploadFile, {
-          max: 1920,  // max dimension is 1920 x 1920 pixels
+          max: 960,  // max dimension is 960 x 960 pixels
           unsharpAmount: 80,
           unsharpRadius: 0.6,
           unsharpThreshold: 2,
