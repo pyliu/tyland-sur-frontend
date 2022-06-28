@@ -66,7 +66,7 @@ export default {
     ]
   }),
   computed: {
-    isDefaultAdmin() { return this.mongoData.id === 'HAADMIN' },
+    isDefaultAdmin() { return ['HAADMIN', 'HBADMIN', 'HCADMIN', 'HDADMIN', 'HEADMIN', 'HFADMIN', 'HGADMIN', 'HHADMIN'].includes(this.mongoData.id) },
     userNameChanged() { return this.userData.name !== this.mongoData.name },
     userNameOK() { return !isEmpty(this.mongoData.name); },
     userPasswordChanged() { return this.modifiedPwdMD5Hash !== this.mongoData.pwd; },

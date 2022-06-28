@@ -114,7 +114,7 @@ export default {
 }
 .logo {
   cursor: pointer;
-  max-width: 300px;
+  max-width: 250px;
 }
 #sidebar-1 {
   hr {
