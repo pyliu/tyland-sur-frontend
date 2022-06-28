@@ -1,5 +1,7 @@
 <template lang="pug">
+.text-center(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
 b-card.text-left(
+  v-else
   ref="user-edit-card",
   header-bg-variant="secondary",
   header-text-variant="white"
@@ -94,6 +96,7 @@ export default {
   watch: {
   },
   created() {
+    this.isBusy = true;
     this.$axios
       .get(`/api/user/${this.userData.id}`)
       .then(({ data }) => {
@@ -108,6 +111,8 @@ export default {
       })
       .catch((e) => {
         console.error(e);
+      }).finally(() => {
+        this.isBusy = false;
       });
   },
   methods: {
