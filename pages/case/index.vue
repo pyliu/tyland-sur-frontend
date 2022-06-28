@@ -18,7 +18,7 @@ export default {
     } else {
       this.isBusy = true;
       this.$axios
-        .post("/api/search/case", { limit: 20 })
+        .post("/api/search/case", { limit: 20, code: `^${this.site}` })
         .then(({ data }) => {
           this.list = [...data.payload];
           this.$store.commit('wipList', this.list);
