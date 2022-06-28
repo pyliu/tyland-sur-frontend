@@ -57,7 +57,7 @@
   
   b-collapse.mt-1(
     v-model="detail"
-    @shown="$refs['marks-detail'].scrollIntoView({ behavior: 'smooth' })"
+    @shown="showCollapsed"
   )
     b-list-group.small(v-if="marks.length > 0 && detail", ref="marks-detail", flush)
       b-list-group-item.p-1(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
@@ -217,6 +217,11 @@ export default {
         console.error(e);
       } finally {
         this.isBusy = false
+      }
+    },
+    showCollapsed() {
+      if (this.$refs['marks-detail']) {
+        this.$refs['marks-detail'].scrollIntoView({ behavior: 'smooth' });
       }
     }
   }
