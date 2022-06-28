@@ -8,6 +8,7 @@ b-card
   b-input-group.my-1(prepend="帳號", size="sm"): b-input(
     v-model="newId",
     :state="newIdOK",
+    :placeholder="`字首須以 ${site} 起始`"
     trim
   )
   b-input-group.my-1(prepend="姓名", size="sm"): b-input(
@@ -28,7 +29,7 @@ b-card
   )
   b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-1(v-model="newAuth", :options="newAuthOpts")
   hr
-  h6 使用者列表
+  h6 使用者列表 👉 點選人名標籤進行編輯
   .text-center(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
   div: b-button.m-1(
     v-for="user in list",
@@ -43,6 +44,7 @@ b-card
 
 <script>
 import isEmpty from "lodash/isEmpty";
+import debounce from "lodash/debounce";
 import MD5 from "crypto-js/md5";
 import UserCard from "~/components/UserCard.vue";
 
@@ -70,26 +72,30 @@ export default {
   }),
   computed: {
     newPwdHash() { return MD5(this.newPwd).toString(); },
-    newIdOK() { return !isEmpty(this.newId) && !this.userMap.has(this.newId); },
+    newIdOK() { return !isEmpty(this.newId) && !this.userMap.has(this.newId) && this.newId?.startsWith(this.site); },
     newNameOK() { return !isEmpty(this.newName); },
     newPwdOK() { return !isEmpty(this.newPwd) && this.newPwd.length > 7; },
     addBtnOK() { return this.newIdOK && this.newPwdOK && this.newNameOK; }
   },
   created() {
-    this.isBusy = true;
     // force reload if currernt user not found in the Map
     this.prepareUserMap(true);
-    this.refreshList();
+    this.debouncedRefreshList = debounce(this.refreshList, 2000);
+  },
+  mounted() {
+    this.isBusy = true;
+    this.debouncedRefreshList();
   },
   methods: {
     refreshList() {
-      setTimeout(() => {
-        this.list = [];
-        this.userMap.forEach((value, key, map) => {
+      this.isBusy = true;
+      this.list = [];
+      this.userMap.forEach((value, key, map) => {
+        if (key?.startsWith(this.site)) {
           this.list.push({ name: value, id: key });
-        });
-        this.isBusy = false;
-      }, 2000);
+        }
+      });
+      this.isBusy = false;
     },
     add() {
       this.isBusy = true;
