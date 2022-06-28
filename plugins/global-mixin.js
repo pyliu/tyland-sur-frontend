@@ -1,18 +1,7 @@
 import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import isEmpty from "lodash/isEmpty";
-
-// import tycode from "~/assets/json/HACode.json";
-// import tysection from "~/assets/json/HASection.json";
-
-// const codeMap = new Map();
-// tycode?.forEach((element) => {
-//   codeMap.set(element.value, element.text);
-// });
-// const sectionMap = new Map();
-// tysection?.forEach((element) => {
-//   sectionMap.set(element.value, element.text);
-// });
+import debounce from "lodash/debounce";
 
 // inject to all Vue instances
 Vue.mixin({
@@ -59,6 +48,11 @@ Vue.mixin({
       const site = this.userId?.substring(0, 2);
       return site?.toUpperCase();
     }
+  },
+  mounted() {
+    // workaround for the site data dynamic loading
+    const debounceCalcCodeSection = debounce(this.calcCodeSection, 200);
+    debounceCalcCodeSection();
   },
   methods: {
     ...mapActions(["checkSession"]),

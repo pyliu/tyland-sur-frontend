@@ -86,9 +86,6 @@ const mutations = {
   wipList(state, payload) {
     state.wipList = [...payload];
   },
-  site(state, payload) {
-    state.site = site;
-  },
   codes(state, payload) {
     state.codes = payload;
   },
