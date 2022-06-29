@@ -25,7 +25,7 @@
         font-scale="1.3"
       )
       span.ml-1 界標
-    b-checkbox.ml-1.mt-1(v-model="collapseAll", size="sm", switch, v-b-tooltip="展開全部界標") 展開
+    b-checkbox.ml-1.mt-1(v-model="collapseAll", size="sm", switch, v-b-tooltip="'展開全部界標'") 展開
 
   b-modal(
     ref="add-mark-modal",
