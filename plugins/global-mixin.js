@@ -515,10 +515,13 @@ Vue.mixin({
         console.warn(e);
       }
     },
-    clearStoreState() {
-      // clear store state
+    clearWipState() {
       this.$store.commit("wip", {});
       this.$store.commit("wipList", []);
+    },
+    clearStoreState() {
+      // clear store state
+      this.clearWipState();
       this.codes?.clear();
       this.sections?.clear();
     }

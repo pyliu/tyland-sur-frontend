@@ -130,6 +130,9 @@ export default {
               });
               if (foundIdx !== -1) {
                 this.list.splice(foundIdx, 1);
+                // update store cached data
+                this.$store.commit("wip", {});
+                this.$store.commit("wipList", this.list);
               }
             } else {
               this.warning(data.message);

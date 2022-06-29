@@ -13,23 +13,20 @@ export default {
     list: [],
   }),
   created() {
-    if (this.wipList.length > 0) {
-      this.list = this.wipList;
-    } else {
-      this.isBusy = true;
-      this.$axios
-        .post("/api/search/case", { limit: 20, code: `^${this.site}` })
-        .then(({ data }) => {
-          this.list = [...data.payload];
-          this.$store.commit('wipList', this.list);
-        })
-        .catch((err) => {
-          console.warn(err);
-        })
-        .finally(() => {
-          this.isBusy = false;
-        });
-    }
+    this.clearWipState();
+    this.isBusy = true;
+    this.$axios
+      .post("/api/search/case", { limit: 20, code: `^${this.site}` })
+      .then(({ data }) => {
+        this.list = [...data.payload];
+        this.$store.commit('wipList', this.list);
+      })
+      .catch((err) => {
+        console.warn(err);
+      })
+      .finally(() => {
+        this.isBusy = false;
+      });
   }
 };
 </script>
