@@ -156,7 +156,7 @@ export default {
     uploadFile: undefined,
     uploadFileBlob: undefined,
     supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
-    distance: "near",
+    distance: "far",
     distanceOpts: [
       { text: "第1張", value: "far" },
       { text: "第2張", value: "near" }
