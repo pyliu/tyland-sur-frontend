@@ -18,11 +18,11 @@ div
         span {{ modification ? "收起" : "修改" }}
     b-collapse(v-model="modification"): b-card
       b-card-title {{ formatedCaseId }}
-      b-card-sub-title.d-flex.justify-content-between.align-items-center
+      b-card-sub-title.d-flex.flex-column
         span {{ `立案者：${userMap.get(creator) || creator}` }}
+        span(v-if="!isOwner") 段小段：{{ sectionCode }} - {{ section }}
         span(v-if="!isOwner") 複丈日期：{{ opdate }}
-        span(v-if="!isOwner") {{ sectionCode }} - {{ section }}
-        b-button.ml-auto.mt-1(
+        b-button(
           v-if="isOwner",
           size="sm",
           :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
