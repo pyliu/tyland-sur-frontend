@@ -9,7 +9,7 @@
       span 編號：\#{{ markSerial }}
       span 種類：{{ markType }}
 
-    h5 📸 遠照
+    h5 📸 第1張
     a(href="#", @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="farImg",
@@ -18,7 +18,7 @@
       block
     )
     hr
-    h5 📸 近照
+    h5 📸 第2張
     a(href="#", @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto.shadow(
       title="點擊開新視窗顯示",
       :src="nearImg",

@@ -29,7 +29,7 @@
     )
       template(#header): .d-flex.justify-content-between.align-items-center
         span 序號：\#{{ markSerial }}
-        span {{ slide === 1 ? "近距離" : "遠距離"}}
+        span {{ slide === 1 ? "第2張" : "第1張"}}
         span 種類：{{ markType }}
 
       b-carousel#carousel-1(
@@ -45,7 +45,7 @@
         @sliding-end="(function () {})()"
       )
         b-carousel-slide(
-          text="遠距離",
+          text="第1張",
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
@@ -59,7 +59,7 @@
             block
           )
         b-carousel-slide(
-          text="近距離",
+          text="第2張",
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
@@ -157,8 +157,8 @@ export default {
     supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
     distance: "near",
     distanceOpts: [
-      { text: "近距離", value: "near" },
-      { text: "遠距離", value: "far" }
+      { text: "第2張", value: "near" },
+      { text: "第1張", value: "far" }
     ],
   }),
   computed: {
@@ -231,7 +231,7 @@ export default {
     },
     subtitle() {
       return `#${this.markSerial} / ${this.markType} / ${
-        this.distance === "far" ? "遠" : "近"
+        this.distance === "far" ? "第1張" : "第2張"
       }`;
     },
     uploadFileBlobUrl() {
