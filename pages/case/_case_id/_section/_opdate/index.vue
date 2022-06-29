@@ -2,21 +2,7 @@
 div
   .text-center.mt-5(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="4")
   div(v-if="dataReady")
-    
-    .d-flex.justify-content-between.align-items-center
-      span(v-if="!modification") {{ formatedCaseId }}
-      span(v-if="!modification") {{ section }}
-      span(v-if="!modification") {{ opdate }}
-      span
-      b-button.p-1.border-0(
-        v-b-tooltip="'切換顯示/修改介面'",
-        size="sm",
-        variant="outline-secondary",
-        @click="toggleModification"
-      )
-        b-icon.mr-1(:icon="collapseIcon")
-        span {{ modification ? "收起" : "修改" }}
-    b-collapse(v-model="modification"): b-card
+    b-card
       b-card-title {{ formatedCaseId }}
       b-card-sub-title.d-flex.flex-column
         span {{ `立案者：${userMap.get(creator) || creator}` }}
