@@ -18,7 +18,9 @@ export default {
     this.$axios
       .post("/api/search/case", { limit: 20, code: `^${this.site}` })
       .then(({ data }) => {
-        this.list = [...data.payload];
+        if (Array.isArray(data.payload)) {
+          this.list = [...data.payload];
+        }
         this.$store.commit('wipList', this.list);
       })
       .catch((err) => {
