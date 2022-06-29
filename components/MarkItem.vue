@@ -145,11 +145,12 @@ export default {
   props: {
     landNumber: { type: String, require: true },
     mark: { type: Object, require: true },
+    open: { type: Object, require: true }
   },
   mixins: [CaseBase],
   data: () => ({
     sendRaw: false,
-    detail: true,
+    detail: false,
     slide: 0,
     ts: +new Date(),
     uploadFile: undefined,
@@ -271,7 +272,13 @@ export default {
       } else {
         this.uploadFileBlob = undefined;
       }
+    },
+    open(flag) {
+      this.detail = flag;
     }
+  },
+  created() {
+    this.detail = this.open;
   },
   methods: {
     openInNewWindow(src) {

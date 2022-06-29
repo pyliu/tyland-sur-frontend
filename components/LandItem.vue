@@ -11,7 +11,6 @@
 
     b-button.p-0.border-0.mr-1(size="sm", :variant="collapseVariant", @click="toggleDetail")
       b-icon(:icon="collapseIcon")
-    
     a(href="#", v-b-tooltip="`建立人：${userMap.get(landCreator) || landCreator}`", @click="toggleDetail") {{ formatedLandNumber }}
     b-badge.mx-1(v-if="markCount > 0", variant="primary", pill, title="界標數") {{ markCount }}
     b-button.p-1.border-0.ml-auto(
@@ -26,6 +25,7 @@
         font-scale="1.3"
       )
       span.ml-1 界標
+    b-checkbox.ml-1.mt-1(v-model="collapseAll", size="sm", switch, v-b-tooltip="展開全部界標") 展開全部
 
   b-modal(
     ref="add-mark-modal",
@@ -63,7 +63,8 @@
       b-list-group-item.p-1(v-for="(mark, idx) in marks", :key="`mark_${idx}`"): MarkItem(
         :raw="raw",
         :land-number="landNumber",
-        :mark="mark"
+        :mark="mark",
+        :open="collapseAll"
         @remove="removeMark(idx)"
       )
 </template>
@@ -81,6 +82,7 @@ export default {
   mixins: [CaseBase],
   data: () => ({
     detail: true,
+    collapseAll: false,
     addMarkType: "其他",
     addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
     addMarkOther: "",
