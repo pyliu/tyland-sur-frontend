@@ -20,7 +20,9 @@ div
       b-card-title {{ formatedCaseId }}
       b-card-sub-title.d-flex.justify-content-between.align-items-center
         span {{ `立案者：${userMap.get(creator) || creator}` }}
-        b-button.mt-1(
+        span(v-if="!isOwner") 複丈日期：{{ opdate }}
+        span(v-if="!isOwner") {{ sectionCode }} - {{ section }}
+        b-button.ml-auto.mt-1(
           v-if="isOwner",
           size="sm",
           :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
@@ -30,19 +32,18 @@ div
         )
           b-icon.mr-1(icon="pencil-square")
           span 修改
-      b-card-text
+      b-card-text(v-if="isOwner")
         b-input-group.my-1(prepend="　　地段"): b-select(
-          v-model="caseData.section",
-          :options="sectionOpts",
-          :state="sectionOK",
-          :disabled="!isOwner"
-        )
+            v-model="caseData.section",
+            :options="sectionOpts",
+            :state="sectionOK",
+            :disabled="!isOwner"
+          )
         b-input-group(prepend="複丈日期"): b-input(
           v-model="caseData.opdate",
           type="date",
           :max="maxOpdate",
-          :state="opdateOK",
-          :readonly="!isOwner"
+          :state="opdateOK"
         )
     
     hr
