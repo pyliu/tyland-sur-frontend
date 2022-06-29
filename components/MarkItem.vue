@@ -158,8 +158,8 @@ export default {
     supportTypes: ["image/jpeg" /*, 'image/png', 'image/gif'*/],
     distance: "near",
     distanceOpts: [
-      { text: "第2張", value: "near" },
-      { text: "第1張", value: "far" }
+      { text: "第1張", value: "far" },
+      { text: "第2張", value: "near" }
     ],
   }),
   computed: {
