@@ -99,7 +99,7 @@ export default {
     filter() {
       const filter = {};
       !isEmpty(this.year) && (filter.year = ("000" + this.year).slice(-3));
-      if (isEmpty(this.code)) {
+      if (isEmpty(this.code) || (this.code?.startsWith('^') && this.code !== `^${this.site}`)) {
         filter.code = `^${this.site}`;
       } else {
         filter.code = this.code;
