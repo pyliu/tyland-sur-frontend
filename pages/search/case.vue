@@ -99,7 +99,11 @@ export default {
     filter() {
       const filter = {};
       !isEmpty(this.year) && (filter.year = ("000" + this.year).slice(-3));
-      !isEmpty(this.code) && (filter.code = this.code);
+      if (isEmpty(this.code)) {
+        filter.code = `^${this.site}`;
+      } else {
+        filter.code = this.code;
+      }
       !isEmpty(this.num) && (filter.num = ("000000" + this.num).slice(-6));
       !isEmpty(this.section) && (filter.section = this.section);
       !isEmpty(this.opdate) && (filter.opdate = this.opdate);
