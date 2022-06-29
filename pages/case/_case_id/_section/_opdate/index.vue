@@ -35,7 +35,7 @@ div
           v-model="caseData.section",
           :options="sectionOpts",
           :state="sectionOK",
-          :readonly="!isOwner"
+          :disabled="!isOwner"
         )
         b-input-group(prepend="複丈日期"): b-input(
           v-model="caseData.opdate",
