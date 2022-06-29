@@ -149,7 +149,7 @@ export default {
   mixins: [CaseBase],
   data: () => ({
     sendRaw: false,
-    detail: false,
+    detail: true,
     slide: 0,
     ts: +new Date(),
     uploadFile: undefined,

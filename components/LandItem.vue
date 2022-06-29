@@ -80,7 +80,7 @@ export default {
   },
   mixins: [CaseBase],
   data: () => ({
-    detail: false,
+    detail: true,
     addMarkType: "其他",
     addMarkOpts: ["鋼釘", "塑膠樁", "水泥樁", "噴漆", "其他"],
     addMarkOther: "",
