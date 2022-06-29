@@ -23,7 +23,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: '界標閱覽系統-桃園市桃園地政事務所',
+    title: '界標閱覽系統-桃園市地政局',
     htmlAttrs: {
       lang: 'zh_TW'
     },
