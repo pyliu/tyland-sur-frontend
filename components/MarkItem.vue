@@ -219,10 +219,12 @@ export default {
       return `${this.basicImgPath}/${this.distance}?ts=${this.ts}`;
     },
     farImg() {
-      return `${this.basicImgPath}/far?ts=${this.ts}`;
+      // return `${this.basicImgPath}/far?ts=${this.ts}`;
+      return `${this.basicImgPath}/far`;
     },
     nearImg() {
-      return `${this.basicImgPath}/near?ts=${this.ts}`;
+      // return `${this.basicImgPath}/near?ts=${this.ts}`;
+      return `${this.basicImgPath}/near`;
     },
     uploadUrl() {
       return `${this.basicImgPath}/${this.distance}`;

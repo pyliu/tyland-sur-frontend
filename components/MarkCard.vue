@@ -69,10 +69,12 @@ export default {
       return `/mark/${this.caseId}/${this.raw?.section}/${this.raw?.opdate}/${this.raw?.number}/${this.markSerial}`;
     },
     farImg() {
-      return `${this.basicImgPath}/far?ts=${this.ts}`;
+      // return `${this.basicImgPath}/far?ts=${this.ts}`;
+      return `${this.basicImgPath}/far`;
     },
     nearImg() {
-      return `${this.basicImgPath}/near?ts=${this.ts}`;
+      // return `${this.basicImgPath}/near?ts=${this.ts}`;
+      return `${this.basicImgPath}/near`;
     },
     subtitle() {
       return `#${this.markSerial} / ${this.markType}`;
