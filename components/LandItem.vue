@@ -77,7 +77,8 @@ export default {
   emit: ["remove"],
   props: {
     landNumber: { type: String, require: true },
-    landCreator: { type: String, require: true }
+    landCreator: { type: String, require: true },
+    openAll: { type: Boolean, default: false }
   },
   mixins: [CaseBase],
   data: () => ({
@@ -145,6 +146,7 @@ export default {
   },
   created() {
     this.incrementAddMarkSerial();
+    this.collapseAll = this.openAll;
   },
   methods: {
     incrementAddMarkSerial() {

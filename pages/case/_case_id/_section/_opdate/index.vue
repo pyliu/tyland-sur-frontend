@@ -8,16 +8,6 @@ div
         span {{ `立案者：${userMap.get(creator) || creator}` }}
         span(v-if="!isOwner") 段小段：{{ sectionCode }} - {{ section }}
         span(v-if="!isOwner") 複丈日期：{{ opdate }}
-        b-button(
-          v-if="isOwner",
-          size="sm",
-          :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
-          :disabled="modifyBtnDisabled",
-          @click="modify",
-          pill
-        )
-          b-icon.mr-1(icon="pencil-square")
-          span 修改
       b-card-text(v-if="isOwner")
         b-input-group.my-1(prepend="　　地段"): b-select(
             v-model="caseData.section",
@@ -31,6 +21,16 @@ div
           :max="maxOpdate",
           :state="opdateOK"
         )
+        .mt-2: b-button(
+          size="sm",
+          :variant="modifyBtnDisabled ? 'outline-secondary' : 'primary'",
+          :disabled="modifyBtnDisabled",
+          @click="modify",
+          pill,
+          block
+        )
+          b-icon.mr-1(icon="pencil-square")
+          span 修改
     
     hr
     
@@ -84,6 +84,7 @@ div
           :raw="caseData"
           :land-number="land.number"
           :land-creator="land.creator"
+          open-all
           @remove="removeLandNumber"
         )
     .text-center.my-3(v-else) ⚠ 無資料
