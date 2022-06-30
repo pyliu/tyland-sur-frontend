@@ -34,12 +34,12 @@
 
       b-carousel#carousel-1(
         v-model="slide",
-        :interval="5000",
-        controls="",
-        indicators="",
+        controls,
+        indicators,
         background="#ababab",
         img-width="256",
         img-height="120",
+        :interval="slideInterval",
         style="text-shadow: 3px 3px 4px #333",
         @sliding-start="(function () {})()",
         @sliding-end="(function () {})()"
@@ -149,13 +149,14 @@ export default {
   props: {
     landNumber: { type: String, require: true },
     mark: { type: Object, require: true },
-    open: { type: Object, require: true }
+    open: { type: Boolean, require: true }
   },
   mixins: [CaseBase],
   data: () => ({
     sendRaw: false,
     detail: false,
     slide: 0,
+    slideInterval: 5000,
     ts: +new Date(),
     uploadFile: undefined,
     uploadFileBlob: undefined,

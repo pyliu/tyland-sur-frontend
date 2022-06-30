@@ -3,29 +3,27 @@
   b-card.text-left(
     ref="card-detail",
     header-bg-variant="secondary",
-    header-text-variant="white"
+    header-text-variant="white",
+    no-body
   )
     template(#header): .d-flex.justify-content-between.align-items-center
       span 編號：\#{{ markSerial }}
       span 種類：{{ markType }}
-
-    h5 📸 第1張
-    a(href="#", @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto.shadow(
-      title="點擊開新視窗顯示",
-      :src="farImg",
-      thumbnail,
-      fluid,
-      block
-    )
-    hr
-    h5 📸 第2張
-    a(href="#", @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto.shadow(
-      title="點擊開新視窗顯示",
-      :src="nearImg",
-      thumbnail,
-      fluid,
-      block
-    )
+    .d-flex.mx-auto.center.p-1
+      a(href="#", @click="openInNewWindow(farImg)"): b-img-lazy.mr-1.shadow(
+        title="第1張，點擊開新視窗顯示",
+        :src="farImg",
+        thumbnail,
+        fluid,
+        block
+      )
+      a(href="#", @click="openInNewWindow(nearImg)"): b-img-lazy.shadow(
+        title="第2張，點擊開新視窗顯示",
+        :src="nearImg",
+        thumbnail,
+        fluid,
+        block
+      )
 
     template(#footer): .d-flex.justify-content-between.align-items-center.text-muted
       span 上傳者：{{ markCreator }}
