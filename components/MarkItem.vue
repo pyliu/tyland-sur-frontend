@@ -50,6 +50,7 @@
           content-visible-up="sm",
           caption-tag="h3",
           :caption="markCaption",
+          :img-alt="farImgAlt",
           img-blank
         ): template(#img)
           a(href="#",  @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto(
@@ -65,6 +66,7 @@
           content-visible-up="sm",
           caption-tag="h3",
           :caption="markCaption",
+          :img-alt="nearImgAlt",
           img-blank
         ): template(#img)
           a(href="#",  @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto(
@@ -227,6 +229,12 @@ export default {
     nearImg() {
       // return `${this.basicImgPath}/near?ts=${this.ts}`;
       return `${this.basicImgPath}/near`;
+    },
+    farImgAlt() {
+      return `#${this.markSerial} - ${this.markType} - 第1張`
+    },
+    nearImgAlt() {
+      return `#${this.markSerial} - ${this.markType} - 第2張`
     },
     uploadUrl() {
       return `${this.basicImgPath}/${this.distance}`;
