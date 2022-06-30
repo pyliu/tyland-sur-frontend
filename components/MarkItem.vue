@@ -34,7 +34,7 @@
 
       b-carousel#carousel-1(
         v-model="slide",
-        :interval="0",
+        :interval="5000",
         controls="",
         indicators="",
         background="#ababab",
