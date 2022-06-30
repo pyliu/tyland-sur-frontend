@@ -49,7 +49,8 @@
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
-          :caption="markCaption"
+          :caption="markCaption",
+          img-blank
         ): template(#img)
           a(href="#",  @click="openInNewWindow(farImg)"): b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
@@ -63,7 +64,8 @@
           text-tag="h4",
           content-visible-up="sm",
           caption-tag="h3",
-          :caption="markCaption"
+          :caption="markCaption",
+          img-blank
         ): template(#img)
           a(href="#",  @click="openInNewWindow(nearImg)"): b-img-lazy.mx-auto(
             title="點擊開新視窗顯示"
