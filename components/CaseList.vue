@@ -82,6 +82,11 @@ export default {
       }
     ]
   }),
+  watch: {
+    loading(flag) {
+      flag && (this.currentPage = 1);
+    }
+  },
   computed: {
     count() { return this.list.length; },
     caption() { return `找到 ${this.count} 筆案件資料`}
