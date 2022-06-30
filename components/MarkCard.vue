@@ -10,14 +10,14 @@
       span 編號：\#{{ markSerial }}
       span 種類：{{ markType }}
     .d-flex.mx-auto.center.p-1
-      a(href="#", @click="openInNewWindow(farImg)"): b-img-lazy.mr-1.shadow(
+      a(href="#", @click="openInModal(farImg)"): b-img-lazy.mr-1.shadow(
         title="第1張，點擊開新視窗顯示",
         :src="farImg",
         thumbnail,
         fluid,
         block
       )
-      a(href="#", @click="openInNewWindow(nearImg)"): b-img-lazy.shadow(
+      a(href="#", @click="openInModal(nearImg)"): b-img-lazy.shadow(
         title="第2張，點擊開新視窗顯示",
         :src="nearImg",
         thumbnail,
@@ -83,6 +83,25 @@ export default {
     openInNewWindow(src) {
       window.open(src, "_blank", "noopener");
     },
+    openInModal(src) {
+      this.modal(this.$createElement('b-img', {
+        props: {
+          src,
+          thumbnail: true,
+          fluid: true,
+          block: true,
+          center: true,
+          title: '彈出新視窗顯示'
+        },
+        class: 'shadow',
+        on: {
+          click: () => this.openInNewWindow(src)
+        }
+      }), {
+        size: 'xl',
+        title: '預覽圖片'
+      })
+    }
   },
 };
 </script>
