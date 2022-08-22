@@ -96,7 +96,7 @@ import isEmpty from "lodash/isEmpty";
 
 export default {
   head: {
-    title: "案件詳情-界標閱覽系統",
+    title: "案件詳情-界標即可拍系統",
   },
   data: () => ({
     modification: true,

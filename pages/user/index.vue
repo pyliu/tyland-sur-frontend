@@ -50,7 +50,7 @@ import UserCard from "~/components/UserCard.vue";
 
 export default {
   head: {
-    title: "使用者管理-界標閱覽系統"
+    title: "使用者管理-界標即可拍系統"
   },
   components: { UserCard },
   data: () => ({
