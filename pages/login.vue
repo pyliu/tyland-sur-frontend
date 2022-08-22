@@ -1,6 +1,6 @@
 <template lang="pug">
 b-container: b-card
-  b-card-title.text-center 登入界標閱覽系統
+  b-card-title.text-center 登入界標即可拍系統
   b-container
   b-form-group(
     label="帳號",
@@ -41,7 +41,7 @@ b-container: b-card
 export default {
   auth: "guest",
   head: {
-    title: "登入系統-界標閱覽系統",
+    title: "登入系統-界標即可拍",
   },
   data: () => ({
     loginInfo: {
