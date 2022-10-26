@@ -49,10 +49,14 @@ Vue.mixin({
       return site?.toUpperCase();
     }
   },
-  mounted() {
+  created() {
     // workaround for the site data dynamic loading
-    const debounceLoadSiteData = debounce(this.loadSiteData, 200);
-    debounceLoadSiteData();
+    if (!this.debounceLoadSiteData) {
+      this.debounceLoadSiteData = debounce(this.loadSiteData, 200);
+    }
+  },
+  mounted() {
+    this.debounceLoadSiteData();
   },
   methods: {
     ...mapActions(["checkSession"]),

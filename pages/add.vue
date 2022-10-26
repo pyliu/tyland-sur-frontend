@@ -131,24 +131,28 @@ export default {
       };
     },
   },
-  created() {
-    this.creator = this.userId;
-    this.opdate = this.maxOpdate = this.today;
-    this.loadRecentCases();
-    this.loadSiteData();
-    // codes/sections which is Map structure from global mixin
-    this.codes.forEach((val, key, map) => {
-      this.codeOpts.push({
-        text: `${key} ${val}`,
-        value: key,
+  async created() {
+    try {
+      this.creator = this.userId;
+      this.opdate = this.maxOpdate = this.today;
+      this.loadRecentCases();
+      await this.loadSiteData();
+      // codes/sections which is Map structure from global mixin
+      this.codes.forEach((val, key, map) => {
+        this.codeOpts.push({
+          text: `${key} ${val}`,
+          value: key,
+        });
       });
-    });
-    this.sections.forEach((val, key, map) => {
-      this.sectionOpts.push({
-        text: `${key} ${val}`,
-        value: key,
+      this.sections.forEach((val, key, map) => {
+        this.sectionOpts.push({
+          text: `${key} ${val}`,
+          value: key,
+        });
       });
-    });
+    } catch (e) {
+      console.error(e)
+    }
   },
   methods: {
     notEmpty(val) {
