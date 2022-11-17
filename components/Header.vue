@@ -42,9 +42,13 @@ section
         NuxtLink(to="/search/uploader") 搜尋上傳者
     hr
     div(v-if="userAuthority.isAdmin")
-      ul: li.h5
-        b-icon.mr-2(icon="people-fill", variant="danger")
-        NuxtLink(to="/user") 使用者管理
+      ul
+        li.h5
+          b-icon.mr-2(icon="people-fill", variant="danger")
+          NuxtLink(to="/user") 使用者管理
+        li.h5
+          b-icon.mr-2(icon="info-square-fill", variant="primary")
+          NuxtLink(to="/stats") 統計數據
       hr
     ul: li.h5
       b-icon.mr-2(icon="key", variant="danger" rotate="315")
