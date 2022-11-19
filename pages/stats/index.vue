@@ -1,7 +1,9 @@
 <template lang="pug">
 b-card.border-0(no-body)
   b-card-title: .d-flex.align-items-center {{ site }} 統計數據 {{ stDate }} ~ {{ edDate }}
-  b-card-sub-title #[span(v-if="!stDateState || !edDateState") ❌]#[span(v-else) ✅] 統計日期區間
+  b-card-sub-title: .d-flex.align-items-center 
+    span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
+    span(v-else) ✅ 統計日期區間
   .d-flex.align-items-center.my-2
     b-datepicker(v-model="stDate", :state="stDateState", :max="today")
     .mx-1 ~
@@ -33,16 +35,19 @@ export default {
     }
   },
   created() {
-    const firstDayOfMonth = new Date();
-    firstDayOfMonth.setDate(1);
-    this.stDate = firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
-    this.edDate = this.today;
+    this.resetDates();
     this.loadUploadedImageCount();
     this.loadCasesCount();
     this.loadMarksCount();
   },
   watch: { },
   methods: {
+    resetDates() {
+      const firstDayOfMonth = new Date();
+      firstDayOfMonth.setDate(1);
+      this.stDate = firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
+      this.edDate = this.today;
+    },
     loadUploadedImageCount() {
       this.isBusy = true;
       this.$axios
