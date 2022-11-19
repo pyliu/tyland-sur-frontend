@@ -1,24 +1,42 @@
 <template lang="pug">
 b-card.border-0(no-body)
-  b-card-title: .d-flex.align-items-center {{ site }} 統計數據
-  b-card-body
-    h4 目前建立案件數量：{{ caseCount }}
-    h4 目前建立界標數量：{{ markCount }}
-    h4 目前上傳圖檔數量：{{ imgCount }}
+  b-card-title: .d-flex.align-items-center {{ site }} 統計數據 {{ stDate }} ~ {{ edDate }}
+  b-card-sub-title #[span(v-if="!stDateState || !edDateState") ❌]#[span(v-else) ✅] 統計日期區間
+  .d-flex.align-items-center.my-2
+    b-datepicker(v-model="stDate", :state="stDateState", :max="today")
+    .mx-1 ~
+    b-datepicker(v-model="edDate", :state="edDateState", :max="today")
+  h5 目前建立案件數量：{{ caseCount }}
+  h5 目前建立界標數量：{{ markCount }}
+  h5 目前上傳圖檔數量：{{ imgCount }}
   
 </template>
 
 <script>
 export default {
   head: {
-    title: "綜合統計-界標即可拍系統"
+    title: "綜合統計數據-界標即可拍系統"
   },
   data: () => ({
+    stDate: '',
+    edDate: '',
     imgCount: '讀取中',
     caseCount: '讀取中',
     markCount: '讀取中'
   }),
+  computed: {
+    stDateState() {
+      return !this.isEmpty(this.stDate) && this.stDate <= this.edDate;
+    },
+    edDateState() {
+      return !this.isEmpty(this.edDate) && this.edDate >= this.stDate;
+    }
+  },
   created() {
+    const firstDayOfMonth = new Date();
+    firstDayOfMonth.setDate(1);
+    this.stDate = firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
+    this.edDate = this.today;
     this.loadUploadedImageCount();
     this.loadCasesCount();
     this.loadMarksCount();

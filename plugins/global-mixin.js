@@ -14,13 +14,7 @@ Vue.mixin({
     ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList", "userMap", "codes", "sections", "loaded"]),
     today() {
       const now = new Date();
-      return (
-        now.getFullYear() +
-        "-" +
-        ("0" + (now.getMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + now.getDate()).slice(-2)
-      );
+      return now.toLocaleDateString('zh-TW').replaceAll('/', '-');
     },
     userId() {
       return this.user?.id;
@@ -89,6 +83,7 @@ Vue.mixin({
         ("0" + now.getSeconds()).slice(-2)
       );
     },
+    isEmpty,
     makeToast(message, opts = {}) {
       // skip making toast when document is not visible
       if (document && document.hidden) {
