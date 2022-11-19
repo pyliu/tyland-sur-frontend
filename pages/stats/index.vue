@@ -80,7 +80,7 @@ export default {
           this.loadCasesCount(),
           this.loadMarksCount()
         ]);
-        console.warn(t1, t2, t3);
+        // console.warn(t1, t2, t3);
       } catch(err) {
         console.error(err);
       } finally {
