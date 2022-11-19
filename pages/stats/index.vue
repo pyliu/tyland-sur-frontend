@@ -8,9 +8,18 @@ b-card.border-0(no-body)
     b-datepicker(v-model="stDate", :state="stDateState", :max="today")
     .mx-1 ~
     b-datepicker(v-model="edDate", :state="edDateState", :max="today")
-  h5 目前建立案件數量：{{ caseCount }}
-  h5 目前建立界標數量：{{ markCount }}
-  h5 目前上傳圖檔數量：{{ imgCount }}
+  b-button(
+    v-if="stDateState && edDateState"
+    variant="outline-primary",
+    :disabled="isBusy",
+    @click="search"
+  ) 🔍 查詢
+  transition(name="slide-fade", mode="out-in")
+    b-spinner.my-2(v-if="isBusy")
+    div(v-else)
+      h5 目前建立案件數量：{{ caseCount }}
+      h5 目前建立界標數量：{{ markCount }}
+      h5 目前上傳圖檔數量：{{ imgCount }}
   
 </template>
 
@@ -20,11 +29,12 @@ export default {
     title: "綜合統計數據-界標即可拍系統"
   },
   data: () => ({
+    firstDayOfMonth: new Date(),
     stDate: '',
     edDate: '',
-    imgCount: '讀取中',
-    caseCount: '讀取中',
-    markCount: '讀取中'
+    imgCount: '',
+    caseCount: '',
+    markCount: ''
   }),
   computed: {
     stDateState() {
@@ -36,21 +46,38 @@ export default {
   },
   created() {
     this.resetDates();
-    this.loadUploadedImageCount();
-    this.loadCasesCount();
-    this.loadMarksCount();
+    this.firstDayOfMonth.setDate(1);
   },
-  watch: { },
+  watch: {
+    isBusy(flag) {
+      if (flag) {
+        this.imgCount = '讀取中';
+        this.caseCount = '讀取中';
+        this.markCount= '讀取中';
+      }
+    }
+  },
   methods: {
     resetDates() {
-      const firstDayOfMonth = new Date();
-      firstDayOfMonth.setDate(1);
-      this.stDate = firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
+      this.stDate = this.firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
       this.edDate = this.today;
     },
+    async search() {
+      try {
+        this.isBusy = true;
+        await Promise.all([
+          this.loadUploadedImageCount(),
+          this.loadCasesCount(),
+          this.loadMarksCount()
+        ]);
+      } catch(err) {
+        console.error(err);
+      } finally {
+        this.isBusy = false;
+      }
+    },
     loadUploadedImageCount() {
-      this.isBusy = true;
-      this.$axios
+      return this.$axios
         .get(`/api/stats/${this.site}/uploaded`)
         .then(({ data }) => {
           this.imgCount = data.payload
@@ -59,12 +86,10 @@ export default {
           console.warn(err);
         })
         .finally(() => {
-          this.isBusy = false;
         });
     },
     loadCasesCount() {
-      this.isBusy = true;
-      this.$axios
+      return this.$axios
         .get(`/api/stats/${this.site}/cases`)
         .then(({ data }) => {
           this.caseCount = data.payload
@@ -73,12 +98,10 @@ export default {
           console.warn(err);
         })
         .finally(() => {
-          this.isBusy = false;
         });
     },
     loadMarksCount() {
-      this.isBusy = true;
-      this.$axios
+      return this.$axios
         .get(`/api/stats/${this.site}/marks`)
         .then(({ data }) => {
           this.markCount = data.payload
@@ -87,7 +110,6 @@ export default {
           console.warn(err);
         })
         .finally(() => {
-          this.isBusy = false;
         });
     }
   }
@@ -95,4 +117,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 </style>
