@@ -5,9 +5,19 @@ b-card.border-0(no-body)
     span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
     span(v-else) ✅ 統計日期區間
   .d-flex.align-items-center.my-2
-    b-datepicker(v-model="stDate", :state="stDateState", :max="today")
+    b-datepicker(
+      v-model="stDate",
+      :state="stDateState",
+      :max="today",
+      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+    )
     .mx-1 ~
-    b-datepicker(v-model="edDate", :state="edDateState", :max="today")
+    b-datepicker(
+      v-model="edDate",
+      :state="edDateState",
+      :max="today", dark,
+      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+    )
   b-button(
     v-if="stDateState && edDateState"
     variant="outline-primary",
@@ -65,11 +75,12 @@ export default {
     async search() {
       try {
         this.isBusy = true;
-        await Promise.all([
+        const [t1, t2, t3] = await Promise.all([
           this.loadUploadedImageCount(),
           this.loadCasesCount(),
           this.loadMarksCount()
         ]);
+        console.warn(t1, t2, t3);
       } catch(err) {
         console.error(err);
       } finally {
@@ -77,40 +88,43 @@ export default {
       }
     },
     loadUploadedImageCount() {
-      return this.$axios
+      return new Promise((resolve, reject) => this.$axios
         .get(`/api/stats/${this.site}/uploaded`)
         .then(({ data }) => {
-          this.imgCount = data.payload
+          this.imgCount = data.payload;
+          resolve(data);
         })
         .catch((err) => {
-          console.warn(err);
+          console.error(err);
+          reject(err);
         })
-        .finally(() => {
-        });
+      );
     },
     loadCasesCount() {
-      return this.$axios
+      return new Promise((resolve, reject) => this.$axios
         .get(`/api/stats/${this.site}/cases`)
         .then(({ data }) => {
-          this.caseCount = data.payload
+          this.caseCount = data.payload;
+          resolve(data);
         })
         .catch((err) => {
-          console.warn(err);
+          console.error(err);
+          reject(err);
         })
-        .finally(() => {
-        });
+      );
     },
     loadMarksCount() {
-      return this.$axios
+      return new Promise((resolve, reject) => this.$axios
         .get(`/api/stats/${this.site}/marks`)
         .then(({ data }) => {
-          this.markCount = data.payload
+          this.markCount = data.payload;
+          resolve(data);
         })
         .catch((err) => {
-          console.warn(err);
+          console.error(err);
+          reject(err);
         })
-        .finally(() => {
-        });
+      );
     }
   }
 };
