@@ -89,7 +89,7 @@ export default {
     },
     loadUploadedImageCount() {
       return new Promise((resolve, reject) => this.$axios
-        .get(`/api/stats/${this.site}/uploaded`)
+        .get(`/api/stats/${this.site}/uploadedMongoDB`)
         .then(({ data }) => {
           this.imgCount = data.payload;
           resolve(data);
