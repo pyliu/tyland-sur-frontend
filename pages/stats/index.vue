@@ -102,7 +102,8 @@ export default {
     },
     loadCasesCount() {
       return new Promise((resolve, reject) => this.$axios
-        .get(`/api/stats/${this.site}/cases`)
+        // .get(`/api/stats/${this.site}/cases`)
+        .post(`/api/stats/mongodb/cases/${this.site}/${this.stDate}/${this.edDate}`)
         .then(({ data }) => {
           this.caseCount = data.payload;
           resolve(data);
