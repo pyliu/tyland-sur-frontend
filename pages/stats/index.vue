@@ -89,7 +89,7 @@ export default {
     },
     loadUploadedImageCount() {
       return new Promise((resolve, reject) => this.$axios
-        .get(`/api/stats/mongodb/${this.site}/uploaded`)
+        .post(`/api/stats/mongodb/uploaded/${this.site}/${this.stDate}/${this.edDate}`)
         .then(({ data }) => {
           this.imgCount = data.payload;
           resolve(data);
@@ -115,7 +115,7 @@ export default {
     },
     loadMarksCount() {
       return new Promise((resolve, reject) => this.$axios
-        .get(`/api/stats/${this.site}/marks`)
+        .post(`/api/stats/mongodb/marks/${this.site}/${this.stDate}/${this.edDate}`)
         .then(({ data }) => {
           this.markCount = data.payload;
           resolve(data);
