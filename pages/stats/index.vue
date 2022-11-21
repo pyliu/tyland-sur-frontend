@@ -2,7 +2,7 @@
 b-card.border-0(no-body)
   b-card-title: .d-flex.align-items-center #[b-icon.mr-1(icon="bar-chart-line")] {{ site }} 統計數據
   b-card-sub-title: .d-flex.align-items-center 
-    span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
+    span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="success", size="sm", @click="resetDates") 預設值]
     span(v-else) ✅ 統計日期區間 {{ stDate }} ~ {{ edDate }}
   .d-flex.align-items-center.my-1
     b-datepicker.h-100(
@@ -30,6 +30,10 @@ b-card.border-0(no-body)
         :disabled="isBusy",
         @click="search"
       ) 🔍 查詢
+      b-button.ml-1(
+        variant="outline-success",
+        @click="resetDates"
+      ) ♻ 預設
   hr(v-if="calculated")
   transition(name="slide-fade", mode="out-in")
     b-spinner.my-2(v-if="isBusy")
