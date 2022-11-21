@@ -24,7 +24,7 @@ b-card.border-0(no-body)
       size="sm"
     )
   transition(name="slide-fade", mode="out-in")
-    .d-flex.justify-content-center(v-if="stDateState && edDateState")
+    .d-flex.justify-content-center.mt-2(v-if="stDateState && edDateState")
       b-button(
         variant="primary",
         :disabled="isBusy",
