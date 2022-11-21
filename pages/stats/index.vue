@@ -4,7 +4,7 @@ b-card.border-0(no-body)
   b-card-sub-title: .d-flex.align-items-center 
     span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
     span(v-else) ✅ 統計日期區間 {{ stDate }} ~ {{ edDate }}
-  .d-flex.align-items-center.my-2
+  .d-flex.align-items-center.my-1
     b-datepicker.h-100(
       v-model="stDate",
       :state="stDateState",
@@ -24,15 +24,16 @@ b-card.border-0(no-body)
       size="sm"
     )
   transition(name="slide-fade", mode="out-in")
-    .d-flex.justify-content-center.mb-2(v-if="stDateState && edDateState")
+    .d-flex.justify-content-center(v-if="stDateState && edDateState")
       b-button(
         variant="primary",
         :disabled="isBusy",
         @click="search"
       ) 🔍 查詢
+  hr(v-if="calculated")
   transition(name="slide-fade", mode="out-in")
     b-spinner.my-2(v-if="isBusy")
-    div(v-else-if="caseCount === '' || markCount === '' || imgCount === ''")
+    div(v-else-if="!calculated")
     div(v-else)
       h5 目前建立案件數量：{{ caseCount }}
       h5 目前建立界標數量：{{ markCount }}
@@ -59,6 +60,9 @@ export default {
     },
     edDateState() {
       return !this.isEmpty(this.edDate) && this.edDate >= this.stDate;
+    },
+    calculated() {
+      return this.caseCount !== '' && this.markCount !== '' || this.imgCount !== ''
     }
   },
   created() {
