@@ -5,7 +5,7 @@ b-card.border-0(no-body)
     span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
     span(v-else) ✅ 統計日期區間 {{ stDate }} ~ {{ edDate }}
   .d-flex.align-items-center.my-2
-    b-datepicker(
+    b-datepicker.h-100(
       v-model="stDate",
       :state="stDateState",
       :max="today",
@@ -14,7 +14,7 @@ b-card.border-0(no-body)
       size="sm"
     )
     .mx-1 ~
-    b-datepicker(
+    b-datepicker.h-100(
       v-model="edDate",
       :state="edDateState",
       :max="today",
