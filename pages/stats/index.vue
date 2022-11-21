@@ -1,31 +1,38 @@
 <template lang="pug">
 b-card.border-0(no-body)
-  b-card-title: .d-flex.align-items-center {{ site }} 統計數據 {{ stDate }} ~ {{ edDate }}
+  b-card-title: .d-flex.align-items-center #[b-icon.mr-1(icon="bar-chart-line")] {{ site }} 統計數據
   b-card-sub-title: .d-flex.align-items-center 
     span(v-if="!stDateState || !edDateState") ❌ 日期區間不正確，請重新選擇 #[b-button(variant="outline-success", size="sm", @click="resetDates") 預設值]
-    span(v-else) ✅ 統計日期區間
+    span(v-else) ✅ 統計日期區間 {{ stDate }} ~ {{ edDate }}
   .d-flex.align-items-center.my-2
     b-datepicker(
       v-model="stDate",
       :state="stDateState",
       :max="today",
-      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }",
+      boundary="viewport",
+      size="sm"
     )
     .mx-1 ~
     b-datepicker(
       v-model="edDate",
       :state="edDateState",
-      :max="today", dark,
-      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+      :max="today",
+      :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }",
+      dark,
+      boundary="viewport",
+      size="sm"
     )
-  b-button(
-    v-if="stDateState && edDateState"
-    variant="outline-primary",
-    :disabled="isBusy",
-    @click="search"
-  ) 🔍 查詢
+  transition(name="slide-fade", mode="out-in")
+    .d-flex.justify-content-center.mb-2(v-if="stDateState && edDateState")
+      b-button(
+        variant="primary",
+        :disabled="isBusy",
+        @click="search"
+      ) 🔍 查詢
   transition(name="slide-fade", mode="out-in")
     b-spinner.my-2(v-if="isBusy")
+    div(v-else-if="caseCount === '' || markCount === '' || imgCount === ''")
     div(v-else)
       h5 目前建立案件數量：{{ caseCount }}
       h5 目前建立界標數量：{{ markCount }}
@@ -72,6 +79,9 @@ export default {
       this.firstDayOfMonth.setDate(1);
       this.stDate = this.firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
       this.edDate = this.today;
+      this.imgCount = '';
+      this.caseCount = '';
+      this.markCount= '';
     },
     async search() {
       try {
