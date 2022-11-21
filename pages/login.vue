@@ -25,7 +25,8 @@ b-container: b-card
     v-model="loginInfo.password",
     :state="pwState",
     placeholder="請輸入密碼",
-    trim
+    trim,
+    @keyup.enter="userLogin"
   )
   .text-center: b-button(
     variant="primary",
@@ -83,34 +84,38 @@ export default {
   },
   methods: {
     userLogin() {
-      try {
-        this.isBusy = true;
-        this.clearStoreState();
-        this.$auth
-          .loginWith("local", {
-            data: { ...this.loginInfo, maxAge: this.maxAge },
-          })
-          .then(({ data }) => {
-            const site = this.loginInfo.userid?.substring(0, 2);
-            if (site) {
-              this.notify(data.message, { type: "success" });
-              this.loadSiteData(true);
-            } else {
-              this.alert(`無法辨識所別，目前登入使用者為 ${this.loginInfo.userid}`);
-            }
-          })
-          .catch((err) => {
-            console.warn(err);
-            this.warning("⚠ 登入失敗，認帳號密碼正確？帳戶是否已停用？");
-          })
-          .finally(() => {
-            this.loginInfo.userid = "";
-            this.loginInfo.password = "";
-            this.isBusy = false;
-          });
-      } catch (err) {
-        console.error(err);
-        this.alert(err.toString());
+      if (!this.isBusy) {
+        try {
+          this.isBusy = true;
+          this.clearStoreState();
+          this.$auth
+            .loginWith("local", {
+              data: { ...this.loginInfo, maxAge: this.maxAge },
+            })
+            .then(({ data }) => {
+              const site = this.loginInfo.userid?.substring(0, 2);
+              if (site) {
+                this.notify(data.message, { type: "success" });
+                this.loadSiteData(true);
+              } else {
+                this.alert(`無法辨識所別，目前登入使用者為 ${this.loginInfo.userid}`);
+              }
+            })
+            .catch((err) => {
+              console.warn(err);
+              this.warning("⚠ 登入失敗，認帳號密碼正確？帳戶是否已停用？");
+            })
+            .finally(() => {
+              setTimeout(() => {
+                this.loginInfo.userid = "";
+                this.loginInfo.password = "";
+                this.isBusy = false;
+              }, 1000);
+            });
+        } catch (err) {
+          console.error(err);
+          this.alert(err.toString());
+        }
       }
     },
   },
