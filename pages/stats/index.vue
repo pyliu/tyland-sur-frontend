@@ -56,7 +56,6 @@ export default {
   },
   created() {
     this.resetDates();
-    this.firstDayOfMonth.setDate(1);
   },
   watch: {
     isBusy(flag) {
@@ -69,6 +68,8 @@ export default {
   },
   methods: {
     resetDates() {
+      // reset to first day of the month
+      this.firstDayOfMonth.setDate(1);
       this.stDate = this.firstDayOfMonth.toLocaleDateString('zh-TW').replaceAll('/', '-');
       this.edDate = this.today;
     },
