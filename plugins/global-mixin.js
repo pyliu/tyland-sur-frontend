@@ -265,6 +265,12 @@ Vue.mixin({
     hideModalById(id) {
       this.$bvModal && this.$bvModal.hide(id);
     },
+    showModal (id) {
+      this.showModalById(id || 'dynamic-modal-control')
+    },
+    hideModal (id) {
+      this.hideModalById(id || 'dynamic-modal-control')
+    },
     modal(message, opts) {
       return new Promise((resolve, reject) => {
         if (this.$isServer) {
@@ -272,6 +278,7 @@ Vue.mixin({
         } else if (this.$bvModal) {
           const merged = Object.assign(
             {
+              id: 'dynamic-modal-control', // used for show/close by programming
               title: "訊息",
               size: "md",
               buttonSize: "sm",
