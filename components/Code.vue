@@ -56,12 +56,16 @@ export default {
     isModifyMode() {
       return this.mode !== 'add'
     },
+    idExisted() {
+      return Boolean(this.codes.get(this.codeId));
+    },
     isIdOK() {
-      if (isEmpty(this.codeId)) {
+      if (
+        isEmpty(this.codeId) ||
+        this.codeId.length !== 4 ||
+        this.idExisted
+      ) {
         return false;
-      }
-      if (this.codeId.length !== 4) {
-        return false
       }
       return true;
     },
@@ -134,7 +138,8 @@ export default {
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
-                // TODO: push the data code this.codes Map
+                // add new added data into store
+                this.codes.set(this.codeId, this.codeName);
               } else {
                 this.warning(data.message);
               }

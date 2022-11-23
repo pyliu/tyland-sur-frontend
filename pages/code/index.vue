@@ -1,7 +1,7 @@
 <template lang="pug">
 b-card.border-0(no-body)
-  h4 收件字
-  .d-flex.align-items-center
+  h4 管理收件字
+  .d-flex.flex-wrap.align-items-center
     b-button.my-1(
       variant="primary",
       @click="addCode"
@@ -13,7 +13,9 @@ b-card.border-0(no-body)
       @click="modifyCode(code)"
     ) {{ code.text }}
 
-  h4 段小段
+  hr
+
+  h4 管理段小段
   .d-flex.flex-wrap.align-items-center.text-nowrap
     b-button.my-1(
       variant="primary",
@@ -25,6 +27,8 @@ b-card.border-0(no-body)
       variant="outline-secondary",
       @click="modifySection(sect)"
     ) {{ sect.text }}
+  
+  hr
 </template>
 
 <script>
@@ -68,9 +72,9 @@ export default {
     addCode() {
       this.modal(this.$createElement(Code, {
         props: { mode: 'add' },
-        on: { close: () => this.$refs.code?.hide() }
+        on: { close: () => this.hideModal('add-code-modal') }
       }), {
-        ref: 'code',
+        id: 'add-code-modal',
         title: '新增收件字',
         size: 'sm',
         centered: true,
@@ -84,7 +88,7 @@ export default {
           inId: code.value,
           inName: code.text.split(' ')[1]
         },
-        on: { close: () => this.$refs.code?.hide() }
+        on: { close: () => this.hideModal() }
       }), {
         ref: 'code',
         title: '修改收件字',
@@ -96,7 +100,7 @@ export default {
     addSection() {
       this.modal(this.$createElement(Section, {
         props: { mode: 'add' },
-        on: { close: () => this.$refs.section?.hide() }
+        on: { close: () => this.hideModal() }
       }), {
         ref: 'section',
         title: '新增段小段',
@@ -112,7 +116,7 @@ export default {
           inId: sect.value,
           inName: sect.text.split(' ')[1]
         },
-        on: { close: () => this.$refs.section?.hide() }
+        on: { close: () => this.hideModal() }
       }), {
         ref: 'section',
         title: '修改段小段',

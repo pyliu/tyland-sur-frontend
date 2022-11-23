@@ -5,7 +5,7 @@ div(role="group")
     v-model="codeId",
     :state="isIdOK",
     :readonly="isModifyMode",
-    :placeholder="`... ${site}XX ...`",
+    :placeholder="`... 段小段代碼 ...`",
     aria-describedby="input-live-feedback",
     trim
   )
@@ -56,12 +56,18 @@ export default {
     isModifyMode() {
       return this.mode !== 'add'
     },
+    idExisted() {
+      return Boolean(this.sections.get(this.codeId));
+    },
     isIdOK() {
-      if (isEmpty(this.codeId)) {
+      if (
+        isEmpty(this.codeId) ||
+        this.idExisted ||
+        this.codeId.length !== 4 ||
+        parseInt(this.codeId) > 9999 ||
+        parseInt(this.codeId) < 1
+      ) {
         return false;
-      }
-      if (this.codeId.length !== 4) {
-        return false
       }
       return true;
     },
@@ -88,7 +94,7 @@ export default {
       this.confirm(`請確認是否要刪除段小段?<p>${this.codeId} ❌</p>`).then((YN) => {
         if (YN) {
           this.$axios
-            .delete(`/api/codes/${this.site}/${this.codeId}`)
+            .delete(`/api/sections/${this.site}/${this.codeId}`)
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
@@ -109,7 +115,7 @@ export default {
       this.confirm(`請確認是否要修改段小段名稱?<p>${this.codeId} 👉 ${this.codeName}</p>`).then((YN) => {
         if (YN) {
           this.$axios
-            .put(`/api/codes/${this.site}/${this.codeId}/${this.codeName}`)
+            .put(`/api/sections/${this.site}/${this.codeId}/${this.codeName}`)
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
@@ -130,10 +136,11 @@ export default {
       this.confirm(`請確認是否要新增段小段?<p>${this.codeId} ${this.codeName} ✔</p>`).then((YN) => {
         if (YN) {
           this.$axios
-            .post(`/api/codes/${this.site}/${this.codeId}/${this.codeName}`)
+            .post(`/api/sections/${this.site}/${this.codeId}/${this.codeName}`)
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
+                this.sections.set(this.codeId, this.codeName);
               } else {
                 this.warning(data.message);
               }
