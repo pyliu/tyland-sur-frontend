@@ -11,13 +11,10 @@ Vue.mixin({
     isBusy: false,
   }),
   computed: {
-    ...mapGetters(["loggedIn", "user", "ip", "statusCode", "wip", "wipList", "userMap", "codes", "sections", "loaded"]),
+    ...mapGetters(["loggedIn", "user", "userId", "site", "ip", "statusCode", "wip", "wipList", "userMap", "codes", "sections", "loaded"]),
     today() {
       const now = new Date();
       return now.toLocaleDateString('zh-TW').replaceAll('/', '-');
-    },
-    userId() {
-      return this.user?.id;
     },
     userName() {
       return this.user?.name;
@@ -37,20 +34,7 @@ Vue.mixin({
     },
     userExpire() {
       return this.user?.token.expire;
-    },
-    site() {
-      const site = this.userId?.substring(0, 2);
-      return site?.toUpperCase();
     }
-  },
-  created() {
-    // workaround for the site data dynamic loading
-    if (!this.debounceLoadSiteData) {
-      this.debounceLoadSiteData = debounce(this.loadSiteData, 200);
-    }
-  },
-  mounted() {
-    this.debounceLoadSiteData();
   },
   methods: {
     ...mapActions(["checkSession"]),
@@ -498,15 +482,17 @@ Vue.mixin({
     },
     async loadSiteData(force = false) {
       try {
+        console.warn(this.site, force, this.loaded);
+        console.warn(this.site && (force || !this.loaded));
         if (this.site && (force || !this.loaded)) {
-          const siteCodes = await import(`~/assets/json/${this.site}Code.json`);
-          const siteSections = await import(`~/assets/json/${this.site}Section.json`);
+          const codesRes = await this.$axios.get(`/api/codes/${this.site}`);
           this.codes.clear();
-          siteCodes?.default?.forEach((element) => {
+          codesRes?.data?.payload?.forEach((element) => {
             this.codes.set(element.value, element.text);
           });
+          const sectionsRes = await this.$axios.get(`/api/sections/${this.site}`);
           this.sections.clear();
-          siteSections?.default?.forEach((element) => {
+          sectionsRes?.data?.payload?.forEach((element) => {
             this.sections.set(element.value, element.text);
           });
         }

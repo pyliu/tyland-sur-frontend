@@ -65,6 +65,11 @@ const getters = {
   // @nuxtjs/auth will add user/loggedIn in store
   loggedIn: (state) => state.auth?.loggedIn,
   user: (state) => state.auth?.user,
+  userId: (state) => state.auth?.user?.id,
+  site: (state) => {
+    const site = state.auth?.user?.id?.substring(0, 2);
+    return site?.toUpperCase();
+  },
   ip: (state) => state.ip,
   statusCode: (state) => state.statusCode,
   wip: (state) => state.wipCase,
@@ -127,7 +132,7 @@ const actions = {
       .catch((e) => {
         console.error(e);
       });
-  },
+  }
 };
 
 export default {

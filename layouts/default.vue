@@ -7,8 +7,11 @@ b-container(v-cloak fluid)
 
 <script>
 export default {
-  async created() {
+  created() {
     this.prepareUserMap();
+  },
+  mounted() {
+    this.loadSiteData();
   }
 }
 </script>

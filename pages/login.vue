@@ -96,7 +96,7 @@ export default {
               const site = this.loginInfo.userid?.substring(0, 2);
               if (site) {
                 this.notify(data.message, { type: "success" });
-                this.loadSiteData(true);
+                this.loadSiteData();
               } else {
                 this.alert(`無法辨識所別，目前登入使用者為 ${this.loginInfo.userid}`);
               }
