@@ -34,6 +34,9 @@ Vue.mixin({
     },
     userExpire() {
       return this.user?.token.expire;
+    },
+    loaded() {
+      return this.codes.size > 0 && this.sections.size > 0
     }
   },
   methods: {
@@ -482,8 +485,6 @@ Vue.mixin({
     },
     async loadSiteData(force = false) {
       try {
-        console.warn(this.site, force, this.loaded);
-        console.warn(this.site && (force || !this.loaded));
         if (this.site && (force || !this.loaded)) {
           const codesRes = await this.$axios.get(`/api/codes/${this.site}`);
           this.codes.clear();

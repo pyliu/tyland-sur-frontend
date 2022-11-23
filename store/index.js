@@ -76,8 +76,7 @@ const getters = {
   wipList: (state) => state.wipList,
   userMap: (state) => state.userMap,
   codes: (state) => state.codes,
-  sections: (state) => state.sections,
-  loaded: (state) => state.codes.size !== 0 && state.sections.size !== 0 
+  sections: (state) => state.sections
 };
 
 // only sync operation
