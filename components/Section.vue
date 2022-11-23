@@ -57,7 +57,10 @@ export default {
       return this.mode !== 'add'
     },
     idExisted() {
-      return Boolean(this.sections.get(this.codeId));
+      if (mode === 'add') {
+        return Boolean(this.sections.get(this.codeId));
+      }
+      return false;
     },
     isIdOK() {
       if (
