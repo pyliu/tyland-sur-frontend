@@ -44,10 +44,13 @@ section
     div(v-if="userAuthority.isAdmin")
       ul
         li.h5
+          b-icon.mr-2(icon="wrench", variant="primary")
+          NuxtLink(to="/code") 代碼管理
+        li.h5
           b-icon.mr-2(icon="people-fill", variant="danger")
           NuxtLink(to="/user") 使用者管理
         li.h5
-          b-icon.mr-2(icon="info-square-fill", variant="primary")
+          b-icon.mr-2(icon="info-square-fill", variant="success")
           NuxtLink(to="/stats") 統計數據
       hr
     ul: li.h5
