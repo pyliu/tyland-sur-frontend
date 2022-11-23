@@ -57,7 +57,7 @@ export default {
       return this.mode !== 'add'
     },
     idExisted() {
-      if (mode === 'add') {
+      if (this.mode === 'add') {
         return Boolean(this.codes.get(this.codeId));
       }
       return false;
