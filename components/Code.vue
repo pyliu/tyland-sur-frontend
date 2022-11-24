@@ -26,7 +26,8 @@ div(role="group")
       v-if="isIdOK && isNameOK",
       variant="outline-primary",
       size="sm",
-      @click="update"
+      @click="update",
+      :disabled="isBusy"
     )
       span(v-if="isModifyMode") 修改
       span(v-else) 新增
@@ -34,7 +35,8 @@ div(role="group")
       v-if="isModifyMode",
       variant="outline-danger",
       size="sm",
-      @click="remove"
+      @click="remove",
+      :disabled="isBusy"
     ) 刪除
 </template>
 
@@ -97,11 +99,13 @@ export default {
     remove() {
       this.confirm(`請確認是否要刪除收件字?<p>${this.codeId} ❌</p>`).then((YN) => {
         if (YN) {
+          this.isBusy = true;
           this.$axios
             .delete(`/api/codes/${this.site}/${this.codeId}`)
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
+                this.codes.delete(this.codeId);
               } else {
                 this.warning(data.message);
               }
@@ -110,7 +114,8 @@ export default {
               console.error(e);
             })
             .finally(() => {
-              this.$emit('close')
+              this.$emit('close');
+              this.isBusy = false;
             });
         }
       });
@@ -118,11 +123,13 @@ export default {
     modify() {
       this.confirm(`請確認是否要修改收件字名稱?<p>${this.codeId} 👉 ${this.codeName}</p>`).then((YN) => {
         if (YN) {
+          this.isBusy = true;
           this.$axios
             .put(`/api/codes/${this.site}/${this.codeId}/${this.codeName}`)
             .then(({ data }) => {
               if (data.statusCode > 0) {
                 this.success(data.message);
+                this.codes.set(this.codeId, this.codeName);
               } else {
                 this.warning(data.message);
               }
@@ -131,7 +138,8 @@ export default {
               console.error(e);
             })
             .finally(() => {
-              this.$emit('close')
+              this.$emit('close');
+              this.isBusy = false;
             });
         }
       });
@@ -139,6 +147,7 @@ export default {
     add() {
       this.confirm(`請確認是否要新增收件字?<p>${this.codeId} ${this.codeName} ✔</p>`).then((YN) => {
         if (YN) {
+          this.isBusy = true;
           this.$axios
             .post(`/api/codes/${this.site}/${this.codeId}/${this.codeName}`)
             .then(({ data }) => {
@@ -154,7 +163,8 @@ export default {
               console.error(e);
             })
             .finally(() => {
-              this.$emit('close')
+              this.$emit('close');
+              this.isBusy = false;
             });
         }
       });
