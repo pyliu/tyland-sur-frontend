@@ -9,7 +9,7 @@ div(role="group")
     aria-describedby="input-live-feedback",
     trim
   )
-  b-form-invalid-feedback#input-live-feedback 請輸入4碼字元
+  b-form-invalid-feedback#input-live-feedback {{ codeLiveFeedback }}
 
   label(for="input-live-2") 段小段名稱:
   b-input#input-live-2(
@@ -53,6 +53,9 @@ export default {
     codeName: '',
   }),
   computed: {
+    codeLiveFeedback() {
+      return this.idExisted ? `${this.codeId} 已存在，請輸入其他代碼` : '請輸入4碼字元';
+    },
     isModifyMode() {
       return this.mode !== 'add'
     },
