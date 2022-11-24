@@ -41,30 +41,12 @@ export default {
   },
   components: { Code, Section },
   data: () => ({
+    codeOpts: [],
+    sectionOpts: []
   }),
-  computed: {
-    codeOpts() {
-      const codeOpts = [];
-      this.codes.forEach((val, key, map) => {
-        codeOpts.push({
-          text: `${key} ${val}`,
-          value: key,
-        });
-      });
-      return codeOpts;
-    },
-    sectionOpts() {
-      const sectionOpts = [];
-      this.sections.forEach((val, key, map) => {
-        sectionOpts.push({
-          text: `${key} ${val}`,
-          value: key,
-        });
-      });
-      return sectionOpts;
-    },
-  },
+  computed: { },
   created() {
+    this.refreshOpts();
   },
   mounted() {
   },
@@ -72,7 +54,12 @@ export default {
     addCode() {
       this.modal(this.$createElement(Code, {
         props: { mode: 'add' },
-        on: { close: () => this.hideModal('add-code-modal') }
+        on: {
+          close: () => {
+            this.hideModal('add-code-modal');
+            this.refreshOpts();
+          }
+        }
       }), {
         id: 'add-code-modal',
         title: '新增收件字',
@@ -88,9 +75,14 @@ export default {
           inId: code.value,
           inName: code.text.split(' ')[1]
         },
-        on: { close: () => this.hideModal() }
+        on: {
+          close: () => {
+            this.hideModal('modify-code-modal');
+            this.refreshOpts();
+          }
+        }
       }), {
-        ref: 'code',
+        id: 'modify-code-modal',
         title: '修改收件字',
         size: 'sm',
         centered: true,
@@ -100,9 +92,14 @@ export default {
     addSection() {
       this.modal(this.$createElement(Section, {
         props: { mode: 'add' },
-        on: { close: () => this.hideModal() }
+        on: {
+          close: () => {
+            this.hideModal('add-section-modal');
+            this.refreshOpts();
+          }
+        }
       }), {
-        ref: 'section',
+        id: 'add-section-modal',
         title: '新增段小段',
         size: 'sm',
         centered: true,
@@ -116,13 +113,34 @@ export default {
           inId: sect.value,
           inName: sect.text.split(' ')[1]
         },
-        on: { close: () => this.hideModal() }
+        on: {
+          close: () => {
+            this.hideModal('modify-section-modal');
+            this.refreshOpts();
+          }
+        }
       }), {
-        ref: 'section',
+        id: 'modify-section-modal',
         title: '修改段小段',
         size: 'sm',
         centered: true,
         hideFooter: true
+      });
+    },
+    refreshOpts() {
+      this.codeOpts = [];
+      this.codes.forEach((val, key, map) => {
+        this.codeOpts.push({
+          text: `${key} ${val}`,
+          value: key,
+        });
+      });
+      this.sectionOpts = [];
+      this.sections.forEach((val, key, map) => {
+        this.sectionOpts.push({
+          text: `${key} ${val}`,
+          value: key,
+        });
       });
     }
   }
