@@ -56,7 +56,9 @@ const state = () => ({
   },
   wipCase: {},
   wipList: [],
+  userList: [],
   userMap: new Map(),
+  authMap: new Map(),
   codes: new Map(),
   sections: new Map()
 });
@@ -74,7 +76,9 @@ const getters = {
   statusCode: (state) => state.statusCode,
   wip: (state) => state.wipCase,
   wipList: (state) => state.wipList,
+  userList: (state) => state.userList ,
   userMap: (state) => state.userMap,
+  authMap: (state) => state.authMap,
   codes: (state) => state.codes,
   sections: (state) => state.sections
 };
@@ -95,6 +99,9 @@ const mutations = {
   },
   sections(state, payload) {
     state.sections = payload;
+  },
+  users(state, payload) {
+    state.userList = [...payload];
   }
 };
 
@@ -120,8 +127,21 @@ const actions = {
         if (data.statusCode > 0) {
           const users = data.payload;
           if (Array.isArray(users)) {
+            commit('users', users);
+            /**
+             * user obj e.g. {
+              authority: 0,
+              id: "HATEST",
+              name: "HATEST",
+              note: "test",
+              pwd: "2a4c124add170ac85243ab9649aa97f7",
+              token: {hash: '487f7b22f68312d2c1bbc93b1aea445b', expire: 1669606900727},
+              _id: "63842df593e58b86220f7e17"
+             }
+             */
             users.forEach((user) => {
               getters.userMap.set(user.id, user.name);
+              getters.authMap.set(user.id, user.authority);
             });
           } else {
             console.warn(`payload 不是陣列，無法初始化 userMap。`, users);

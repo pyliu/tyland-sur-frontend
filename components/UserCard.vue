@@ -137,6 +137,7 @@ export default {
             if (this.userNameChanged) {
               this.userData.name = this.mongoData.name;
               this.prepareUserMap(true);
+              this.$emit('refresh');
             }
           } else {
             this.warning(data.message);

@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import isEmpty from "lodash/isEmpty";
-import debounce from "lodash/debounce";
 
 // inject to all Vue instances
 Vue.mixin({
@@ -11,7 +10,7 @@ Vue.mixin({
     isBusy: false,
   }),
   computed: {
-    ...mapGetters(["loggedIn", "user", "userId", "site", "ip", "statusCode", "wip", "wipList", "userMap", "codes", "sections", "loaded"]),
+    ...mapGetters(["loggedIn", "user", "userId", "site", "ip", "statusCode", "wip", "wipList", "userList", "userMap", "authMap", "codes", "sections", "loaded"]),
     today() {
       const now = new Date();
       return now.toLocaleDateString('zh-TW').replaceAll('/', '-');
@@ -473,21 +472,32 @@ Vue.mixin({
       await this.$localForage.clear();
     },
     async prepareUserMap(force = false) {
-      if (force) {
-        this.removeCache('usersCache');
-        this.userMap.clear();
-      }
-      const users = await this.getCache('usersCache');
-      if (Array.isArray(users) && users.length > 0 ) {
-        this.userMap.size !== users.length && users.forEach(user => this.userMap.set(user.id, user.name));
-      } else {
-        await this.$store.dispatch('prepareUserMap');
-        setTimeout(() => {
-          const array = Array.from(this.userMap, ([id, name]) => ({ id, name }));
-          const expire = this.$auth.strategies.local.options.token.maxAge || 1800;
-          this.setCache('usersCache', array, expire * 1000);
-          process.env.NODE_ENV !== 'production' && console.log(`儲存使用者資料 ${expire} 秒後到期`, array);
-        }, 2000);
+      try {
+        if (force) {
+          this.removeCache('usersCache');
+          this.userMap.clear();
+          this.authMap.clear();
+        }
+        const users = await this.getCache('usersCache');
+        if (Array.isArray(users) && users.length > 0 ) {
+          // commit users raw data to store
+          this.$store.commit('users', users);
+          // refresh Map data
+          users.forEach(user => {
+            this.userMap.set(user.id, user.name);
+            this.authMap.set(user.id, user.authority);
+          });
+        } else {
+          await this.$store.dispatch('prepareUserMap');
+          setTimeout(() => {
+            // const array = Array.from(this.userMap, ([id, name]) => ({ id, name }));
+            const expire = this.$auth.strategies.local.options.token.maxAge || 1800;
+            this.setCache('usersCache', this.userList, expire * 1000);
+            process.env.NODE_ENV !== 'production' && console.log(`儲存 ${this.userList.length} 筆使用者資料 ${expire} 秒後到期`);
+          }, 2000);
+        }
+      } catch (err) {
+        console.error(err);
       }
     },
     async loadSiteData(force = false) {
