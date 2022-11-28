@@ -101,11 +101,7 @@ export default {
     collapsedIcon() { return this.collapsed ? 'arrow-down' : 'arrow-up'; },
     collapsedIconVariant() { return this.collapsed ? 'primary' : 'secondary'; }
   },
-  watch: {
-    selectedCheckbox(val) {
-      console.log(val)
-    }
-  },
+  watch: {},
   created() {
     // force reload if currernt user not found in the Map
     this.prepareUserMap(true);
