@@ -1,39 +1,56 @@
 <template lang="pug">
 b-card
   .d-flex.justify-content-between.align-items-center
-    h6 新建使用者
-    b-button.my-auto(:variant="addBtnOK ? 'primary' : 'outline-secondary'", size="sm", @click="add", :disabled="!addBtnOK", pill)
-      b-icon.mr-1(icon="plus-circle")
-      span 新增
-  b-input-group.my-1(prepend="帳號", size="sm"): b-input(
-    v-model="newId",
-    :state="newIdOK",
-    :placeholder="`字首須以 ${site} 起始`"
-    trim
-  )
-  b-input-group.my-1(prepend="姓名", size="sm"): b-input(
-    v-model="newName",
-    :state="newNameOK",
-    trim
-  )
-  b-input-group(prepend="密碼", size="sm"): b-input(
-    v-model="newPwd",
-    type="password",
-    :state="newPwdOK",
-    placeholder="... 至少8個字元 ...",
-    trim
-  )
-  b-input-group.my-1(prepend="備註", size="sm"): b-input(
-    v-model="newNote"
-    trim
-  )
-  b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-1(v-model="newAuth", :options="newAuthOpts")
+    h5.my-auto #[b-icon(icon="people-fill")] 帳號管理
+    b-checkbox.my-auto(v-model="addUI", switch) 建立新帳號
+    //- b-button(
+    //-   pill,
+    //-   size="sm",
+    //-   :variant="collapsedIconVariant",
+    //-   @click="addUI = !addUI"
+    //- ): b-icon(:icon="collapsedIcon", :scale="0.5")
+  b-collapse(v-model="addUI")
+    b-input-group.my-1(prepend="帳號", size="sm"): b-input(
+      v-model="newId",
+      :state="newIdOK",
+      :placeholder="`字首須以 ${site} 起始`"
+      trim
+    )
+    b-input-group.my-1(prepend="姓名", size="sm"): b-input(
+      v-model="newName",
+      :state="newNameOK",
+      trim
+    )
+    b-input-group(prepend="密碼", size="sm"): b-input(
+      v-model="newPwd",
+      type="password",
+      :state="newPwdOK",
+      placeholder="... 至少8個字元 ...",
+      trim
+    )
+    b-input-group.my-1(prepend="備註", size="sm"): b-input(
+      v-model="newNote"
+      trim
+    )
+    b-input-group.my-1(prepend="權限", size="sm"): b-radio-group.my-auto.ml-1(v-model="newAuth", :options="newAuthOpts")
+    .text-center: b-button.my-auto(
+      v-if="addBtnOK",
+      variant="primary",
+      size="sm",
+      @click="add",
+      pill
+    ) 確定新增
   hr
-  h6 使用者列表
-  .text-muted.small - 點選人名標籤進行編輯(紅色代表管理者，黑色代表已停用)
+  h6: .d-flex.align-items-center
+    .mr-2 顯示選項
+    b-checkbox-group(v-model="selectedCheckbox", size="sm")
+      b-checkbox(:value="0") 一般
+      b-checkbox(:value="2") 停用
+      b-checkbox(:value="1") 系管
   .text-center(v-if="isBusy"): b-icon(icon="arrow-clockwise", animation="spin-pulse", font-scale="3")
   div: b-button.m-1(
     v-for="user in list",
+    v-if="isVisible(user.id)"
     :key="`${user.id}`",
     :title="`編輯 ${user.id} / ${user.name}`",
     :variant="variant(user.id)",
@@ -71,13 +88,23 @@ export default {
       disabled: 2
     },
     list: [],
+    selectedCheckbox: [0, 1],
+    addUI: false
   }),
   computed: {
     newPwdHash() { return MD5(this.newPwd).toString(); },
     newIdOK() { return !isEmpty(this.newId) && !this.userMap.has(this.newId) && this.newId?.startsWith(this.site); },
     newNameOK() { return !isEmpty(this.newName); },
     newPwdOK() { return !isEmpty(this.newPwd) && this.newPwd.length > 7; },
-    addBtnOK() { return this.newIdOK && this.newPwdOK && this.newNameOK; }
+    addBtnOK() { return this.newIdOK && this.newPwdOK && this.newNameOK; },
+    collapsed() { return !this.addUI },
+    collapsedIcon() { return this.collapsed ? 'arrow-down' : 'arrow-up'; },
+    collapsedIconVariant() { return this.collapsed ? 'primary' : 'secondary'; }
+  },
+  watch: {
+    selectedCheckbox(val) {
+      console.log(val)
+    }
   },
   created() {
     // force reload if currernt user not found in the Map
@@ -140,6 +167,9 @@ export default {
         title: `編輯 ${user.id} / ${user.name}`
       })
     },
+    isVisible(id) {
+      return this.selectedCheckbox.includes(this.authMap.get(id));
+    },
     isAdmin(id) {
       return this.authMap.get(id) & 1;
     },
@@ -163,6 +193,9 @@ export default {
         return '管理者';
       }
       return '';
+    },
+    toogleAddUI() {
+      this.addUI = this.addUI;
     }
   }
 };
