@@ -116,7 +116,7 @@ export default {
     sendRaw: false,
     detail: false,
     slide: 0,
-    slideInterval: 5000,
+    slideInterval: 0,
     ts: +new Date()
   }),
   computed: {
