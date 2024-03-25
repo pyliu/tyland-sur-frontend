@@ -82,7 +82,7 @@ section
 </template>
 
 <script>
-import Password from "~/components/Password.vue"
+import Password from "~/components/Password.vue";
 export default {
   components: { Password },
   data: () => ({

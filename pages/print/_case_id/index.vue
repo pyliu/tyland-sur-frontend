@@ -10,6 +10,7 @@ export default {
   head: {
     title: "案件列表-界標即可拍系統"
   },
+  layout: 'print',
   data: () => ({
     list: [],
   }),
