@@ -48,6 +48,11 @@ div(v-else)
     
     template(#row-details="{ item }")
       CaseItem(:raw="item" card)
+
+    template(#cell(print)="{ item }")
+      b-button(variant="outline-primary", @click="printCase(item)")
+        b-icon(icon="printer", size="lg")
+        span.ml-1 列印
 </template>
 
 <script>
@@ -79,6 +84,11 @@ export default {
         key: 'opdate',
         label: "日期",
         sortable: true
+      },
+      {
+        key: 'print',
+        label: '列印',
+        sortable: false
       }
     ]
   }),
@@ -112,6 +122,10 @@ export default {
         size: "lg"
       });
       this.$refs.caseList?.clearSelected();
+    },
+    printCase (caseData) {
+      this.$store.commit("wip", caseData);
+      this.$router.push(`/print/${this.caseId(caseData)}/`);
     },
     isCaseCreator(item) { return item?.creator === this.userId; },
     remove(item) {

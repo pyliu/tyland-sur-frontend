@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     caseId(caseData) {
-      if (!caseData.year || !caseData.code || !caseData.num) {
+      if (!caseData || !caseData.year || !caseData.code || !caseData.num) {
         this.alert('案件資料有問題，請檢查主控台視窗!');
         console.warn(caseData);
         return false;

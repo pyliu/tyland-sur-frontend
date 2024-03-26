@@ -18,6 +18,9 @@
       :icon="collapseIcon"
     )
 
+  .text-right: b-button(variant="outline-primary", @click="printCase")
+      b-icon(icon="printer", size="lg")
+      span.ml-1 列印
   b-collapse.mt-1(v-model="detail")
     b-card.text-left(
       header-bg-variant="secondary"
@@ -88,7 +91,7 @@
 
 <script>
 import isEmpty from "lodash/isEmpty";
-import CaseBase from "~/components/CaseBase.js"
+import CaseBase from "~/components/CaseBase.js";
 
 export default {
   props: {

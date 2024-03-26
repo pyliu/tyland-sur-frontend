@@ -77,6 +77,7 @@ const getters = {
   wip: (state) => state.wipCase,
   wipList: (state) => state.wipList,
   userList: (state) => state.userList ,
+  users: (state) => state.userList ,
   userMap: (state) => state.userMap,
   authMap: (state) => state.authMap,
   codes: (state) => state.codes,

@@ -34,6 +34,9 @@ div
     
     hr
     
+    .text-right: b-button(variant="outline-primary", @click="printCase")
+        b-icon(icon="printer", size="lg")
+        span.ml-1 列印
     .d-flex.justify-content-start.align-items-center
       b-button.border-0.p-1(variant="outline-success", v-b-modal.add-land-modal)
         b-icon.mr-1(
@@ -427,6 +430,14 @@ export default {
           }
         }
       });
+    },
+    printCase () {
+      if (this.caseData) {
+        // this.$store.commit("wip", this.raw);
+        this.$router.push(`/print/${this.caseId}/`);
+      } else {
+        this.warning('無法列印案件，請重新選擇!')
+      }
     },
   },
 };

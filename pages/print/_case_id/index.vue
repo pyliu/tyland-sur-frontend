@@ -3,9 +3,22 @@ b-card.border-0(no-body)
   section(v-if="isValid")
     .d-flex.justify-content-between
       b-card-title {{ formatedCaseId }}
-      .text-muted.small {{ paramCaseId }}
-    b-card-body
-      .h2.text-center 顯示圖片 ...
+      b-card-title 段小段：{{ sectionCode }} {{ section }}
+      b-card-title 複丈日期：{{ opDate }}
+      //- .text-muted.small {{ paramCaseId }}
+    b-card-body(v-for="(land, idx) in lands", :key="`${land.number}_${idx}`")
+      .d-flex.justify-content-between
+        .h5 地號：{{ formatLandNumber(land.number) }}
+        .h5 建立人：{{ land.creator }} {{ getUserName(land.creator) }}
+      hr
+      div(v-for="(mark, midx) in land.marks" :key="`${land.number}_${idx}_${midx}`")
+        .h5 \#{{ mark.serial }} {{ mark.type }}
+        b-row.my-2
+          b-col
+            b-img(:src="`${getBaseImgSrc(land, mark)}/near`", thumbnail, fluid)
+          b-col
+            b-img(:src="`${getBaseImgSrc(land, mark)}/far`", thumbnail, fluid)
+        hr
   .my-5.text-center.h1(v-else) ⚠ 重新新選擇案件
   //- CaseList.mt-2(:list="list", :loading="isBusy")
 </template>
@@ -21,7 +34,10 @@ export default {
   }),
   computed: {
     isValid () {
-      return this.caseData?.year && this.caseData?.code && this.caseData?.num;
+      if (!this.isEmpty(this.caseData)) {
+        return this.caseData?.year && this.caseData?.code && this.caseData?.num;
+      }
+      return false;
     },
     caseId() {
       if (!this.isValid) {
@@ -39,6 +55,18 @@ export default {
       }
       return false;
     },
+    sectionCode () {
+      return this.caseData.section;
+    },
+    section () {
+      return this.sections.get(this.sectionCode);
+    },
+    opDate () {
+      return this.caseData.opdate;
+    },
+    lands () {
+      return this.caseData?.lands || []
+    },
     paramCaseId() {
       return this.$route.params.case_id;
     },
@@ -52,11 +80,29 @@ export default {
       return this.paramCaseId.substring(9);
     }
   },
+  watch: {
+    caseData (val) {}
+  },
   created() {
     this.caseData = {...this.wip};
   },
   mounted () {},
-  methods: {}
+  methods: {
+    getUserName (id) {
+      return this.userMap.get(id)
+    },
+    formatLandNumber (str) {
+      if (typeof str === 'string' && str.length === 8) {
+        const mainNumber = str.substring(0, 4).replace(/^0+/, '');
+        const subNumber = str.substring(4).replace(/^0+/, '');
+        return this.isEmpty(subNumber) ? mainNumber : `${mainNumber}-${subNumber}`;
+      }
+      return str
+    },
+    getBaseImgSrc (land, mark) {
+      return `/mark/${this.paramCaseId}/${this.sectionCode}/${this.opDate}/${land.number}/${mark.serial}`
+    }
+  }
 };
 </script>
 

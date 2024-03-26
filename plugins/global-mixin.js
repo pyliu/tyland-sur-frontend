@@ -1,6 +1,6 @@
+import isEmpty from "lodash/isEmpty";
 import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import isEmpty from "lodash/isEmpty";
 
 // inject to all Vue instances
 Vue.mixin({
@@ -10,7 +10,7 @@ Vue.mixin({
     isBusy: false,
   }),
   computed: {
-    ...mapGetters(["loggedIn", "user", "userId", "site", "ip", "statusCode", "wip", "wipList", "userList", "userMap", "authMap", "codes", "sections", "loaded"]),
+    ...mapGetters(["loggedIn", "user", "userId", "site", "ip", "statusCode", "wip", "wipList", "userList", "users", "userMap", "authMap", "codes", "sections", "loaded"]),
     today() {
       const now = new Date();
       return now.toLocaleDateString('zh-TW').replaceAll('/', '-');

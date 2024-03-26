@@ -40,5 +40,18 @@ export default {
         creator() {
             return this.raw?.creator;
         }
+    },
+    methods: {
+        printCase () {
+            if (this.raw) {
+                this.$store.commit("wip", this.raw);
+                this.$router.push(`/print/${this.caseId}/`);
+                // const routeData = this.$router.resolve({name: `/print/${this.caseId}/`});
+                // window.open(routeData.href, '_blank');
+                // window.open(`/print/${this.caseId}/`, '_blank');
+            } else {
+                this.warning('無法列印案件，請重新選擇!')
+            }
+        },
     }
 }
