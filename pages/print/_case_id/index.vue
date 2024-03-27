@@ -11,15 +11,18 @@ b-card.border-0(no-body)
         .h5 地號：{{ formatLandNumber(land.number) }}
         .h5 建立人：{{ land.creator }} {{ getUserName(land.creator) }}
       hr
-      div(v-for="(mark, midx) in land.marks" :key="`${land.number}_${idx}_${midx}`")
-        .h5 \#{{ mark.serial }} {{ mark.type }}
+      b-card.my-3(
+        v-for="(mark, midx) in land.marks" :key="`${land.number}_${idx}_${midx}`",
+
+      )
+        template(#header)
+          h6.mb-0 \#{{ mark.serial }} {{ mark.type }}
         b-row.my-2
-          b-col
-            b-img(:src="`${getBaseImgSrc(land, mark)}/near`", thumbnail, fluid)
-          b-col
-            b-img(:src="`${getBaseImgSrc(land, mark)}/far`", thumbnail, fluid)
-        hr
-  .my-5.text-center.h1(v-else) ⚠ 重新新選擇案件
+          b-col.text-center
+            b-img.shadow(:src="`${getBaseImgSrc(land, mark)}/near`", thumbnail, fluid, @load="loaded++")
+          b-col.text-center
+            b-img.shadow(:src="`${getBaseImgSrc(land, mark)}/far`", thumbnail, fluid, @load="loaded++")
+  .my-5.text-center.h1(v-else) ⚠ 請回上一頁重新選擇案件
   //- CaseList.mt-2(:list="list", :loading="isBusy")
 </template>
 
@@ -30,7 +33,8 @@ export default {
   },
   layout: 'print',
   data: () => ({
-    caseData: {}
+    caseData: {},
+    loaded: 0
   }),
   computed: {
     isValid () {
@@ -78,10 +82,27 @@ export default {
     },
     paramCaseNum() {
       return this.paramCaseId.substring(9);
+    },
+    markCount () {
+      let count = 0;
+      if (this.lands.length > 0) {
+        this.caseData.lands.forEach(land => {
+          if (Array.isArray(land.marks)) {
+            count += land.marks.length * 2
+          }
+        });
+      }
+      return count;
     }
   },
   watch: {
-    caseData (val) {}
+    caseData (val) {},
+    loaded (val) {
+      // all images loaded, bring print dialog up
+      if (val === this.markCount) {
+        window.print();
+      }
+    }
   },
   created() {
     this.caseData = {...this.wip};
