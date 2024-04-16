@@ -11,9 +11,8 @@ b-card.border-0(no-body)
         .h5 地號：{{ formatLandNumber(land.number) }}
         .h5 建立人：{{ land.creator }} {{ getUserName(land.creator) }}
       hr
-      b-card.my-3(
-        v-for="(mark, midx) in land.marks" :key="`${land.number}_${idx}_${midx}`",
-
+      b-card.my-3.print-no-break(
+        v-for="(mark, midx) in land.marks" :key="`${land.number}_${idx}_${midx}`"
       )
         template(#header)
           h6.mb-0 \#{{ mark.serial }} {{ mark.type }}
@@ -29,7 +28,7 @@ b-card.border-0(no-body)
 <script>
 export default {
   head: {
-    title: "案件列印-界標即可拍系統"
+    title: "案件列印-測量即可拍系統"
   },
   layout: 'print',
   data: () => ({

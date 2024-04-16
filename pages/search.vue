@@ -14,7 +14,7 @@ div
 import CaseList from "../components/CaseList.vue";
 export default {
   head: {
-    title: "查詢案件-界標即可拍系統",
+    title: "查詢案件-測量即可拍系統",
   },
   data: () => ({
     searchedData: [],

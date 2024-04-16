@@ -56,7 +56,7 @@ import isEmpty from "lodash/isEmpty";
 
 export default {
   head: {
-    title: '新增案件-界標即可拍系統'
+    title: '新增案件-測量即可拍系統'
   },
   data: () => {
     const now = new Date();

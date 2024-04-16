@@ -1,7 +1,7 @@
 <template lang="pug">
 b-card
   b-card-title.d-flex.align-items-center
-    span.mr-auto 界標即可拍線上系統開發沿革
+    span.mr-auto 測量即可拍線上系統開發沿革
     NuxtLink.arrow-link(to="/case" title="開始使用") ➭
   b-card-text
     ul(style="padding-left: 1.5rem;")

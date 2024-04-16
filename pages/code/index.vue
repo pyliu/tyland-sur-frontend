@@ -32,12 +32,12 @@ b-card.border-0(no-body)
 </template>
 
 <script>
-import Code from "~/components/Code.vue"
-import Section from "~/components/Section.vue"
+import Code from "~/components/Code.vue";
+import Section from "~/components/Section.vue";
 
 export default {
   head: {
-    title: "代碼管理-界標即可拍系統"
+    title: "代碼管理-測量即可拍系統"
   },
   components: { Code, Section },
   data: () => ({

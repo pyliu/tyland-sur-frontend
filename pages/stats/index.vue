@@ -48,7 +48,7 @@ b-card.border-0(no-body)
 <script>
 export default {
   head: {
-    title: "綜合統計數據-界標即可拍系統"
+    title: "綜合統計數據-測量即可拍系統"
   },
   data: () => ({
     firstDayOfMonth: new Date(),

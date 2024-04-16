@@ -37,7 +37,7 @@ import isEmpty from 'lodash/isEmpty';
 export default {
   emit: ["data-update"],
   head: {
-    title: "查詢案件資料-界標即可拍系統",
+    title: "查詢案件資料-測量即可拍系統",
   },
   data: () => {
     const now = new Date();

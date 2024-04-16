@@ -17,7 +17,7 @@ b-card.border-0(no-body)
 import debounce from 'lodash/debounce';
 export default {
   head: {
-    title: "案件列印列表-界標即可拍系統"
+    title: "案件列印列表-測量即可拍系統"
   },
   data: () => ({
     list: [],

@@ -8,7 +8,7 @@ b-card.border-0(no-body)
 <script>
 export default {
   head: {
-    title: "案件列表-界標即可拍系統"
+    title: "案件列表-測量即可拍系統"
   },
   data: () => ({
     list: [],

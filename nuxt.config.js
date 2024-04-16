@@ -1,5 +1,5 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const isProd = process.env.NODE_ENV === "production";
 const protocol = process.env.PROTOCOL === "https" ? "https" : "http";
@@ -23,7 +23,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: '界標即可拍系統-桃園市地政局',
+    title: '測量即可拍系統-桃園市地政局',
     htmlAttrs: {
       lang: 'zh_TW'
     },

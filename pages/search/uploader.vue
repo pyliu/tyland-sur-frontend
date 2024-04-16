@@ -20,7 +20,7 @@ import sortBy from 'lodash/sortBy';
 export default {
   emit: ["data-update"],
   head: {
-    title: "查詢界標 BY 上傳使用者-界標即可拍系統",
+    title: "查詢界標 BY 上傳使用者-測量即可拍系統",
   },
   data: () => ({
     opdate: "",

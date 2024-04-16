@@ -62,14 +62,14 @@ b-card
 </template>
 
 <script>
-import isEmpty from "lodash/isEmpty";
-import debounce from "lodash/debounce";
 import MD5 from "crypto-js/md5";
+import debounce from "lodash/debounce";
+import isEmpty from "lodash/isEmpty";
 import UserCard from "~/components/UserCard.vue";
 
 export default {
   head: {
-    title: "使用者管理-界標即可拍系統"
+    title: "使用者管理-測量即可拍系統"
   },
   components: { UserCard },
   data: () => ({
